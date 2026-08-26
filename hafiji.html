@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hafiji Dashboard - MASJID-E-AYESHA</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#064e3b,#0f766e);
+}
+
+.container{
+    width:100%;
+    max-width:650px;
+    margin:auto;
+    padding:20px 15px 40px;
+}
+
+h1{
+    color:white;
+    text-align:center;
+    font-size:27px;
+    margin:10px 0 20px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.22);
+}
+
+h2{
+    color:#0f766e;
+    margin-top:0;
+}
+
+.profile{
+    text-align:center;
+}
+
+.profile img{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #0f766e;
+    display:block;
+    margin:10px auto;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:13px;
+    margin-top:7px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+}
+
+textarea{
+    min-height:75px;
+    resize:vertical;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-top:12px;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+}
+
+.summary-box{
+    background:#ecfdf5;
+    padding:14px 8px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.summary-box strong{
+    display:block;
+    font-size:22px;
+    color:#0f766e;
+    margin-top:5px;
+}
+
+.payment{
+    border:1px solid #ddd;
+    border-radius:15px;
+    padding:15px;
+    margin-top:14px;
+    background:#fff;
+}
+
+.payment h3{
+    margin:0 0 10px;
+    color:#134e4a;
+}
+
+.payment p{
+    margin:7px 0;
+}
+
+.pending{
+    color:#d97706;
+    font-weight:bold;
+}
+
+.success{
+    color:green;
+    font-weight:bold;
+}
+
+.chanda{
+    border-left:5px solid #7c3aed;
+}
+
+.hafiji{
+    border-left:5px solid #0f766e;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:0;
+    border-radius:11px;
+    background:#0f766e;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.refresh{
+    background:#2563eb;
+}
+
+.logout{
+    background:#555;
+}
+
+.remarkBtn{
+    background:#7c3aed;
+}
+
+.received{
+    background:#16a34a;
+}
+
+.message{
+    text-align:center;
+    font-weight:bold;
+    margin-top:12px;
+    line-height:1.5;
+}
+
+.empty{
+    text-align:center;
+    color:#666;
+    padding:20px 5px;
+}
+
+.filter-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:7px;
+}
+
+.filter-buttons button{
+    margin-top:0;
+    font-size:13px;
+    padding:12px 5px;
+}
+
+.small{
+    color:#666;
+    font-size:13px;
+}
+
+@media(max-width:450px){
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+
+    .filter-buttons{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🕌 MASJID-E-AYESHA</h1>
+
+
+<!-- PROFILE -->
+
+<div class="card profile">
+
+<h2>🕌 Hafiji Profile</h2>
+
+<img
+    id="profileImage"
+    src="https://via.placeholder.com/110?text=H"
+    alt="Profile"
+>
+
+<p>
+<strong id="hafijiName">
+Hafiji Sahab
+</strong>
+</p>
+
+<p id="loginInfo">
+Checking login...
+</p>
+
+<input
+    type="file"
+    id="profileFile"
+    accept="image/*"
+>
+
+<button id="uploadProfileBtn">
+📷 Profile Picture Save करें
+</button>
+
+<div
+    id="profileMessage"
+    class="message"
+></div>
+
+</div>
+
+
+<!-- SUMMARY -->
+
+<div class="card">
+
+<h2>📊 Payment Summary</h2>
+
+<div class="summary">
+
+<div class="summary-box">
+Total
+<strong id="totalCount">0</strong>
+</div>
+
+<div class="summary-box">
+Pending
+<strong id="pendingCount">0</strong>
+</div>
+
+<div class="summary-box">
+Successful
+<strong id="successCount">0</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PAYMENTS -->
+
+<div class="card">
+
+<h2>💰 Payments & Chanda</h2>
+
+<div class="filter-buttons">
+
+<button id="allBtn">
+All
+</button>
+
+<button id="hafijiBtn">
+Hafiji
+</button>
+
+<button id="chandaBtn">
+Chanda
+</button>
+
+<button id="pendingBtn">
+Pending
+</button>
+
+</div>
+
+<div id="message" class="message"></div>
+
+<div id="paymentsList">
+
+<div class="empty">
+⏳ Payments loading...
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ACTION -->
+
+<div class="card">
+
+<button
+class="refresh"
+id="refreshBtn"
+>
+🔄 Refresh Payments
+</button>
+
+<button
+class="logout"
+id="logoutBtn"
+>
+🚪 Logout
+</button>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    collection,
+    getDocs,
+    updateDoc
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
+
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBI9ow2vRoOtOt2V1-J5rNgj_QqMD_EFbg",
+
+    authDomain:
+    "masjid-e-ayesha-371f6.firebaseapp.com",
+
+    projectId:
+    "masjid-e-ayesha-371f6",
+
+    storageBucket:
+    "masjid-e-ayesha-371f6.firebasestorage.app",
+
+    messagingSenderId:
+    "356807161570",
+
+    appId:
+    "1:356807161570:web:53e439043b8eee8e7d90bb",
+
+    measurementId:
+    "G-Q5TVCP79W2"
+};
+
+
+/* INITIALIZE */
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getFirestore(app);
+
+const storage =
+    getStorage(app);
+
+
+let currentUser = null;
+
+let allPayments = [];
+
+let currentFilter = "all";
+
+
+/* LOGIN CHECK */
+
+onAuthStateChanged(
+    auth,
+    async function(user){
+
+        if(!user){
+
+            location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        currentUser = user;
+
+
+        try{
+
+            const userSnap =
+                await getDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    )
+                );
+
+
+            if(!userSnap.exists()){
+
+                alert(
+                    "❌ Hafiji profile नहीं मिला।"
+                );
+
+                await signOut(auth);
+
+                location.href =
+                    "login.html";
+
+                return;
+            }
+
+
+            const userData =
+                userSnap.data();
+
+
+            if(userData.role !== "hafiji"){
+
+                alert(
+                    "❌ इस account को Hafiji access नहीं है।"
+                );
+
+                await signOut(auth);
+
+                location.href =
+                    "login.html";
+
+                return;
+            }
+
+
+            document.getElementById(
+                "hafijiName"
+            ).innerText =
+                userData.name ||
+                "Hafiji Sahab";
+
+
+            document.getElementById(
+                "loginInfo"
+            ).innerText =
+                "📧 " +
+                (user.email || "");
+
+
+            if(userData.photoURL){
+
+                document.getElementById(
+                    "profileImage"
+                ).src =
+                    userData.photoURL;
+
+            }
+
+
+            await loadPayments();
+
+        }
+        catch(error){
+
+            console.error(error);
+
+            document.getElementById(
+                "message"
+            ).style.color =
+                "red";
+
+            document.getElementById(
+                "message"
+            ).innerText =
+                "❌ Dashboard load नहीं हुआ।";
+
+        }
+
+    }
+);
+
+
+/* PROFILE PICTURE */
+
+document
+.getElementById("uploadProfileBtn")
+.addEventListener(
+    "click",
+    async function(){
+
+        const file =
+            document.getElementById(
+                "profileFile"
+            ).files[0];
+
+
+        const msg =
+            document.getElementById(
+                "profileMessage"
+            );
+
+
+        if(!file){
+
+            msg.style.color="red";
+
+            msg.innerText =
+                "❌ पहले photo चुनें।";
+
+            return;
+        }
+
+
+        try{
+
+            msg.style.color="#0f766e";
+
+            msg.innerText =
+                "⏳ Photo upload हो रही है...";
+
+
+            const storageRef =
+                ref(
+                    storage,
+                    "profilePictures/" +
+                    currentUser.uid +
+                    ".jpg"
+                );
+
+
+            await uploadBytes(
+                storageRef,
+                file
+            );
+
+
+            const photoURL =
+                await getDownloadURL(
+                    storageRef
+                );
+
+
+            await updateDoc(
+                doc(
+                    db,
+                    "users",
+                    currentUser.uid
+                ),
+                {
+                    photoURL:
+                        photoURL
+                }
+            );
+
+
+            document.getElementById(
+                "profileImage"
+            ).src =
+                photoURL;
+
+
+            msg.style.color="green";
+
+            msg.innerText =
+                "✅ Profile Picture Save हो गई।";
+
+        }
+        catch(error){
+
+            console.error(error);
+
+            msg.style.color="red";
+
+            msg.innerText =
+                "❌ Photo upload failed: " +
+                error.message;
+
+        }
+
+    }
+);
+
+
+/* LOAD PAYMENTS */
+
+async function loadPayments(){
+
+    const list =
+        document.getElementById(
+            "paymentsList"
+        );
+
+
+    list.innerHTML =
+        '<div class="empty">⏳ Payments loading...</div>';
+
+
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "payments"
+                )
+            );
+
+
+        allPayments = [];
+
+
+        snapshot.forEach(
+            function(item){
+
+                allPayments.push({
+
+                    id:item.id,
+
+                    ...item.data()
+
+                });
+
+            }
+        );
+
+
+        allPayments.sort(
+            function(a,b){
+
+                return String(
+                    b.createdAt || ""
+                ).localeCompare(
+                    String(
+                        a.createdAt || ""
+                    )
+                );
+
+            }
+        );
+
+
+        updateSummary();
+
+        showPayments();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        list.innerHTML =
+            '<div class="empty">❌ Payments load नहीं हुए।</div>';
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            error.message;
+
+        document.getElementById(
+            "message"
+        ).style.color =
+            "red";
+
+    }
+
+}
+
+
+/* SUMMARY */
+
+function updateSummary(){
+
+    let pending = 0;
+
+    let successful = 0;
+
+
+    allPayments.forEach(
+        function(payment){
+
+            if(
+                payment.status ===
+                "Successful"
+            ){
+
+                successful++;
+
+            }
+            else{
+
+                pending++;
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "totalCount"
+    ).innerText =
+        allPayments.length;
+
+
+    document.getElementById(
+        "pendingCount"
+    ).innerText =
+        pending;
+
+
+    document.getElementById(
+        "successCount"
+    ).innerText =
+        successful;
+
+}
+
+
+/* SHOW PAYMENTS */
+
+function showPayments(){
+
+    const list =
+        document.getElementById(
+            "paymentsList"
+        );
+
+
+    let payments =
+        allPayments;
+
+
+    if(currentFilter === "hafiji"){
+
+        payments =
+            allPayments.filter(
+                function(p){
+
+                    return p.category ===
+                        "hafiji";
+
+                }
+            );
+
+    }
+
+
+    if(currentFilter === "chanda"){
+
+        payments =
+            allPayments.filter(
+                function(p){
+
+                    return p.category ===
+                        "chanda";
+
+                }
+            );
+
+    }
+
+
+    if(currentFilter === "pending"){
+
+        payments =
+            allPayments.filter(
+                function(p){
+
+                    return p.status !==
+                        "Successful";
+
+                }
+            );
+
+    }
+
+
+    if(payments.length === 0){
+
+        list.innerHTML =
+            '<div class="empty">कोई payment नहीं मिला।</div>';
+
+        return;
+    }
+
+
+    list.innerHTML = "";
+
+
+    payments.forEach(
+        function(payment){
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+
+            box.className =
+                "payment " +
+                (
+                    payment.category ===
+                    "chanda"
+                    ? "chanda"
+                    : "hafiji"
+                );
+
+
+            const successful =
+                payment.status ===
+                "Successful";
+
+
+            let categoryText =
+                payment.category ===
+                "chanda"
+                ? "🕌 Chanda"
+                : "💰 Hafiji Payment";
+
+
+            let modeText =
+                payment.paymentMode ===
+                "cash"
+                ? "💵 Cash / Offline"
+                : "🌐 Online";
+
+
+            let html = "";
+
+
+            html +=
+                "<h3>" +
+                categoryText +
+                "</h3>";
+
+
+            html +=
+                "<p>👤 Member: <strong>" +
+                escapeHtml(
+                    payment.memberName ||
+                    "General Chanda"
+                ) +
+                "</strong></p>";
+
+
+            if(payment.mobile){
+
+                html +=
+                    "<p>📱 Mobile: " +
+                    escapeHtml(
+                        payment.mobile
+                    ) +
+                    "</p>";
+
+            }
+
+
+            html +=
+                "<p>💰 Amount: <strong>₹" +
+                Number(
+                    payment.amount || 0
+                ) +
+                "</strong></p>";
+
+
+            html +=
+                "<p>💳 Mode: " +
+                modeText +
+                "</p>";
+
+
+            html +=
+                "<p>📅 Date: " +
+                escapeHtml(
+                    payment.paymentDate ||
+                    "-"
+                ) +
+                "</p>";
+
+
+            html +=
+                "<p>⏰ Time: " +
+                escapeHtml(
+                    payment.paymentTime ||
+                    "-"
+                ) +
+                "</p>";
+
+
+            html +=
+                "<p>📝 Remark: " +
+                escapeHtml(
+                    payment.remark ||
+                    "No remark"
+                ) +
+                "</p>";
+
+
+            if(successful){
+
+                html +=
+                    '<p class="success">✅ Payment Successful</p>';
+
+            }
+            else{
+
+                html +=
+                    '<p class="pending">⏳ Payment Pending</p>';
+
+            }
+
+
+            if(
+                payment.verifiedDate
+            ){
+
+                html +=
+                    "<p>✔️ Verified Date: " +
+                    escapeHtml(
+                        payment.verifiedDate
+                    ) +
+                    "</p>";
+
+            }
+
+
+            if(
+                payment.verifiedTime
+            ){
+
+                html +=
+                    "<p>🕐 Verified Time: " +
+                    escapeHtml(
+                        payment.verifiedTime
+                    ) +
+                    "</p>";
+
+            }
+
+
+            box.innerHTML =
+                html;
+
+
+            /* SCREENSHOT */
+
+            if(payment.screenshot){
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                img.src =
+                    payment.screenshot;
+
+
+                img.alt =
+                    "Payment Screenshot";
+
+
+                box.appendChild(
+                    img
+                );
+
+            }
+
+
+            /* REMARK BUTTON */
+
+            const remarkButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            remarkButton.className =
+                "remarkBtn";
+
+
+            remarkButton.innerText =
+                "📝 Remark लिखें / बदलें";
+
+
+            remarkButton.onclick =
+                function(){
+
+                    editRemark(
+                        payment.id,
+                        payment.remark || ""
+                    );
+
+                };
+
+
+            box.appendChild(
+                remarkButton
+            );
+
+
+            /* RECEIVED BUTTON */
+
+            if(!successful){
+
+                const receivedButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                receivedButton.className =
+                    "received";
+
+
+                receivedButton.innerText =
+                    "✅ Payment Received";
+
+
+                receivedButton.onclick =
+                    function(){
+
+                        verifyPayment(
+                            payment.id
+                        );
+
+                    };
+
+
+                box.appendChild(
+                    receivedButton
+                );
+
+            }
+
+
+            list.appendChild(
+                box
+            );
+
+        }
+    );
+
+}
+
+
+/* EDIT REMARK */
+
+async function editRemark(
+    paymentId,
+    oldRemark
+){
+
+    const remark =
+        prompt(
+            "Payment का Remark लिखें:",
+            oldRemark
+        );
+
+
+    if(remark === null){
+
+        return;
+    }
+
+
+    try{
+
+        await updateDoc(
+            doc(
+                db,
+                "payments",
+                paymentId
+            ),
+            {
+
+                remark:
+                    remark.trim(),
+
+                remarkUpdatedAt:
+                    new Date().toISOString(),
+
+                remarkUpdatedBy:
+                    currentUser.uid
+
+            }
+        );
+
+
+        alert(
+            "✅ Remark Save हो गया।"
+        );
+
+
+        await loadPayments();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "❌ Remark Save नहीं हुआ: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* PAYMENT RECEIVED */
+
+async function verifyPayment(
+    paymentId
+){
+
+    const ok =
+        confirm(
+            "क्या आपको यह payment मिल गया है?"
+        );
+
+
+    if(!ok){
+
+        return;
+    }
+
+
+    try{
+
+        const now =
+            new Date();
+
+
+        const date =
+            now.toLocaleDateString(
+                "en-IN"
+            );
+
+
+        const time =
+            now.toLocaleTimeString(
+                "en-IN",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            );
+
+
+        await updateDoc(
+            doc(
+                db,
+                "payments",
+                paymentId
+            ),
+            {
+
+                status:
+                    "Successful",
+
+                verifiedDate:
+                    date,
+
+                verifiedTime:
+                    time,
+
+                verifiedAt:
+                    new Date().toISOString(),
+
+                verifiedBy:
+                    currentUser.uid
+
+            }
+        );
+
+
+        alert(
+            "✅ Payment Successful mark कर दिया गया।"
+        );
+
+
+        await loadPayments();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "❌ Payment update नहीं हुआ: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* FILTER BUTTONS */
+
+document
+.getElementById("allBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        currentFilter =
+            "all";
+
+        showPayments();
+
+    }
+);
+
+
+document
+.getElementById("hafijiBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        currentFilter =
+            "hafiji";
+
+        showPayments();
+
+    }
+);
+
+
+document
+.getElementById("chandaBtn")
+.addEventListener(

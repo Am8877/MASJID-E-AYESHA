@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Member Dashboard - MASJID-E-AYESHA</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#064e3b,#0f766e);
+}
+
+.container{
+    width:100%;
+    max-width:520px;
+    margin:auto;
+    padding:20px 15px 40px;
+}
+
+h1{
+    color:white;
+    text-align:center;
+    font-size:27px;
+    margin:10px 0 20px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.22);
+}
+
+h2{
+    color:#0f766e;
+    margin-top:0;
+}
+
+.info{
+    background:#ecfdf5;
+    padding:15px;
+    border-radius:12px;
+    margin:10px 0;
+}
+
+.info p{margin:8px 0}
+
+button{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:11px;
+    background:#0f766e;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+button:active{transform:scale(.98)}
+
+.logout{background:#555}
+.pay-box{
+    display:none;
+    margin-top:15px;
+    padding:15px;
+    background:#f8fafc;
+    border-radius:14px;
+    text-align:center;
+}
+
+.amount{
+    font-size:25px;
+    color:#0f766e;
+    font-weight:bold;
+}
+
+.upi{
+    background:#ecfdf5;
+    padding:12px;
+    border-radius:10px;
+    margin-top:10px;
+    word-break:break-all;
+}
+
+.qr-box{
+    margin:15px auto;
+    padding:15px;
+    background:white;
+    border-radius:15px;
+    border:1px solid #ddd;
+    max-width:300px;
+}
+
+.qr-box img{
+    width:100%;
+    display:block;
+}
+
+.timer{
+    font-size:22px;
+    font-weight:bold;
+    color:#dc2626;
+    margin:10px 0;
+}
+
+.voice{
+    background:#2563eb;
+}
+
+.file{
+    width:100%;
+    margin-top:12px;
+}
+
+.message{
+    text-align:center;
+    font-weight:bold;
+    margin-top:12px;
+    line-height:1.5;
+}
+
+.payment-item{
+    border:1px solid #ddd;
+    border-radius:14px;
+    padding:15px;
+    margin-top:12px;
+    background:#fff;
+}
+
+.pending{
+    color:#d97706;
+    font-weight:bold;
+}
+
+.success{
+    color:green;
+    font-weight:bold;
+}
+
+.payment-item img{
+    width:100%;
+    max-height:250px;
+    object-fit:contain;
+    margin-top:10px;
+    border-radius:10px;
+    border:1px solid #ddd;
+}
+
+.hidden{
+    display:none!important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🕌 MASJID-E-AYESHA</h1>
+
+<div class="card">
+
+<h2>👤 Member Dashboard</h2>
+
+<div class="info">
+
+<p id="memberName">⏳ Loading...</p>
+
+<p id="memberMobile"></p>
+
+<p>
+💰 Monthly Hafiji Payment:
+<strong id="memberAmount">₹0</strong>
+</p>
+
+</div>
+
+<button id="payButton">
+💳 Monthly Payment
+</button>
+
+<div id="payBox" class="pay-box">
+
+<h3>💳 Payment करें</h3>
+
+<p>Payment Amount</p>
+
+<div class="amount" id="payAmount">
+₹0
+</div>
+
+<div class="upi">
+<b>UPI ID</b><br>
+7488611526@ybl
+</div>
+
+<div id="qrArea">
+
+<div class="qr-box">
+<img id="qrImage" alt="UPI QR Code">
+</div>
+
+<div class="timer">
+⏱️ QR Time: <span id="timer">05:00</span>
+</div>
+
+</div>
+
+<button id="upiButton">
+📲 Pay Now
+</button>
+
+<button class="voice" id="voiceButton">
+🔊 Payment Instructions सुनें
+</button>
+
+<p>
+⚠️ Payment करने के बाद screenshot upload करना जरूरी है।
+</p>
+
+<label>
+📷 Payment Screenshot
+</label>
+
+<input
+    class="file"
+    type="file"
+    id="screenshot"
+    accept="image/*"
+>
+
+<button id="submitPayment">
+📤 Screenshot Submit करें
+</button>
+
+<div id="paymentMessage" class="message"></div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📋 Payment History</h2>
+
+<div id="history">
+⏳ Loading payment history...
+</div>
+
+</div>
+
+
+<div class="card">
+
+<button class="logout" id="logoutButton">
+🚪 Logout
+</button>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    addDoc,
+    collection,
+    query,
+    where,
+    orderBy,
+    getDocs
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+/* ================================
+   FIREBASE
+================================ */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBI9ow2vRoOtOt2V1-J5rNgj_QqMD_EFbg",
+
+    authDomain:
+    "masjid-e-ayesha-371f6.firebaseapp.com",
+
+    projectId:
+    "masjid-e-ayesha-371f6",
+
+    storageBucket:
+    "masjid-e-ayesha-371f6.firebasestorage.app",
+
+    messagingSenderId:
+    "356807161570",
+
+    appId:
+    "1:356807161570:web:53e439043b8eee8e7d90bb",
+
+    measurementId:
+    "G-Q5TVCP79W2"
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getFirestore(app);
+
+
+/* ================================
+   SETTINGS
+================================ */
+
+const UPI_ID =
+    "7488611526@ybl";
+
+const QR_TIME =
+    5 * 60;
+
+let currentUser = null;
+let memberData = null;
+let timerInterval = null;
+let remainingSeconds = QR_TIME;
+
+
+/* ================================
+   AUTH
+================================ */
+
+onAuthStateChanged(
+auth,
+async function(user){
+
+    if(!user){
+
+        location.href =
+            "login.html";
+
+        return;
+    }
+
+    currentUser = user;
+
+    try{
+
+        const userSnap =
+            await getDoc(
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                )
+            );
+
+        if(!userSnap.exists()){
+
+            alert(
+                "Member profile नहीं मिला।"
+            );
+
+            await signOut(auth);
+
+            location.href =
+                "login.html";
+
+            return;
+        }
+
+        memberData =
+            userSnap.data();
+
+        if(memberData.role !== "member"){
+
+            alert(
+                "यह Member account नहीं है।"
+            );
+
+            await signOut(auth);
+
+            location.href =
+                "login.html";
+
+            return;
+        }
+
+        document
+        .getElementById("memberName")
+        .innerText =
+            "👤 Name: " +
+            (memberData.name || "-");
+
+        document
+        .getElementById("memberMobile")
+        .innerText =
+            "📱 Mobile: " +
+            (memberData.mobile || "-");
+
+        const amount =
+            Number(
+                memberData.monthlyAmount ||
+                memberData.amount ||
+                0
+            );
+
+        document
+        .getElementById("memberAmount")
+        .innerText =
+            "₹" + amount;
+
+        document
+        .getElementById("payAmount")
+        .innerText =
+            "₹" + amount;
+
+        loadPaymentHistory();
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Dashboard load नहीं हो पाया।"
+        );
+    }
+
+});
+
+
+/* ================================
+   PAYMENT BUTTON
+================================ */
+
+document
+.getElementById("payButton")
+.addEventListener(
+"click",
+function(){
+
+    const box =
+        document.getElementById("payBox");
+
+    if(
+        box.style.display ===
+        "block"
+    ){
+
+        box.style.display =
+            "none";
+
+        stopTimer();
+
+    }else{
+
+        box.style.display =
+            "block";
+
+        startPaymentTimer();
+
+        speak(
+            "कृपया payment करें। Payment करने के बाद payment screenshot upload करना जरूरी है।"
+        );
+    }
+
+});
+
+
+/* ================================
+   CREATE QR
+================================ */
+
+function createQR(){
+
+    const amount =
+        Number(
+            memberData.monthlyAmount ||
+            memberData.amount ||
+            0
+        );
+
+    const upiData =
+        "upi://pay" +
+        "?pa=" +
+        encodeURIComponent(UPI_ID) +
+        "&pn=" +
+        encodeURIComponent(
+            "MASJID-E-AYESHA"
+        ) +
+        "&am=" +
+        encodeURIComponent(amount) +
+        "&cu=INR";
+
+    const qrUrl =
+        "https://api.qrserver.com/v1/create-qr-code/" +
+        "?size=300x300&data=" +
+        encodeURIComponent(upiData);
+
+    document
+    .getElementById("qrImage")
+    .src =
+        qrUrl;
+}
+
+
+/* ================================
+   TIMER
+================================ */
+
+function startPaymentTimer(){
+
+    stopTimer();
+
+    remainingSeconds =
+        QR_TIME;
+
+    document
+    .getElementById("qrArea")
+    .classList
+    .remove("hidden");
+
+    createQR();
+
+    updateTimerText();
+
+    timerInterval =
+        setInterval(
+        function(){
+
+            remainingSeconds--;
+
+            updateTimerText();
+
+            if(
+                remainingSeconds <= 0
+            ){
+
+                stopTimer();
+
+                document
+                .getElementById("qrArea")
+                .classList
+                .add("hidden");
+
+                document
+                .getElementById("paymentMessage")
+                .style.color =
+                    "red";
+
+                document
+                .getElementById("paymentMessage")
+                .innerText =
+                    "⏰ QR का समय समाप्त हो गया। Payment के लिए Monthly Payment फिर से दबाएँ।";
+
+                speak(
+                    "QR का समय समाप्त हो गया है।"
+                );
+            }
+
+        },
+        1000
+        );
+}
+
+
+function stopTimer(){
+
+    if(timerInterval){
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval =
+            null;
+    }
+}
+
+
+function updateTimerText(){
+
+    const minutes =
+        Math.floor(
+            remainingSeconds / 60
+        );
+
+    const seconds =
+        remainingSeconds % 60;
+
+    document
+    .getElementById("timer")
+    .innerText =
+        String(minutes)
+        .padStart(2,"0") +
+        ":" +
+        String(seconds)
+        .padStart(2,"0");
+}
+
+
+/* ================================
+   UPI PAY
+================================ */
+
+document
+.getElementById("upiButton")
+.addEventListener(
+"click",
+function(){
+
+    if(!memberData){
+
+        alert(
+            "Member information loading..."
+        );
+
+        return;
+    }
+
+    const amount =
+        Number(
+            memberData.monthlyAmount ||
+            memberData.amount ||
+            0
+        );
+
+    if(amount <= 0){
+
+        alert(
+            "Monthly amount सही नहीं है।"
+        );
+
+        return;
+    }
+
+    if(remainingSeconds <= 0){
+
+        alert(
+            "QR का समय समाप्त हो गया है।"
+        );
+
+        return;
+    }
+
+    const upiUrl =
+        "upi://pay" +
+        "?pa=" +
+        encodeURIComponent(UPI_ID) +
+        "&pn=" +
+        encodeURIComponent(
+            "MASJID-E-AYESHA"
+        ) +
+        "&am=" +
+        encodeURIComponent(amount) +
+        "&cu=INR";
+
+    speak(
+        "Payment application खुल रहा है। Payment करने के बाद screenshot जरूर upload करें।"
+    );
+
+    window.location.href =
+        upiUrl;
+
+});
+
+
+/* ================================
+   VOICE
+================================ */
+
+document
+.getElementById("voiceButton")
+.addEventListener(
+"click",
+function(){
+
+    speak(
+        "कृपया QR code से payment करें। Payment करने के बाद screenshot upload करना जरूरी है।"
+    );
+
+});
+
+
+function speak(text){
+
+    if(
+        "speechSynthesis" in window
+    ){
+
+        window.speechSynthesis.cancel();
+
+        const speech =
+            new SpeechSynthesisUtterance(
+                text
+            );
+
+        speech.lang =
+            "hi-IN";
+
+        speech.rate =
+            0.9;
+
+        window.speechSynthesis.speak(
+            speech
+        );
+    }
+}
+
+
+/* ================================
+   IMAGE COMPRESS
+================================ */
+
+function compressImage(file){
+
+    return new Promise(
+    function(resolve,reject){
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+        function(event){
+
+            const img =
+                new Image();
+
+            img.onload =
+            function(){
+
+                const maxWidth =
+                    800;
+
+                const scale =
+                    Math.min(
+                        1,
+                        maxWidth /
+                        img.width
+                    );
+
+                const canvas =
+                    document.createElement(
+                        "canvas"
+                    );
+
+                canvas.width =
+                    img.width * scale;
+
+                canvas.height =
+                    img.height * scale;
+
+                const ctx =
+                    canvas.getContext(
+                        "2d"
+                    );
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                resolve(
+                    canvas.toDataURL(
+                        "image/jpeg",
+                        0.55
+                    )
+                );
+            };
+
+            img.onerror =
+                reject;
+
+            img.src =
+                event.target.result;
+        };
+
+        reader.onerror =
+            reject;
+
+        reader.readAsDataURL(file);
+    });
+}
+
+
+/* ================================
+   SUBMIT PAYMENT
+================================ */
+
+document
+.getElementById("submitPayment")
+.addEventListener(
+"click",
+async function(){
+
+    const file =
+        document
+        .getElementById("screenshot")
+        .files[0];
+
+    const message =
+        document
+        .getElementById(
+            "paymentMessage"
+        );
+
+    if(!file){
+
+        message.style.color =
+            "red";
+
+        message.innerText =
+            "❌ पहले payment screenshot चुनें।";
+
+        return;
+    }
+
+    if(!memberData){
+
+        message.style.color =
+            "red";
+
+        message.innerText =
+            "❌ Member data loading है।";
+
+        return;
+    }
+
+    try{
+
+        message.style.color =
+            "#0f766e";
+
+        message.innerText =
+            "⏳ Screenshot तैयार हो रहा है...";
+
+        const screenshot =
+            await compressImage(
+                file
+            );
+
+        const now =
+            new Date();
+
+        const paymentDate =
+            now.toLocaleDateString(
+                "en-IN"
+            );
+
+        const paymentTime =
+            now.toLocaleTimeString(
+                "en-IN",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            );
+
+        const paymentAmount =
+            Number(
+                memberData.monthlyAmount ||
+                memberData.amount ||
+                0
+            );
+
+        await addDoc(
+            collection(
+                db,
+                "payments"
+            ),
+            {
+
+                memberId:
+                    currentUser.uid,
+
+                memberName:
+                    memberData.name || "",
+
+                mobile:
+                    memberData.mobile || "",
+
+                amount:
+                    paymentAmount,
+
+                upiId:
+                    UPI_ID,
+
+                paymentMode:
+                    "Online",
+
+                screenshot:
+                    screenshot,
+
+                status:
+                    "Pending",
+
+                paymentDate:
+                    paymentDate,
+
+                paymentTime:
+                    paymentTime,
+
+                createdAt:
+                    new Date().toISOString()
+
+            }
+        );
+
+        message.style.color =
+            "green";
+
+        message.innerHTML =
+            "✅ Screenshot successfully submit हो गया।<br>⏳ Hafiji payment verify करेंगे।";
+
+        document
+        .getElementById("screenshot")
+        .value = "";
+
+        speak(
+            "Payment screenshot successfully submit हो गया है।"
+        );
+
+        loadPaymentHistory();
+
+    }catch(error){
+
+        console.error(error);
+
+        message.style.color =
+            "red";
+
+        message.innerText =
+            "❌ Payment submit नहीं हुआ: " +
+            error.message;
+    }
+
+});
+
+
+/* ================================
+   PAYMENT HISTORY
+================================ */
+
+async function loadPaymentHistory(){
+
+    const history =
+        document.getElementById(
+            "history"
+        );
+
+    try{
+
+        const paymentQuery =
+            query(
+                collection(
+                    db,
+                    "payments"
+                ),
+                where(
+                    "memberId",
+                    "==",
+                    currentUser.uid
+                ),
+                orderBy(
+                    "createdAt",
+                    "desc"
+                )
+            );
+
+        const result =
+            await getDocs(
+                paymentQuery
+            );
+
+        if(result.empty){
+
+            history.innerHTML =
+                "<p>अभी कोई payment नहीं है।</p>";
+
+            return;
+        }
+
+        history.innerHTML = "";
+
+        result.forEach(
+        function(item){
+
+            const payment =
+                item.data();
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.className =
+                "payment-item";
+
+            const successful =
+                payment.status ===
+                "Successful";
+
+            const statusClass =
+                successful
+                ? "success"
+                : "pending";
+
+            let html =
+                "<strong>💰 Amount: ₹" +
+                Number(
+                    payment.amount || 0
+                ) +
+                "</strong>";
+
+            html +=
+                "<p>📅 Date: " +
+                (payment.paymentDate || "-") +
+                "</p>";
+
+            html +=
+                "<p>🕐 Time: " +
+                (payment.paymentTime || "-") +
+                "</p>";
+
+            html +=
+                "<p class='" +
+                statusClass +
+                "'>" +
+                (
+                    successful
+                    ? "✅ Payment Successful"
+                    : "⏳ Payment Pending"
+                ) +
+                "</p>";
+
+            if(
+                payment.verifiedDate &&
+                payment.verifiedTime
+            ){
+
+                html +=
+                    "<p>✔️ Verified: " +
+                    payment.verifiedDate +
+                    " — " +
+                    payment.verifiedTime +
+                    "</p>";
+            }
+
+            if(payment.remark){
+
+                html +=
+                    "<p>📝 Remark: " +
+                    payment.remark +
+                    "</p>";
+            }
+
+            div.innerHTML =
+                html;
+
+            if(payment.screenshot){
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+                img.src =
+                    payment.screenshot;
+
+                img.alt =
+                    "Payment Screenshot";
+
+                div.appendChild(img);
+            }
+
+            history.appendChild(
+                div
+            );
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+        history.innerHTML =
+            "<p>Payment history load नहीं हुई।</p>";
+    }
+}
+
+
+/* ================================
+   LOGOUT
+================================ */
+
+document
+.getElementById("logoutButton")
+.addEventListener(
+"click",
+async function(){
+
+    try{
+
+        await signOut(auth);
+
+        localStorage.removeItem(
+            "currentUser"
+        );
+
+        localStorage.removeItem(
+            "adminType"
+        );
+
+        location.href =
+            "login.html";
+
+    }catch(error){
+
+        alert(
+            "Logout failed"
+        );
+    }
+
+});
+
+</script>
+
+</body>
+</html>

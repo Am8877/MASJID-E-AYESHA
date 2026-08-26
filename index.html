@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MASJID-E-AYESHA</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#064e3b,#0f766e);
+}
+
+.container{
+    width:100%;
+    max-width:500px;
+    margin:auto;
+    padding:25px 18px;
+    text-align:center;
+}
+
+.logo{
+    font-size:65px;
+    margin-top:15px;
+}
+
+h1{
+    color:white;
+    margin:8px 0;
+    font-size:30px;
+}
+
+.subtitle{
+    color:#d1fae5;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+    margin-top:20px;
+}
+
+.card h2{
+    color:#0f766e;
+    margin-top:0;
+}
+
+.card p{
+    color:#444;
+    line-height:1.6;
+}
+
+button{
+    display:block;
+    width:100%;
+    padding:15px;
+    margin-top:13px;
+    border:0;
+    border-radius:12px;
+    background:#0f766e;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.admin{
+    margin-top:20px;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+}
+
+.admin h3{
+    color:#134e4a;
+}
+
+.admin button{
+    background:#134e4a;
+}
+
+footer{
+    color:#d1fae5;
+    font-size:13px;
+    margin-top:25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">🕌</div>
+
+    <h1>MASJID-E-AYESHA</h1>
+
+    <div class="subtitle">
+        Monthly Hafiji Payment Management
+    </div>
+
+    <div class="card">
+
+        <h2>Welcome</h2>
+
+        <p>
+            MASJID-E-AYESHA के Members यहाँ
+            Registration और Login कर सकते हैं।
+        </p>
+
+        <button onclick="openPage('register.html')">
+            📝 New Member Registration
+        </button>
+
+        <button onclick="openPage('login.html')">
+            🔐 Member Login
+        </button>
+
+    </div>
+
+    <div class="admin">
+
+        <h3>Management</h3>
+
+        <button onclick="openPage('login.html')">
+            👤 Hafiji / Secretary Login
+        </button>
+
+    </div>
+
+    <footer>
+        © 2026 MASJID-E-AYESHA
+    </footer>
+
+</div>
+
+<script>
+
+function openPage(page){
+
+    window.location.href = page;
+
+}
+
+</script>
+
+</body>
+</html>

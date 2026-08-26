@@ -1,0 +1,83 @@
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#0f766e,#134e4a);
+    min-height:100vh;
+    color:#222;
+}
+
+.container{
+    width:100%;
+    max-width:500px;
+    margin:auto;
+    padding:25px 18px;
+    text-align:center;
+}
+
+.logo{
+    font-size:65px;
+    margin-top:15px;
+}
+
+h1{
+    color:white;
+    margin:8px 0;
+    font-size:30px;
+}
+
+.subtitle{
+    color:#d1fae5;
+    margin-bottom:25px;
+}
+
+.card,
+.admin-card{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    margin-top:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.20);
+}
+
+h2{
+    color:#0f766e;
+}
+
+h3{
+    color:#134e4a;
+}
+
+p{
+    line-height:1.6;
+}
+
+button{
+    width:100%;
+    border:0;
+    border-radius:12px;
+    padding:15px;
+    margin-top:12px;
+    background:#0f766e;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.admin-card button{
+    background:#134e4a;
+}
+
+footer{
+    color:#d1fae5;
+    margin-top:25px;
+    font-size:13px;
+}
