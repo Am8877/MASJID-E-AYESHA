@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Hafiji Dashboard - MASJID-E-AYESHA</title>
 
@@ -118,6 +118,16 @@ label{
     margin:7px 0;
 }
 
+.payment img{
+    width:100%;
+    max-height:320px;
+    object-fit:contain;
+    margin-top:12px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    background:#f8fafc;
+}
+
 .pending{
     color:#d97706;
     font-weight:bold;
@@ -146,6 +156,7 @@ button{
     color:white;
     font-size:16px;
     font-weight:bold;
+    cursor:pointer;
 }
 
 button:active{
@@ -178,19 +189,24 @@ button:active{
 .empty{
     text-align:center;
     color:#666;
-    padding:20px 5px;
+    padding:25px 5px;
 }
 
 .filter-buttons{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
-    gap:7px;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:15px;
 }
 
 .filter-buttons button{
     margin-top:0;
-    font-size:13px;
-    padding:12px 5px;
+    font-size:14px;
+    padding:13px 5px;
+}
+
+.filter-buttons button.active{
+    background:#064e3b;
 }
 
 .small{
@@ -198,14 +214,27 @@ button:active{
     font-size:13px;
 }
 
+.errorBox{
+    background:#fee2e2;
+    color:#991b1b;
+    border-radius:12px;
+    padding:12px;
+    margin-top:10px;
+    display:none;
+    word-break:break-word;
+}
+
+.loading{
+    text-align:center;
+    padding:25px 5px;
+    color:#666;
+    font-size:17px;
+}
+
 @media(max-width:450px){
 
     .summary{
         grid-template-columns:1fr;
-    }
-
-    .filter-buttons{
-        grid-template-columns:1fr 1fr;
     }
 
 }
@@ -219,7 +248,7 @@ button:active{
 <h1>🕌 MASJID-E-AYESHA</h1>
 
 
-<!-- PROFILE -->
+<!-- ================= PROFILE ================= -->
 
 <div class="card profile">
 
@@ -238,7 +267,7 @@ Hafiji Sahab
 </p>
 
 <p id="loginInfo">
-Checking login...
+⏳ Login checking...
 </p>
 
 <input
@@ -253,13 +282,13 @@ Checking login...
 
 <div
     id="profileMessage"
-    class="message"
-></div>
+    class="message">
+</div>
 
 </div>
 
 
-<!-- SUMMARY -->
+<!-- ================= SUMMARY ================= -->
 
 <div class="card">
 
@@ -287,7 +316,7 @@ Successful
 </div>
 
 
-<!-- PAYMENTS -->
+<!-- ================= PAYMENTS ================= -->
 
 <div class="card">
 
@@ -295,7 +324,9 @@ Successful
 
 <div class="filter-buttons">
 
-<button id="allBtn">
+<button
+id="allBtn"
+class="active">
 All
 </button>
 
@@ -313,11 +344,19 @@ Pending
 
 </div>
 
-<div id="message" class="message"></div>
+<div
+id="message"
+class="message">
+</div>
+
+<div
+id="errorBox"
+class="errorBox">
+</div>
 
 <div id="paymentsList">
 
-<div class="empty">
+<div class="loading">
 ⏳ Payments loading...
 </div>
 
@@ -326,21 +365,19 @@ Pending
 </div>
 
 
-<!-- ACTION -->
+<!-- ================= ACTION ================= -->
 
 <div class="card">
 
 <button
 class="refresh"
-id="refreshBtn"
->
+id="refreshBtn">
 🔄 Refresh Payments
 </button>
 
 <button
 class="logout"
-id="logoutBtn"
->
+id="logoutBtn">
 🚪 Logout
 </button>
 
@@ -350,6 +387,10 @@ id="logoutBtn"
 
 
 <script type="module">
+
+/* ==================================================
+   FIREBASE IMPORT
+================================================== */
 
 import {
     initializeApp
@@ -369,10 +410,10 @@ from
 
 import {
     getFirestore,
-    doc,
-    getDoc,
     collection,
     getDocs,
+    getDoc,
+    doc,
     updateDoc
 }
 from
@@ -389,7 +430,9 @@ from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
 
 
-/* FIREBASE CONFIG */
+/* ==================================================
+   FIREBASE CONFIG
+================================================== */
 
 const firebaseConfig = {
 
@@ -413,13 +456,18 @@ const firebaseConfig = {
 
     measurementId:
     "G-Q5TVCP79W2"
+
 };
 
 
-/* INITIALIZE */
+/* ==================================================
+   INITIALIZE FIREBASE
+================================================== */
 
 const app =
-    initializeApp(firebaseConfig);
+    initializeApp(
+        firebaseConfig
+    );
 
 const auth =
     getAuth(app);
@@ -431,14 +479,85 @@ const storage =
     getStorage(app);
 
 
-let currentUser = null;
+/* ==================================================
+   GLOBAL VARIABLES
+================================================== */
 
-let allPayments = [];
+let currentUser =
+    null;
 
-let currentFilter = "all";
+let allPayments =
+    [];
+
+let currentFilter =
+    "all";
 
 
-/* LOGIN CHECK */
+/* ==================================================
+   ELEMENTS
+================================================== */
+
+const paymentsList =
+    document.getElementById(
+        "paymentsList"
+    );
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
+
+
+/* ==================================================
+   MESSAGE FUNCTIONS
+================================================== */
+
+function showMessage(
+    text,
+    color="green"
+){
+
+    message.style.color =
+        color;
+
+    message.innerText =
+        text;
+
+}
+
+
+function showError(
+    text
+){
+
+    errorBox.style.display =
+        "block";
+
+    errorBox.innerText =
+        "❌ " + text;
+
+}
+
+
+function hideError(){
+
+    errorBox.style.display =
+        "none";
+
+    errorBox.innerText =
+        "";
+
+}
+
+
+/* ==================================================
+   AUTHENTICATION
+================================================== */
 
 onAuthStateChanged(
     auth,
@@ -453,12 +572,13 @@ onAuthStateChanged(
         }
 
 
-        currentUser = user;
+        currentUser =
+            user;
 
 
         try{
 
-            const userSnap =
+            const userDoc =
                 await getDoc(
                     doc(
                         db,
@@ -468,13 +588,17 @@ onAuthStateChanged(
                 );
 
 
-            if(!userSnap.exists()){
+            if(
+                !userDoc.exists()
+            ){
 
                 alert(
                     "❌ Hafiji profile नहीं मिला।"
                 );
 
-                await signOut(auth);
+                await signOut(
+                    auth
+                );
 
                 location.href =
                     "login.html";
@@ -484,16 +608,25 @@ onAuthStateChanged(
 
 
             const userData =
-                userSnap.data();
+                userDoc.data();
 
 
-            if(userData.role !== "hafiji"){
+            if(
+                String(
+                    userData.role ||
+                    ""
+                ).toLowerCase()
+                !==
+                "hafiji"
+            ){
 
                 alert(
                     "❌ इस account को Hafiji access नहीं है।"
                 );
 
-                await signOut(auth);
+                await signOut(
+                    auth
+                );
 
                 location.href =
                     "login.html";
@@ -502,25 +635,36 @@ onAuthStateChanged(
             }
 
 
-            document.getElementById(
+            document
+            .getElementById(
                 "hafijiName"
-            ).innerText =
+            )
+            .innerText =
                 userData.name ||
                 "Hafiji Sahab";
 
 
-            document.getElementById(
+            document
+            .getElementById(
                 "loginInfo"
-            ).innerText =
+            )
+            .innerText =
                 "📧 " +
-                (user.email || "");
+                (
+                    user.email ||
+                    "Login"
+                );
 
 
-            if(userData.photoURL){
+            if(
+                userData.photoURL
+            ){
 
-                document.getElementById(
+                document
+                .getElementById(
                     "profileImage"
-                ).src =
+                )
+                .src =
                     userData.photoURL;
 
             }
@@ -531,17 +675,16 @@ onAuthStateChanged(
         }
         catch(error){
 
-            console.error(error);
+            console.error(
+                error
+            );
 
-            document.getElementById(
-                "message"
-            ).style.color =
-                "red";
+            paymentsList.innerHTML =
+                '<div class="empty">❌ Dashboard load नहीं हो पाया।</div>';
 
-            document.getElementById(
-                "message"
-            ).innerText =
-                "❌ Dashboard load नहीं हुआ।";
+            showError(
+                error.message
+            );
 
         }
 
@@ -549,29 +692,37 @@ onAuthStateChanged(
 );
 
 
-/* PROFILE PICTURE */
+/* ==================================================
+   PROFILE PHOTO UPLOAD
+================================================== */
 
 document
-.getElementById("uploadProfileBtn")
+.getElementById(
+    "uploadProfileBtn"
+)
 .addEventListener(
     "click",
     async function(){
 
         const file =
-            document.getElementById(
+            document
+            .getElementById(
                 "profileFile"
-            ).files[0];
+            )
+            .files[0];
 
 
         const msg =
-            document.getElementById(
+            document
+            .getElementById(
                 "profileMessage"
             );
 
 
         if(!file){
 
-            msg.style.color="red";
+            msg.style.color =
+                "red";
 
             msg.innerText =
                 "❌ पहले photo चुनें।";
@@ -580,9 +731,22 @@ document
         }
 
 
+        if(!currentUser){
+
+            msg.style.color =
+                "red";
+
+            msg.innerText =
+                "❌ Login नहीं मिला।";
+
+            return;
+        }
+
+
         try{
 
-            msg.style.color="#0f766e";
+            msg.style.color =
+                "#0f766e";
 
             msg.innerText =
                 "⏳ Photo upload हो रही है...";
@@ -622,13 +786,16 @@ document
             );
 
 
-            document.getElementById(
+            document
+            .getElementById(
                 "profileImage"
-            ).src =
+            )
+            .src =
                 photoURL;
 
 
-            msg.style.color="green";
+            msg.style.color =
+                "green";
 
             msg.innerText =
                 "✅ Profile Picture Save हो गई।";
@@ -636,12 +803,15 @@ document
         }
         catch(error){
 
-            console.error(error);
+            console.error(
+                error
+            );
 
-            msg.style.color="red";
+            msg.style.color =
+                "red";
 
             msg.innerText =
-                "❌ Photo upload failed: " +
+                "❌ Upload failed: " +
                 error.message;
 
         }
@@ -650,21 +820,26 @@ document
 );
 
 
-/* LOAD PAYMENTS */
+/* ==================================================
+   LOAD ALL PAYMENTS
+================================================== */
 
 async function loadPayments(){
 
-    const list =
-        document.getElementById(
-            "paymentsList"
-        );
+    paymentsList.innerHTML =
+        '<div class="loading">⏳ Payments loading...</div>';
 
-
-    list.innerHTML =
-        '<div class="empty">⏳ Payments loading...</div>';
+    hideError();
 
 
     try{
+
+        /*
+          IMPORTANT:
+          यहाँ orderBy नहीं लगाया गया है।
+          इसलिए Firestore composite index
+          की जरूरत नहीं पड़ेगी।
+        */
 
         const snapshot =
             await getDocs(
@@ -675,17 +850,19 @@ async function loadPayments(){
             );
 
 
-        allPayments = [];
+        allPayments =
+            [];
 
 
         snapshot.forEach(
-            function(item){
+            function(paymentDoc){
 
                 allPayments.push({
 
-                    id:item.id,
+                    id:
+                        paymentDoc.id,
 
-                    ...item.data()
+                    ...paymentDoc.data()
 
                 });
 
@@ -693,14 +870,18 @@ async function loadPayments(){
         );
 
 
+        /* नवीनतम payment ऊपर */
+
         allPayments.sort(
             function(a,b){
 
                 return String(
-                    b.createdAt || ""
+                    b.createdAt ||
+                    ""
                 ).localeCompare(
                     String(
-                        a.createdAt || ""
+                        a.createdAt ||
+                        ""
                     )
                 );
 
@@ -712,44 +893,162 @@ async function loadPayments(){
 
         showPayments();
 
+
+        showMessage(
+            "✅ Payments loaded: " +
+            allPayments.length,
+            "green"
+        );
+
+
+        setTimeout(
+            function(){
+
+                message.innerText =
+                    "";
+
+            },
+            2500
+        );
+
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "FIRESTORE ERROR:",
+            error
+        );
 
-        list.innerHTML =
+
+        paymentsList.innerHTML =
             '<div class="empty">❌ Payments load नहीं हुए।</div>';
 
-        document.getElementById(
-            "message"
-        ).innerText =
-            error.message;
 
-        document.getElementById(
-            "message"
-        ).style.color =
-            "red";
+        showError(
+            error.message
+        );
 
     }
 
 }
 
 
-/* SUMMARY */
+/* ==================================================
+   CATEGORY
+================================================== */
+
+function getCategory(
+    payment
+){
+
+    /*
+       कुछ पुराने records में
+       category है।
+
+       नए records में
+       paymentType हो सकता है।
+
+       इसलिए दोनों check होंगे।
+    */
+
+    const value =
+        String(
+            payment.category ||
+            payment.paymentType ||
+            ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    if(
+        value.includes(
+            "chanda"
+        )
+    ){
+
+        return "chanda";
+
+    }
+
+
+    return "hafiji";
+
+}
+
+
+/* ==================================================
+   STATUS
+================================================== */
+
+function isSuccessful(
+    payment
+){
+
+    return String(
+        payment.status ||
+        ""
+    )
+    .trim()
+    .toLowerCase()
+    ===
+    "successful";
+
+}
+
+
+/* ==================================================
+   PAYMENT MODE
+================================================== */
+
+function paymentModeText(
+    payment
+){
+
+    const mode =
+        String(
+            payment.paymentMode ||
+            ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    if(
+        mode === "cash" ||
+        mode === "offline"
+    ){
+
+        return "💵 Cash / Offline";
+
+    }
+
+
+    return "🌐 Online";
+
+}
+
+
+/* ==================================================
+   SUMMARY
+================================================== */
 
 function updateSummary(){
 
-    let pending = 0;
+    let pending =
+        0;
 
-    let successful = 0;
+    let successful =
+        0;
 
 
     allPayments.forEach(
         function(payment){
 
             if(
-                payment.status ===
-                "Successful"
+                isSuccessful(
+                    payment
+                )
             ){
 
                 successful++;
@@ -765,95 +1064,143 @@ function updateSummary(){
     );
 
 
-    document.getElementById(
+    document
+    .getElementById(
         "totalCount"
-    ).innerText =
+    )
+    .innerText =
         allPayments.length;
 
 
-    document.getElementById(
+    document
+    .getElementById(
         "pendingCount"
-    ).innerText =
+    )
+    .innerText =
         pending;
 
 
-    document.getElementById(
+    document
+    .getElementById(
         "successCount"
-    ).innerText =
+    )
+    .innerText =
         successful;
 
 }
 
 
-/* SHOW PAYMENTS */
+/* ==================================================
+   FILTER
+================================================== */
+
+function filterPayments(){
+
+    if(
+        currentFilter ===
+        "all"
+    ){
+
+        return [
+            ...allPayments
+        ];
+
+    }
+
+
+    if(
+        currentFilter ===
+        "hafiji"
+    ){
+
+        return allPayments.filter(
+            function(payment){
+
+                return (
+                    getCategory(
+                        payment
+                    )
+                    ===
+                    "hafiji"
+                );
+
+            }
+        );
+
+    }
+
+
+    if(
+        currentFilter ===
+        "chanda"
+    ){
+
+        return allPayments.filter(
+            function(payment){
+
+                return (
+                    getCategory(
+                        payment
+                    )
+                    ===
+                    "chanda"
+                );
+
+            }
+        );
+
+    }
+
+
+    if(
+        currentFilter ===
+        "pending"
+    ){
+
+        return allPayments.filter(
+            function(payment){
+
+                return !isSuccessful(
+                    payment
+                );
+
+            }
+        );
+
+    }
+
+
+    return [
+        ...allPayments
+    ];
+
+}
+
+
+/* ==================================================
+   SHOW PAYMENTS
+================================================== */
 
 function showPayments(){
 
-    const list =
-        document.getElementById(
-            "paymentsList"
-        );
+    const payments =
+        filterPayments();
 
 
-    let payments =
-        allPayments;
+    if(
+        payments.length ===
+        0
+    ){
 
-
-    if(currentFilter === "hafiji"){
-
-        payments =
-            allPayments.filter(
-                function(p){
-
-                    return p.category ===
-                        "hafiji";
-
-                }
-            );
-
-    }
-
-
-    if(currentFilter === "chanda"){
-
-        payments =
-            allPayments.filter(
-                function(p){
-
-                    return p.category ===
-                        "chanda";
-
-                }
-            );
-
-    }
-
-
-    if(currentFilter === "pending"){
-
-        payments =
-            allPayments.filter(
-                function(p){
-
-                    return p.status !==
-                        "Successful";
-
-                }
-            );
-
-    }
-
-
-    if(payments.length === 0){
-
-        list.innerHTML =
-            '<div class="empty">कोई payment नहीं मिला।</div>';
+        paymentsList.innerHTML =
+            '<div class="empty">📭 इस category में कोई payment नहीं मिला।</div>';
 
         return;
     }
 
 
-    list.innerHTML = "";
+    paymentsList.innerHTML =
+        "";
 
 
     payments.forEach(
@@ -865,54 +1212,69 @@ function showPayments(){
                 );
 
 
-            box.className =
-                "payment " +
-                (
-                    payment.category ===
-                    "chanda"
-                    ? "chanda"
-                    : "hafiji"
+            const category =
+                getCategory(
+                    payment
                 );
 
 
             const successful =
-                payment.status ===
-                "Successful";
+                isSuccessful(
+                    payment
+                );
 
 
-            let categoryText =
-                payment.category ===
+            box.className =
+                "payment " +
+                (
+                    category ===
+                    "chanda"
+                    ?
+                    "chanda"
+                    :
+                    "hafiji"
+                );
+
+
+            let html =
+                "";
+
+
+            /* TITLE */
+
+            if(
+                category ===
                 "chanda"
-                ? "🕌 Chanda"
-                : "💰 Hafiji Payment";
+            ){
+
+                html +=
+                    "<h3>🕌 Chanda</h3>";
+
+            }
+            else{
+
+                html +=
+                    "<h3>💰 Hafiji Payment</h3>";
+
+            }
 
 
-            let modeText =
-                payment.paymentMode ===
-                "cash"
-                ? "💵 Cash / Offline"
-                : "🌐 Online";
-
-
-            let html = "";
-
-
-            html +=
-                "<h3>" +
-                categoryText +
-                "</h3>";
-
+            /* MEMBER */
 
             html +=
                 "<p>👤 Member: <strong>" +
                 escapeHtml(
                     payment.memberName ||
-                    "General Chanda"
+                    "General"
                 ) +
                 "</strong></p>";
 
 
-            if(payment.mobile){
+            /* MOBILE */
+
+            if(
+                payment.mobile
+            ){
 
                 html +=
                     "<p>📱 Mobile: " +
@@ -924,381 +1286,25 @@ function showPayments(){
             }
 
 
+            /* EMAIL */
+
+            if(
+                payment.email
+            ){
+
+                html +=
+                    "<p>📧 Email: " +
+                    escapeHtml(
+                        payment.email
+                    ) +
+                    "</p>";
+
+            }
+
+
+            /* AMOUNT */
+
             html +=
                 "<p>💰 Amount: <strong>₹" +
                 Number(
-                    payment.amount || 0
-                ) +
-                "</strong></p>";
-
-
-            html +=
-                "<p>💳 Mode: " +
-                modeText +
-                "</p>";
-
-
-            html +=
-                "<p>📅 Date: " +
-                escapeHtml(
-                    payment.paymentDate ||
-                    "-"
-                ) +
-                "</p>";
-
-
-            html +=
-                "<p>⏰ Time: " +
-                escapeHtml(
-                    payment.paymentTime ||
-                    "-"
-                ) +
-                "</p>";
-
-
-            html +=
-                "<p>📝 Remark: " +
-                escapeHtml(
-                    payment.remark ||
-                    "No remark"
-                ) +
-                "</p>";
-
-
-            if(successful){
-
-                html +=
-                    '<p class="success">✅ Payment Successful</p>';
-
-            }
-            else{
-
-                html +=
-                    '<p class="pending">⏳ Payment Pending</p>';
-
-            }
-
-
-            if(
-                payment.verifiedDate
-            ){
-
-                html +=
-                    "<p>✔️ Verified Date: " +
-                    escapeHtml(
-                        payment.verifiedDate
-                    ) +
-                    "</p>";
-
-            }
-
-
-            if(
-                payment.verifiedTime
-            ){
-
-                html +=
-                    "<p>🕐 Verified Time: " +
-                    escapeHtml(
-                        payment.verifiedTime
-                    ) +
-                    "</p>";
-
-            }
-
-
-            box.innerHTML =
-                html;
-
-
-            /* SCREENSHOT */
-
-            if(payment.screenshot){
-
-                const img =
-                    document.createElement(
-                        "img"
-                    );
-
-
-                img.src =
-                    payment.screenshot;
-
-
-                img.alt =
-                    "Payment Screenshot";
-
-
-                box.appendChild(
-                    img
-                );
-
-            }
-
-
-            /* REMARK BUTTON */
-
-            const remarkButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            remarkButton.className =
-                "remarkBtn";
-
-
-            remarkButton.innerText =
-                "📝 Remark लिखें / बदलें";
-
-
-            remarkButton.onclick =
-                function(){
-
-                    editRemark(
-                        payment.id,
-                        payment.remark || ""
-                    );
-
-                };
-
-
-            box.appendChild(
-                remarkButton
-            );
-
-
-            /* RECEIVED BUTTON */
-
-            if(!successful){
-
-                const receivedButton =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                receivedButton.className =
-                    "received";
-
-
-                receivedButton.innerText =
-                    "✅ Payment Received";
-
-
-                receivedButton.onclick =
-                    function(){
-
-                        verifyPayment(
-                            payment.id
-                        );
-
-                    };
-
-
-                box.appendChild(
-                    receivedButton
-                );
-
-            }
-
-
-            list.appendChild(
-                box
-            );
-
-        }
-    );
-
-}
-
-
-/* EDIT REMARK */
-
-async function editRemark(
-    paymentId,
-    oldRemark
-){
-
-    const remark =
-        prompt(
-            "Payment का Remark लिखें:",
-            oldRemark
-        );
-
-
-    if(remark === null){
-
-        return;
-    }
-
-
-    try{
-
-        await updateDoc(
-            doc(
-                db,
-                "payments",
-                paymentId
-            ),
-            {
-
-                remark:
-                    remark.trim(),
-
-                remarkUpdatedAt:
-                    new Date().toISOString(),
-
-                remarkUpdatedBy:
-                    currentUser.uid
-
-            }
-        );
-
-
-        alert(
-            "✅ Remark Save हो गया।"
-        );
-
-
-        await loadPayments();
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        alert(
-            "❌ Remark Save नहीं हुआ: " +
-            error.message
-        );
-
-    }
-
-}
-
-
-/* PAYMENT RECEIVED */
-
-async function verifyPayment(
-    paymentId
-){
-
-    const ok =
-        confirm(
-            "क्या आपको यह payment मिल गया है?"
-        );
-
-
-    if(!ok){
-
-        return;
-    }
-
-
-    try{
-
-        const now =
-            new Date();
-
-
-        const date =
-            now.toLocaleDateString(
-                "en-IN"
-            );
-
-
-        const time =
-            now.toLocaleTimeString(
-                "en-IN",
-                {
-                    hour:"2-digit",
-                    minute:"2-digit"
-                }
-            );
-
-
-        await updateDoc(
-            doc(
-                db,
-                "payments",
-                paymentId
-            ),
-            {
-
-                status:
-                    "Successful",
-
-                verifiedDate:
-                    date,
-
-                verifiedTime:
-                    time,
-
-                verifiedAt:
-                    new Date().toISOString(),
-
-                verifiedBy:
-                    currentUser.uid
-
-            }
-        );
-
-
-        alert(
-            "✅ Payment Successful mark कर दिया गया।"
-        );
-
-
-        await loadPayments();
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        alert(
-            "❌ Payment update नहीं हुआ: " +
-            error.message
-        );
-
-    }
-
-}
-
-
-/* FILTER BUTTONS */
-
-document
-.getElementById("allBtn")
-.addEventListener(
-    "click",
-    function(){
-
-        currentFilter =
-            "all";
-
-        showPayments();
-
-    }
-);
-
-
-document
-.getElementById("hafijiBtn")
-.addEventListener(
-    "click",
-    function(){
-
-        currentFilter =
-            "hafiji";
-
-        showPayments();
-
-    }
-);
-
-
-document
-.getElementById("chandaBtn")
-.addEventListener(
+        
