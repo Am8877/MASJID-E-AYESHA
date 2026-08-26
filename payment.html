@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Online Payment - MASJID-E-AYESHA</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#064e3b,#0f766e);
+}
+
+.container{
+    width:100%;
+    max-width:500px;
+    margin:auto;
+    padding:20px 15px 40px;
+}
+
+.header{
+    text-align:center;
+    color:white;
+}
+
+.logo{
+    font-size:55px;
+}
+
+.header h1{
+    font-size:25px;
+    margin:5px 0;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+    margin-top:20px;
+}
+
+h2{
+    text-align:center;
+    color:#0f766e;
+}
+
+.member{
+    background:#ecfdf5;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.amount{
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    color:#0f766e;
+    margin:15px 0;
+}
+
+.timer{
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    color:#dc2626;
+    margin:10px 0;
+}
+
+.qr-area{
+    text-align:center;
+    margin-top:15px;
+}
+
+#qrcode{
+    display:flex;
+    justify-content:center;
+    margin:15px 0;
+}
+
+#qrcode img,
+#qrcode canvas{
+    width:250px !important;
+    height:250px !important;
+    padding:8px;
+    background:white;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:12px;
+    border:0;
+    border-radius:12px;
+    background:#0f766e;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.upi{
+    background:#2563eb;
+}
+
+.upload{
+    background:#16a34a;
+}
+
+.back{
+    background:#555;
+}
+
+.hidden{
+    display:none;
+}
+
+.expired{
+    text-align:center;
+    color:#dc2626;
+    font-weight:bold;
+    padding:15px;
+    background:#fef2f2;
+    border-radius:10px;
+}
+
+.info{
+    background:#fff7ed;
+    padding:13px;
+    border-radius:10px;
+    margin-top:15px;
+    line-height:1.5;
+    font-size:14px;
+}
+
+.message{
+    text-align:center;
+    font-weight:bold;
+    margin-top:12px;
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<div class="logo">🕌</div>
+
+<h1>MASJID-E-AYESHA</h1>
+
+<p>Monthly Hafiji Payment</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>💳 Online Payment</h2>
+
+<div class="member">
+
+👤 Member:
+<strong id="memberName">
+Loading...
+</strong>
+
+</div>
+
+
+<div class="amount">
+
+₹<span id="amount">
+0
+</span>
+
+</div>
+
+
+<div
+id="timer"
+class="timer"
+>
+05:00
+</div>
+
+
+<div
+id="qrArea"
+class="qr-area"
+>
+
+<p>
+📱 QR Scan करके payment करें
+</p>
+
+<div id="qrcode"></div>
+
+<button
+class="upi"
+id="upiBtn"
+>
+📱 Pay with UPI App
+</button>
+
+</div>
+
+
+<div
+id="expired"
+class="expired hidden"
+>
+⏰ Payment QR का समय समाप्त हो गया।
+<br>
+कृपया फिर से Pay Now करें।
+</div>
+
+
+<div class="info">
+
+🔊 <strong>Important:</strong><br>
+
+Payment करने के बाद
+<strong>Payment Screenshot जरूर upload करें</strong>।
+
+</div>
+
+
+<button
+class="upload"
+id="uploadBtn"
+>
+📷 Payment Screenshot Upload करें
+</button>
+
+
+<div
+id="message"
+class="message"
+></div>
+
+
+<button
+class="back"
+onclick="location.href='member.html'"
+>
+← Member Dashboard
+</button>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+/* ==============================
+   FIREBASE
+============================== */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBI9ow2vRoOtOt2V1-J5rNgj_QqMD_EFbg",
+
+    authDomain:
+    "masjid-e-ayesha-371f6.firebaseapp.com",
+
+    projectId:
+    "masjid-e-ayesha-371f6",
+
+    storageBucket:
+    "masjid-e-ayesha-371f6.firebasestorage.app",
+
+    messagingSenderId:
+    "356807161570",
+
+    appId:
+    "1:356807161570:web:53e439043b8eee8e7d90bb",
+
+    measurementId:
+    "G-Q5TVCP79W2"
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getFirestore(app);
+
+
+/* ==============================
+   VARIABLES
+============================== */
+
+const UPI_ID =
+    "7488611526@ybl";
+
+const PAYEE_NAME =
+    "Hafiji Sahab";
+
+let paymentAmount = 0;
+
+let secondsLeft = 300;
+
+let timer;
+
+
+/* ==============================
+   LOGIN CHECK
+============================== */
+
+onAuthStateChanged(
+    auth,
+    async function(user){
+
+        if(!user){
+
+            location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        try{
+
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
+
+            const userSnap =
+                await getDoc(userRef);
+
+
+            if(!userSnap.exists()){
+
+                showError(
+                    "Member profile नहीं मिला।"
+                );
+
+                return;
+            }
+
+
+            const data =
+                userSnap.data();
+
+
+            if(data.role !== "member"){
+
+                showError(
+                    "यह Member account नहीं है।"
+                );
+
+                return;
+            }
+
+
+            document
+            .getElementById("memberName")
+            .innerText =
+                data.name ||
+                user.email;
+
+
+            /* MEMBER MONTHLY AMOUNT */
+
+            paymentAmount =
+                Number(data.amount || 0);
+
+
+            if(
+                !paymentAmount ||
+                paymentAmount <= 0
+            ){
+
+                showError(
+                    "आपका monthly payment amount अभी set नहीं है। Secretary से amount set करवाएँ।"
+                );
+
+                document
+                .getElementById("qrArea")
+                .classList.add("hidden");
+
+                return;
+            }
+
+
+            document
+            .getElementById("amount")
+            .innerText =
+                paymentAmount;
+
+
+            /* PAYMENT QR */
+
+            createQR();
+
+
+            /* START 5 MINUTE TIMER */
+
+            startTimer();
+
+
+            /* VOICE ALERT */
+
+            speakMessage(
+                "Payment करने के बाद payment screenshot जरूर upload करें।"
+            );
+
+
+        }catch(error){
+
+            console.error(error);
+
+            showError(
+                "Dashboard load नहीं हुआ: " +
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+/* ==============================
+   CREATE QR
+============================== */
+
+function createQR(){
+
+    const qr =
+        document.getElementById(
+            "qrcode"
+        );
+
+
+    qr.innerHTML = "";
+
+
+    const upiLink =
+        "upi://pay" +
+        "?pa=" +
+        encodeURIComponent(UPI_ID) +
+
+        "&pn=" +
+        encodeURIComponent(PAYEE_NAME) +
+
+        "&am=" +
+        encodeURIComponent(
+            paymentAmount.toFixed(2)
+        ) +
+
+        "&cu=INR";
+
+
+    new QRCode(
+        qr,
+        {
+            text:upiLink,
+            width:250,
+            height:250,
+            correctLevel:
+                QRCode.CorrectLevel.H
+        }
+    );
+
+
+    document
+    .getElementById("upiBtn")
+    .onclick =
+        function(){
+
+            window.location.href =
+                upiLink;
+
+        };
+
+}
+
+
+/* ==============================
+   5 MINUTE TIMER
+============================== */
+
+function startTimer(){
+
+    clearInterval(timer);
+
+    secondsLeft = 300;
+
+    updateTimer();
+
+
+    timer =
+        setInterval(
+            function(){
+
+                secondsLeft--;
+
+                updateTimer();
+
+
+                if(secondsLeft <= 0){
+
+                    clearInterval(timer);
+
+                    expireQR();
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* ==============================
+   TIMER DISPLAY
+============================== */
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(
+            secondsLeft / 60
+        );
+
+    const seconds =
+        secondsLeft % 60;
+
+
+    document
+    .getElementById("timer")
+    .innerText =
+        String(minutes)
+        .padStart(2,"0")
+        + ":" +
+        String(seconds)
+        .padStart(2,"0");
+
+}
+
+
+/* ==============================
+   QR EXPIRE
+============================== */
+
+function expireQR(){
+
+    document
+    .getElementById("qrArea")
+    .classList.add("hidden");
+
+
+    document
+    .getElementById("expired")
+    .classList.remove("hidden");
+
+
+    speakMessage(
+        "Payment QR का समय समाप्त हो गया है। कृपया फिर से Pay Now करें।"
+    );
+
+}
+
+
+/* ==============================
+   VOICE
+============================== */
+
+function speakMessage(text){
+
+    if(
+        "speechSynthesis" in window
+    ){
+
+        const speech =
+            new SpeechSynthesisUtterance(
+                text
+            );
+
+        speech.lang =
+            "hi-IN";
+
+        speech.rate =
+            0.9;
+
+        window.speechSynthesis.speak(
+            speech
+        );
+
+    }
+
+}
+
+
+/* ==============================
+   SCREENSHOT
+============================== */
+
+document
+.getElementById("uploadBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        /*
+         * यहाँ आपकी existing
+         * screenshot upload वाली
+         * page खोल दी जाएगी।
+         */
+
+        location.href =
+            "screenshot.html";
+
+    }
+);
+
+
+/* ==============================
+   ERROR
+============================== */
+
+function showError(text){
+
+    document
+    .getElementById("message")
+    .style.color =
+        "red";
+
+    document
+    .getElementById("message")
+    .innerText =
+        "❌ " + text;
+
+}
+
+</script>
+
+</body>
+</html>
