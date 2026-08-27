@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Login - MASJID-E-AYESHA</title>
+<title>Hafiji Dashboard - MASJID-E-AYESHA</title>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
@@ -22,58 +20,81 @@ body{
 
 .container{
     width:100%;
-    max-width:500px;
+    max-width:650px;
     margin:auto;
-    padding:25px 18px;
+    padding:20px 15px 40px;
 }
 
-.logo{
+.header{
     text-align:center;
-    font-size:60px;
-}
-
-h1{
     color:white;
-    text-align:center;
-    font-size:28px;
-    margin:8px 0 20px;
+    margin-bottom:20px;
 }
 
-.login-box{
+.header .logo{
+    font-size:48px;
+}
+
+.header h1{
+    margin:5px 0;
+    font-size:26px;
+}
+
+.card{
     background:white;
-    padding:25px;
     border-radius:20px;
-    box-shadow:0 8px 25px rgba(0,0,0,.25);
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.22);
 }
 
 h2{
-    text-align:center;
     color:#0f766e;
+    margin-top:0;
+}
+
+h3{
+    color:#134e4a;
+}
+
+.info{
+    background:#ecfdf5;
+    padding:15px;
+    border-radius:12px;
+    margin-top:10px;
+}
+
+.info p{
+    margin:9px 0;
 }
 
 label{
-    font-weight:bold;
     display:block;
-    margin-top:12px;
+    font-weight:bold;
+    margin-top:13px;
 }
 
-select,
-input{
+input,
+textarea{
     width:100%;
-    padding:14px;
-    margin-top:8px;
-    margin-bottom:8px;
+    padding:13px;
+    margin-top:7px;
     border:1px solid #ccc;
     border-radius:10px;
     font-size:16px;
 }
 
+textarea{
+    min-height:80px;
+    resize:vertical;
+}
+
 button{
     width:100%;
-    padding:15px;
+    padding:14px;
     margin-top:10px;
     border:0;
-    border-radius:12px;
+    border-radius:11px;
     background:#0f766e;
     color:white;
     font-size:16px;
@@ -85,172 +106,363 @@ button:active{
     transform:scale(.98);
 }
 
-.login-btn{
+.save{
     background:#0f766e;
 }
 
-.forgot{
-    background:#f59e0b;
+.pay{
+    background:#16a34a;
 }
 
-.register{
-    background:#0f766e;
+.upload{
+    background:#2563eb;
 }
 
-.back{
+.refresh{
+    background:#2563eb;
+}
+
+.logout{
     background:#555;
 }
 
 .message{
     text-align:center;
-    margin-top:15px;
     font-weight:bold;
+    margin-top:12px;
     line-height:1.5;
-    min-height:25px;
 }
 
-.info{
-    background:#ecfdf5;
-    padding:12px;
-    border-radius:10px;
-    margin-top:15px;
-    font-size:14px;
-    color:#134e4a;
+.center{
     text-align:center;
 }
 
-.loading{
-    opacity:.7;
+.qr{
+    display:block;
+    width:260px;
+    max-width:100%;
+    margin:15px auto;
+    border-radius:12px;
+    border:1px solid #ddd;
 }
 
-</style>
+.timer{
+    text-align:center;
+    background:#fff7ed;
+    color:#c2410c;
+    padding:12px;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    margin-top:10px;
+}
 
+.payment{
+    border:1px solid #ddd;
+    padding:15px;
+    border-radius:14px;
+    margin-top:12px;
+    background:#f8fafc;
+}
+
+.pending{
+    color:#d97706;
+    font-weight:bold;
+}
+
+.success{
+    color:green;
+    font-weight:bold;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.summaryBox{
+    background:#ecfdf5;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.summaryBox strong{
+    display:block;
+    font-size:22px;
+    color:#0f766e;
+    margin-top:5px;
+}
+
+.hidden{
+    display:none !important;
+}
+
+hr{
+    border:0;
+    border-top:1px solid #ddd;
+    margin:18px 0;
+}
+
+.empty{
+    text-align:center;
+    color:#666;
+    padding:15px;
+}
+
+.loading{
+    text-align:center;
+    color:#666;
+    padding:15px;
+}
+
+@media(max-width:420px){
+    .summary{
+        grid-template-columns:1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="logo">
-🕌
+<div class="header">
+    <div class="logo">🕌</div>
+    <h1>MASJID-E-AYESHA</h1>
 </div>
 
-<h1>
-MASJID-E-AYESHA
-</h1>
 
+<!-- ================= PROFILE ================= -->
 
-<div class="login-box">
+<div class="card">
 
-<h2>
-🔐 Login
-</h2>
-
-
-<!-- ================= LOGIN TYPE ================= -->
-
-<label>
-Login Type
-</label>
-
-<select id="loginType">
-
-<option value="member">
-👤 Member
-</option>
-
-<option value="hafiji">
-📖 Hafiji Sahab
-</option>
-
-<option value="secretary">
-👨‍💼 Secretary Sahab
-</option>
-
-</select>
-
-
-<!-- ================= EMAIL ================= -->
-
-<label id="loginLabel">
-Member Email
-</label>
-
-<input
-type="text"
-id="email"
-autocomplete="username"
-placeholder="Member Email डालें"
->
-
-
-<!-- ================= PASSWORD ================= -->
-
-<label>
-Password
-</label>
-
-<input
-type="password"
-id="password"
-autocomplete="current-password"
-placeholder="Password डालें"
->
-
-
-<!-- ================= LOGIN ================= -->
-
-<button
-class="login-btn"
-id="loginBtn"
->
-🔐 Login
-</button>
-
-
-<!-- ================= FORGOT ================= -->
-
-<button
-class="forgot"
-id="forgotBtn"
->
-🔑 Forgot Password
-</button>
-
-
-<!-- ================= REGISTER ================= -->
-
-<button
-class="register"
-id="registerBtn"
->
-📝 New Member Registration
-</button>
-
-
-<!-- ================= BACK ================= -->
-
-<button
-class="back"
-id="backBtn"
->
-← Back
-</button>
-
-
-<!-- ================= MESSAGE ================= -->
-
-<div
-id="message"
-class="message">
-</div>
-
+<h2>📖 Hafiji Dashboard</h2>
 
 <div class="info">
 
-🔒 आपका Login Firebase Authentication से सुरक्षित है।
+<p id="statusText">
+⏳ Login checking...
+</p>
+
+<p id="nameText">
+👤 Name: Loading...
+</p>
+
+<p id="emailText">
+📧 Email: Loading...
+</p>
+
+<p id="uidText">
+🆔 UID: Loading...
+</p>
 
 </div>
+
+</div>
+
+
+<!-- ================= AMOUNT ================= -->
+
+<div class="card">
+
+<h2>💰 मेरा Hafiji Amount</h2>
+
+<div class="info">
+
+<p>
+Monthly Hafiji Amount:
+<strong id="myAmount">₹0</strong>
+</p>
+
+<p>
+UPI ID:
+<strong>7488611526@ybl</strong>
+</p>
+
+</div>
+
+<label>
+💰 Monthly Hafiji Amount
+</label>
+
+<input
+type="number"
+id="hafijiAmount"
+min="1"
+placeholder="जैसे 500"
+>
+
+<button
+class="save"
+id="saveAmountBtn"
+>
+💾 Amount Save करें
+</button>
+
+<div
+id="amountMessage"
+class="message">
+</div>
+
+</div>
+
+
+<!-- ================= PAYMENT ================= -->
+
+<div class="card">
+
+<h2>💳 Hafiji Payment</h2>
+
+<button
+class="pay"
+id="openPaymentBtn"
+>
+📲 Hafiji Payment करें
+</button>
+
+
+<div
+id="paymentBox"
+class="hidden"
+>
+
+<hr>
+
+<div class="center">
+
+<h3>💳 Payment करें</h3>
+
+<p>
+Payment Amount:
+<strong id="paymentAmount">₹0</strong>
+</p>
+
+<p>
+UPI:
+<strong>7488611526@ybl</strong>
+</p>
+
+<img
+id="qrImage"
+class="qr"
+alt="Payment QR"
+>
+
+<div
+id="timer"
+class="timer"
+>
+⏱️ QR Time: 05:00
+</div>
+
+</div>
+
+
+<button
+class="pay"
+id="upiBtn"
+>
+📲 UPI App से Pay करें
+</button>
+
+
+<label>
+📷 Payment Screenshot
+</label>
+
+<input
+type="file"
+id="screenshot"
+accept="image/*"
+>
+
+
+<label>
+📝 Remark
+</label>
+
+<textarea
+id="remark"
+placeholder="Remark लिखें..."
+></textarea>
+
+
+<button
+class="upload"
+id="submitPaymentBtn"
+>
+📤 Payment Submit करें
+</button>
+
+
+<div
+id="paymentMessage"
+class="message">
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= PAYMENT SUMMARY ================= -->
+
+<div class="card">
+
+<h2>📊 मेरी Payment Summary</h2>
+
+<div class="summary">
+
+<div class="summaryBox">
+Total Submitted
+<strong id="totalSubmitted">₹0</strong>
+</div>
+
+<div class="summaryBox">
+Approved
+<strong id="totalApproved">₹0</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= PAYMENT HISTORY ================= -->
+
+<div class="card">
+
+<h2>📋 मेरी Hafiji Payment History</h2>
+
+<button
+class="refresh"
+id="refreshHistoryBtn"
+>
+🔄 History Refresh करें
+</button>
+
+<div id="history">
+<div class="loading">
+⏳ Payment history loading...
+</div>
+</div>
+
+</div>
+
+
+<!-- ================= LOGOUT ================= -->
+
+<div class="card">
+
+<button
+class="logout"
+id="logoutBtn"
+>
+🚪 Logout
+</button>
 
 </div>
 
@@ -259,9 +471,8 @@ class="message">
 
 <script type="module">
 
-
 /* =====================================================
-   FIREBASE
+   FIREBASE IMPORT
 ===================================================== */
 
 import {
@@ -270,20 +481,25 @@ import {
 from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
-
 import {
     getAuth,
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail
+    onAuthStateChanged,
+    signOut
 }
 from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
-
 import {
     getFirestore,
     doc,
-    getDoc
+    getDoc,
+    updateDoc,
+    addDoc,
+    collection,
+    query,
+    where,
+    getDocs,
+    orderBy
 }
 from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
@@ -315,7 +531,6 @@ const firebaseConfig = {
 
     measurementId:
     "G-Q5TVCP79W2"
-
 };
 
 
@@ -334,550 +549,241 @@ getFirestore(app);
 
 
 /* =====================================================
-   IMPORTANT ACCOUNTS
-
-   Firebase Authentication में यही email होना चाहिए।
+   VARIABLES
 ===================================================== */
 
-const HAFIJI_EMAIL =
-"hafiji2@gmail.com";
-
-const SECRETARY_EMAIL =
-"secretary@gmail.com";
+let currentUser = null;
+let hafijiData = null;
+let timerInterval = null;
 
 
 /* =====================================================
    ELEMENTS
 ===================================================== */
 
-const loginType =
-document.getElementById(
-    "loginType"
-);
+const statusText =
+document.getElementById("statusText");
 
-const emailInput =
-document.getElementById(
-    "email"
-);
+const nameText =
+document.getElementById("nameText");
 
-const passwordInput =
-document.getElementById(
-    "password"
-);
+const emailText =
+document.getElementById("emailText");
 
-const loginLabel =
-document.getElementById(
-    "loginLabel"
-);
+const uidText =
+document.getElementById("uidText");
 
-const loginBtn =
-document.getElementById(
-    "loginBtn"
-);
+const myAmount =
+document.getElementById("myAmount");
 
-const forgotBtn =
-document.getElementById(
-    "forgotBtn"
-);
+const paymentAmount =
+document.getElementById("paymentAmount");
 
-const registerBtn =
-document.getElementById(
-    "registerBtn"
-);
+const amountInput =
+document.getElementById("hafijiAmount");
 
-const backBtn =
-document.getElementById(
-    "backBtn"
-);
+const amountMessage =
+document.getElementById("amountMessage");
 
-const message =
-document.getElementById(
-    "message"
-);
+const paymentBox =
+document.getElementById("paymentBox");
+
+const qrImage =
+document.getElementById("qrImage");
+
+const timer =
+document.getElementById("timer");
+
+const paymentMessage =
+document.getElementById("paymentMessage");
+
+const historyBox =
+document.getElementById("history");
 
 
 /* =====================================================
-   MESSAGE FUNCTION
+   GET AMOUNT
 ===================================================== */
 
-function showMessage(
-    text,
-    color
-){
+function getAmount(){
 
-    message.style.color =
-    color;
-
-    message.innerHTML =
-    text;
-
-}
-
-
-/* =====================================================
-   LOGIN TYPE CHANGE
-===================================================== */
-
-loginType.addEventListener(
-"change",
-function(){
-
-    const type =
-    loginType.value;
-
-
-    if(type === "member"){
-
-        loginLabel.innerText =
-        "Member Email";
-
-        emailInput.placeholder =
-        "Member Email डालें";
-
+    if(!hafijiData){
+        return 0;
     }
 
-
-    else if(type === "hafiji"){
-
-        loginLabel.innerText =
-        "Hafiji User ID / Email";
-
-        emailInput.placeholder =
-        "hafiji या Email डालें";
-
-    }
-
-
-    else if(type === "secretary"){
-
-        loginLabel.innerText =
-        "Secretary User ID / Email";
-
-        emailInput.placeholder =
-        "secretary या Email डालें";
-
-    }
-
-
-    emailInput.value =
-    "";
-
-    passwordInput.value =
-    "";
-
-    showMessage(
-        "",
-        "#0f766e"
+    return Number(
+        hafijiData.monthlyAmount ||
+        hafijiData.hafijiAmount ||
+        hafijiData.amount ||
+        0
     );
-
-});
+}
 
 
 /* =====================================================
-   CONVERT USER ID TO EMAIL
+   SHOW AMOUNT
 ===================================================== */
 
-function getLoginEmail(
-    type,
-    value
-){
+function showAmount(){
 
-    let v =
-    value
-    .trim()
-    .toLowerCase();
+    const amount =
+    getAmount();
 
+    myAmount.innerText =
+    "₹" + amount;
 
-    /* HAFIJI */
+    paymentAmount.innerText =
+    "₹" + amount;
 
-    if(type === "hafiji"){
-
-        if(
-            v === "hafiji" ||
-            v === "hafiji sahab"
-        ){
-
-            return HAFIJI_EMAIL;
-
-        }
-
-        return v;
-
-    }
-
-
-    /* SECRETARY */
-
-    if(type === "secretary"){
-
-        if(
-            v === "secretary" ||
-            v === "secretary sahab"
-        ){
-
-            return SECRETARY_EMAIL;
-
-        }
-
-        return v;
-
-    }
-
-
-    /* MEMBER */
-
-    return v;
+    updateQR();
 
 }
 
 
 /* =====================================================
-   LOGIN BUTTON
+   UPDATE QR
 ===================================================== */
 
-loginBtn.addEventListener(
-"click",
-async function(){
+function updateQR(){
 
-    const type =
-    loginType.value;
+    const amount =
+    getAmount();
+
+    const qrData =
+    "upi://pay" +
+    "?pa=7488611526@ybl" +
+    "&pn=MASJID-E-AYESHA" +
+    "&am=" +
+    encodeURIComponent(amount) +
+    "&cu=INR";
+
+    qrImage.src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+    encodeURIComponent(qrData);
+
+}
 
 
-    const enteredEmail =
-    emailInput.value.trim();
+/* =====================================================
+   AUTH CHECK
+===================================================== */
 
+onAuthStateChanged(
+auth,
+async function(user){
 
-    const password =
-    passwordInput.value;
+    if(!user){
 
+        statusText.innerText =
+        "❌ Login नहीं है। Login page पर जा रहे हैं...";
 
-    /* EMPTY CHECK */
-
-    if(
-        enteredEmail === "" ||
-        password === ""
-    ){
-
-        showMessage(
-            "❌ Email / User ID और Password डालें।",
-            "red"
+        setTimeout(
+            function(){
+                window.location.replace(
+                    "login.html"
+                );
+            },
+            800
         );
 
         return;
-
     }
 
 
-    const email =
-    getLoginEmail(
-        type,
-        enteredEmail
-    );
+    currentUser =
+    user;
 
 
-    /* BUTTON DISABLE */
-
-    loginBtn.disabled =
-    true;
-
-    loginBtn.classList.add(
-        "loading"
-    );
-
-
-    showMessage(
-        "⏳ Login हो रहा है...",
-        "#0f766e"
-    );
+    statusText.innerText =
+    "⏳ Hafiji profile checking...";
 
 
     try{
 
-        /* =========================================
-           FIREBASE AUTH LOGIN
-        ========================================= */
-
-        const result =
-        await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-        );
-
-
-        const user =
-        result.user;
-
-
-        console.log(
-            "Firebase Login Successful"
-        );
-
-        console.log(
-            "UID:",
+        const userRef =
+        doc(
+            db,
+            "users",
             user.uid
         );
 
-        console.log(
-            "Email:",
-            user.email
+
+        const userSnap =
+        await getDoc(userRef);
+
+
+        if(!userSnap.exists()){
+
+            statusText.innerText =
+            "❌ Firestore में Hafiji profile नहीं मिला।";
+
+            await signOut(auth);
+
+            return;
+        }
+
+
+        hafijiData =
+        userSnap.data();
+
+
+        /* =============================================
+           ROLE CHECK
+        ============================================= */
+
+        if(
+            hafijiData.role !==
+            "hafiji"
+        ){
+
+            statusText.innerText =
+            "❌ यह account Hafiji account नहीं है।";
+
+            await signOut(auth);
+
+            setTimeout(
+                function(){
+                    window.location.replace(
+                        "login.html"
+                    );
+                },
+                1000
+            );
+
+            return;
+        }
+
+
+        /* =============================================
+           PROFILE
+        ============================================= */
+
+        statusText.innerText =
+        "✅ Hafiji Login Active";
+
+        nameText.innerText =
+        "👤 Name: " +
+        (
+            hafijiData.name ||
+            "Hafiji Sahab"
         );
 
+        emailText.innerText =
+        "📧 Email: " +
+        (
+            user.email ||
+            hafijiData.email ||
+            "Email नहीं है"
+        );
 
-        /* =========================================
-           HAFIJI
-        ========================================= */
+        uidText.innerText =
+        "🆔 UID: " +
+        user.uid;
 
-        if(type === "hafiji"){
 
-            /*
-             * यहां Firestore role check नहीं है।
-             * केवल Firebase Authentication email check होगा।
-             */
+        showAmount();
 
-            if(
-                !user.email ||
-                user.email.toLowerCase() !==
-                HAFIJI_EMAIL.toLowerCase()
-            ){
-
-                showMessage(
-                    "❌ यह Hafiji account नहीं है।",
-                    "red"
-                );
-
-                return;
-
-            }
-
-
-            localStorage.setItem(
-                "adminType",
-                "hafiji"
-            );
-
-
-            localStorage.setItem(
-                "adminUID",
-                user.uid
-            );
-
-
-            localStorage.setItem(
-                "loginEmail",
-                user.email
-            );
-
-
-            localStorage.setItem(
-                "isLoggedIn",
-                "true"
-            );
-
-
-            showMessage(
-                "✅ Hafiji Login Successful<br>⏳ Dashboard खुल रहा है...",
-                "green"
-            );
-
-
-            setTimeout(
-                function(){
-
-                    window.location.replace(
-                        "hafiji.html"
-                    );
-
-                },
-                700
-            );
-
-
-            return;
-
-        }
-
-
-        /* =========================================
-           SECRETARY
-        ========================================= */
-
-        if(type === "secretary"){
-
-            /*
-             * यहां भी Firestore role check नहीं है।
-             */
-
-            if(
-                !user.email ||
-                user.email.toLowerCase() !==
-                SECRETARY_EMAIL.toLowerCase()
-            ){
-
-                showMessage(
-                    "❌ यह Secretary account नहीं है।",
-                    "red"
-                );
-
-                return;
-
-            }
-
-
-            localStorage.setItem(
-                "adminType",
-                "secretary"
-            );
-
-
-            localStorage.setItem(
-                "adminUID",
-                user.uid
-            );
-
-
-            localStorage.setItem(
-                "loginEmail",
-                user.email
-            );
-
-
-            localStorage.setItem(
-                "isLoggedIn",
-                "true"
-            );
-
-
-            showMessage(
-                "✅ Secretary Login Successful<br>⏳ Dashboard खुल रहा है...",
-                "green"
-            );
-
-
-            setTimeout(
-                function(){
-
-                    window.location.replace(
-                        "secretary.html"
-                    );
-
-                },
-                700
-            );
-
-
-            return;
-
-        }
-
-
-        /* =========================================
-           MEMBER
-        ========================================= */
-
-        if(type === "member"){
-
-            try{
-
-                const userDoc =
-                await getDoc(
-                    doc(
-                        db,
-                        "users",
-                        user.uid
-                    )
-                );
-
-
-                if(!userDoc.exists()){
-
-                    showMessage(
-                        "❌ Member profile नहीं मिला।",
-                        "red"
-                    );
-
-                    return;
-
-                }
-
-
-                const data =
-                userDoc.data();
-
-
-                if(
-                    data.role !==
-                    "member"
-                ){
-
-                    showMessage(
-                        "❌ यह Member account नहीं है।",
-                        "red"
-                    );
-
-                    return;
-
-                }
-
-
-                localStorage.setItem(
-                    "currentUser",
-                    user.uid
-                );
-
-
-                localStorage.setItem(
-                    "loginEmail",
-                    user.email || ""
-                );
-
-
-                localStorage.setItem(
-                    "isLoggedIn",
-                    "true"
-                );
-
-
-                showMessage(
-                    "✅ Member Login Successful<br>⏳ Dashboard खुल रहा है...",
-                    "green"
-                );
-
-
-                setTimeout(
-                    function(){
-
-                        window.location.replace(
-                            "member.html"
-                        );
-
-                    },
-                    700
-                );
-
-
-                return;
-
-            }
-
-            catch(memberError){
-
-                console.error(
-                    memberError
-                );
-
-
-                showMessage(
-                    "❌ Member profile check नहीं हुआ: " +
-                    memberError.message,
-                    "red"
-                );
-
-                return;
-
-            }
-
-        }
+        loadPaymentHistory();
 
 
     }
@@ -885,91 +791,13 @@ async function(){
     catch(error){
 
         console.error(
-            "LOGIN ERROR:",
+            "HAFIJI DASHBOARD ERROR:",
             error
         );
 
-
-        if(
-            error.code ===
-            "auth/invalid-credential"
-        ){
-
-            showMessage(
-                "❌ Email / User ID या Password गलत है।",
-                "red"
-            );
-
-        }
-
-        else if(
-            error.code ===
-            "auth/user-not-found"
-        ){
-
-            showMessage(
-                "❌ Firebase में यह account नहीं मिला।",
-                "red"
-            );
-
-        }
-
-        else if(
-            error.code ===
-            "auth/wrong-password"
-        ){
-
-            showMessage(
-                "❌ Password गलत है।",
-                "red"
-            );
-
-        }
-
-        else if(
-            error.code ===
-            "auth/invalid-email"
-        ){
-
-            showMessage(
-                "❌ Email format गलत है।",
-                "red"
-            );
-
-        }
-
-        else if(
-            error.code ===
-            "auth/too-many-requests"
-        ){
-
-            showMessage(
-                "❌ बहुत ज्यादा कोशिश हुई है। थोड़ी देर बाद फिर प्रयास करें।",
-                "red"
-            );
-
-        }
-
-        else{
-
-            showMessage(
-                "❌ Login Failed:<br>" +
-                error.message,
-                "red"
-            );
-
-        }
-
-    }
-
-    finally{
-
-        loginBtn.disabled =
-        false;
-
-        loginBtn.classList.remove(
-            "loading"
-        );
+        statusText.innerText =
+        "❌ Dashboard Error: " +
+        error.message;
 
     }
 
@@ -977,91 +805,552 @@ async function(){
 
 
 /* =====================================================
-   FORGOT PASSWORD
+   SAVE AMOUNT
 ===================================================== */
 
-forgotBtn.addEventListener(
+document
+.getElementById("saveAmountBtn")
+.addEventListener(
 "click",
 async function(){
 
-    const type =
-    loginType.value;
-
-
-    const enteredEmail =
-    emailInput.value.trim();
+    const amount =
+    Number(
+        amountInput.value
+    );
 
 
     if(
-        enteredEmail === ""
+        !amount ||
+        amount <= 0
     ){
 
-        showMessage(
-            "❌ पहले Email / User ID डालें।",
-            "red"
-        );
+        amountMessage.style.color =
+        "red";
+
+        amountMessage.innerText =
+        "❌ सही amount डालें।";
 
         return;
-
     }
 
 
-    const email =
-    getLoginEmail(
-        type,
-        enteredEmail
-    );
+    if(!currentUser){
+
+        amountMessage.style.color =
+        "red";
+
+        amountMessage.innerText =
+        "❌ Login नहीं है।";
+
+        return;
+    }
 
 
     try{
 
-        showMessage(
-            "⏳ Password reset link भेजा जा रहा है...",
-            "#0f766e"
+        amountMessage.style.color =
+        "#0f766e";
+
+        amountMessage.innerText =
+        "⏳ Amount save हो रहा है...";
+
+
+        await updateDoc(
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            ),
+            {
+                monthlyAmount:
+                amount
+            }
         );
 
 
-        await sendPasswordResetEmail(
-            auth,
-            email
+        hafijiData.monthlyAmount =
+        amount;
+
+
+        showAmount();
+
+
+        amountInput.value =
+        "";
+
+
+        amountMessage.style.color =
+        "green";
+
+        amountMessage.innerText =
+        "✅ Monthly Hafiji Amount ₹" +
+        amount +
+        " save हो गया।";
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        amountMessage.style.color =
+        "red";
+
+        amountMessage.innerText =
+        "❌ Amount save नहीं हुआ: " +
+        error.message;
+
+    }
+
+});
+
+
+/* =====================================================
+   OPEN PAYMENT
+===================================================== */
+
+document
+.getElementById("openPaymentBtn")
+.addEventListener(
+"click",
+function(){
+
+    const amount =
+    getAmount();
+
+
+    if(amount <= 0){
+
+        alert(
+            "पहले Monthly Hafiji Amount सेट करें।"
+        );
+
+        return;
+    }
+
+
+    if(
+        paymentBox.classList.contains(
+            "hidden"
+        )
+    ){
+
+        paymentBox.classList.remove(
+            "hidden"
+        );
+
+        startTimer();
+
+    }
+
+    else{
+
+        paymentBox.classList.add(
+            "hidden"
+        );
+
+        stopTimer();
+
+    }
+
+});
+
+
+/* =====================================================
+   QR TIMER
+===================================================== */
+
+function startTimer(){
+
+    stopTimer();
+
+
+    let seconds =
+    5 * 60;
+
+
+    qrImage.classList.remove(
+        "hidden"
+    );
+
+
+    timer.classList.remove(
+        "hidden"
+    );
+
+
+    function tick(){
+
+        const min =
+        Math.floor(
+            seconds / 60
+        );
+
+        const sec =
+        seconds % 60;
+
+
+        timer.innerText =
+        "⏱️ QR Time: " +
+        String(min).padStart(2,"0") +
+        ":" +
+        String(sec).padStart(2,"0");
+
+
+        if(seconds <= 0){
+
+            stopTimer();
+
+            qrImage.classList.add(
+                "hidden"
+            );
+
+            timer.innerText =
+            "⛔ QR का समय समाप्त हो गया।";
+
+            return;
+        }
+
+
+        seconds--;
+
+    }
+
+
+    tick();
+
+
+    timerInterval =
+    setInterval(
+        tick,
+        1000
+    );
+
+}
+
+
+/* =====================================================
+   STOP TIMER
+===================================================== */
+
+function stopTimer(){
+
+    if(timerInterval){
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval =
+        null;
+
+    }
+
+}
+
+
+/* =====================================================
+   UPI BUTTON
+===================================================== */
+
+document
+.getElementById("upiBtn")
+.addEventListener(
+"click",
+function(){
+
+    const amount =
+    getAmount();
+
+
+    if(amount <= 0){
+
+        alert(
+            "पहले amount सेट करें।"
+        );
+
+        return;
+    }
+
+
+    const upi =
+    "upi://pay" +
+    "?pa=7488611526@ybl" +
+    "&pn=MASJID-E-AYESHA" +
+    "&am=" +
+    encodeURIComponent(amount) +
+    "&cu=INR";
+
+
+    window.location.href =
+    upi;
+
+});
+
+
+/* =====================================================
+   IMAGE COMPRESS
+===================================================== */
+
+function compressImage(file){
+
+    return new Promise(
+    function(resolve,reject){
+
+        const reader =
+        new FileReader();
+
+
+        reader.onload =
+        function(e){
+
+            const img =
+            new Image();
+
+
+            img.onload =
+            function(){
+
+                const maxWidth =
+                900;
+
+                const scale =
+                Math.min(
+                    1,
+                    maxWidth /
+                    img.width
+                );
+
+
+                const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+                canvas.width =
+                img.width * scale;
+
+                canvas.height =
+                img.height * scale;
+
+
+                const ctx =
+                canvas.getContext(
+                    "2d"
+                );
+
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+
+                resolve(
+                    canvas.toDataURL(
+                        "image/jpeg",
+                        0.55
+                    )
+                );
+
+            };
+
+
+            img.onerror =
+            reject;
+
+
+            img.src =
+            e.target.result;
+
+        };
+
+
+        reader.onerror =
+        reject;
+
+
+        reader.readAsDataURL(
+            file
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   SUBMIT PAYMENT
+===================================================== */
+
+document
+.getElementById("submitPaymentBtn")
+.addEventListener(
+"click",
+async function(){
+
+    const file =
+    document
+    .getElementById("screenshot")
+    .files[0];
+
+
+    const remark =
+    document
+    .getElementById("remark")
+    .value
+    .trim();
+
+
+    if(!currentUser){
+
+        paymentMessage.style.color =
+        "red";
+
+        paymentMessage.innerText =
+        "❌ Login नहीं है।";
+
+        return;
+    }
+
+
+    if(!file){
+
+        paymentMessage.style.color =
+        "red";
+
+        paymentMessage.innerText =
+        "❌ पहले payment screenshot चुनें।";
+
+        return;
+    }
+
+
+    const amount =
+    getAmount();
+
+
+    if(amount <= 0){
+
+        paymentMessage.style.color =
+        "red";
+
+        paymentMessage.innerText =
+        "❌ पहले Monthly Hafiji Amount सेट करें।";
+
+        return;
+    }
+
+
+    try{
+
+        paymentMessage.style.color =
+        "#0f766e";
+
+        paymentMessage.innerText =
+        "⏳ Screenshot compress हो रहा है...";
+
+
+        const image =
+        await compressImage(
+            file
         );
 
 
-        showMessage(
-            "✅ Password reset link आपके email पर भेज दिया गया है।",
-            "green"
+        paymentMessage.innerText =
+        "⏳ Payment submit हो रहा है...";
+
+
+        await addDoc(
+            collection(
+                db,
+                "payments"
+            ),
+            {
+
+                userId:
+                currentUser.uid,
+
+                uid:
+                currentUser.uid,
+
+                name:
+                hafijiData.name ||
+                "Hafiji Sahab",
+
+                email:
+                currentUser.email ||
+                hafijiData.email ||
+                "",
+
+                role:
+                "hafiji",
+
+                paymentType:
+                "Hafiji",
+
+                amount:
+                amount,
+
+                paymentMode:
+                "Online",
+
+                screenshot:
+                image,
+
+                remark:
+                remark,
+
+                status:
+                "pending",
+
+                createdAt:
+                new Date().toISOString()
+
+            }
         );
+
+
+        paymentMessage.style.color =
+        "green";
+
+        paymentMessage.innerText =
+        "✅ Payment successfully submit हो गया। Secretary verification के बाद Approved होगा।";
+
+
+        document
+        .getElementById("screenshot")
+        .value = "";
+
+
+        document
+        .getElementById("remark")
+        .value = "";
+
+
+        loadPaymentHistory();
 
     }
 
     catch(error){
 
         console.error(
+            "PAYMENT ERROR:",
             error
         );
 
 
-        if(
-            error.code ===
-            "auth/user-not-found"
-        ){
+        paymentMessage.style.color =
+        "red";
 
-            showMessage(
-                "❌ यह email Firebase में नहीं मिला।",
-                "red"
-            );
-
-        }
-
-        else{
-
-            showMessage(
-                "❌ Reset Failed:<br>" +
-                error.message,
-                "red"
-            );
-
-        }
+        paymentMessage.innerText =
+        "❌ Payment submit नहीं हुआ: " +
+        error.message;
 
     }
 
@@ -1069,74 +1358,395 @@ async function(){
 
 
 /* =====================================================
-   REGISTER BUTTON
+   PAYMENT HISTORY
 ===================================================== */
 
-registerBtn.addEventListener(
+async function loadPaymentHistory(){
+
+    if(!currentUser){
+
+        return;
+    }
+
+
+    historyBox.innerHTML =
+    '<div class="loading">⏳ Payment history loading...</div>';
+
+
+    try{
+
+        const paymentRef =
+        collection(
+            db,
+            "payments"
+        );
+
+
+        const q =
+        query(
+            paymentRef,
+            where(
+                "userId",
+                "==",
+                currentUser.uid
+            )
+        );
+
+
+        const snapshot =
+        await getDocs(q);
+
+
+        if(snapshot.empty){
+
+            historyBox.innerHTML =
+            '<div class="empty">📭 अभी कोई payment history नहीं है।</div>';
+
+            document
+            .getElementById(
+                "totalSubmitted"
+            )
+            .innerText =
+            "₹0";
+
+            document
+            .getElementById(
+                "totalApproved"
+            )
+            .innerText =
+            "₹0";
+
+            return;
+        }
+
+
+        let payments = [];
+
+
+        snapshot.forEach(
+        function(paymentDoc){
+
+            payments.push({
+
+                id:
+                paymentDoc.id,
+
+                ...paymentDoc.data()
+
+            });
+
+        });
+
+
+        payments.sort(
+        function(a,b){
+
+            return String(
+                b.createdAt || ""
+            ).localeCompare(
+                String(
+                    a.createdAt || ""
+                )
+            );
+
+        });
+
+
+        let submitted =
+        0;
+
+        let approved =
+        0;
+
+
+        historyBox.innerHTML =
+        "";
+
+
+        payments.forEach(
+        function(payment){
+
+            const amount =
+            Number(
+                payment.amount || 0
+            );
+
+
+            submitted +=
+            amount;
+
+
+            if(
+                payment.status ===
+                "approved" ||
+                payment.status ===
+                "success" ||
+                payment.status ===
+                "paid"
+            ){
+
+                approved +=
+                amount;
+
+            }
+
+
+            let statusHTML;
+
+
+            if(
+                payment.status ===
+                "approved" ||
+                payment.status ===
+                "success" ||
+                payment.status ===
+                "paid"
+            ){
+
+                statusHTML =
+                '<span class="success">✅ Approved / Paid</span>';
+
+            }
+
+            else{
+
+                statusHTML =
+                '<span class="pending">⏳ Pending Verification</span>';
+
+            }
+
+
+            const div =
+            document.createElement(
+                "div"
+            );
+
+
+            div.className =
+            "payment";
+
+
+            div.innerHTML =
+
+            "<b>💰 Amount:</b> ₹" +
+            amount +
+
+            "<br><br>" +
+
+            "<b>📌 Type:</b> " +
+            (
+                payment.paymentType ||
+                "Hafiji"
+            ) +
+
+            "<br><br>" +
+
+            "<b>💳 Mode:</b> " +
+            (
+                payment.paymentMode ||
+                "Online"
+            ) +
+
+            "<br><br>" +
+
+            "<b>📅 Date:</b> " +
+            formatDate(
+                payment.createdAt
+            ) +
+
+            "<br><br>" +
+
+            "<b>📊 Status:</b> " +
+            statusHTML +
+
+            (
+                payment.remark
+                ?
+                "<br><br><b>📝 Remark:</b> " +
+                escapeHTML(
+                    payment.remark
+                )
+                :
+                ""
+            );
+
+            historyBox.appendChild(
+                div
+            );
+
+        });
+
+
+        document
+        .getElementById(
+            "totalSubmitted"
+        )
+        .innerText =
+        "₹" + submitted;
+
+
+        document
+        .getElementById(
+            "totalApproved"
+        )
+        .innerText =
+        "₹" + approved;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "HISTORY ERROR:",
+            error
+        );
+
+
+        historyBox.innerHTML =
+        '<div class="empty">❌ Payment history load नहीं हुई:<br>' +
+        escapeHTML(
+            error.message
+        ) +
+        '</div>';
+
+    }
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value){
+
+    if(!value){
+        return "Date नहीं है";
+    }
+
+
+    try{
+
+        return new Date(
+            value
+        ).toLocaleString(
+            "hi-IN"
+        );
+
+    }
+
+    catch(e){
+
+        return String(
+            value
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   REFRESH HISTORY
+===================================================== */
+
+document
+.getElementById(
+    "refreshHistoryBtn"
+)
+.addEventListener(
 "click",
 function(){
 
-    window.location.href =
-    "register.html";
+    loadPaymentHistory();
 
 });
 
 
 /* =====================================================
-   BACK BUTTON
+   LOGOUT
 ===================================================== */
 
-backBtn.addEventListener(
+document
+.getElementById(
+    "logoutBtn"
+)
+.addEventListener(
 "click",
-function(){
+async function(){
 
-    window.location.href =
-    "index.html";
+    try{
 
-});
+        stopTimer();
+
+        await signOut(
+            auth
+        );
+
+        localStorage.removeItem(
+            "adminType"
+        );
+
+        localStorage.removeItem(
+            "adminUID"
+        );
+
+        localStorage.removeItem(
+            "loginEmail"
+        );
+
+        localStorage.removeItem(
+            "isLoggedIn"
+        );
 
 
-/* =====================================================
-   ENTER KEY LOGIN
-===================================================== */
+        window.location.replace(
+            "login.html"
+        );
 
-passwordInput.addEventListener(
-"keydown",
-function(event){
+    }
 
-    if(
-        event.key === "Enter"
-    ){
+    catch(error){
 
-        loginBtn.click();
+        alert(
+            "Logout नहीं हुआ: " +
+            error.message
+        );
 
     }
 
 });
-
-
-emailInput.addEventListener(
-"keydown",
-function(event){
-
-    if(
-        event.key === "Enter"
-    ){
-
-        passwordInput.focus();
-
-    }
-
-});
-
-
-/* =====================================================
-   PAGE READY
-===================================================== */
-
-console.log(
-    "MASJID-E-AYESHA Login Ready"
-);
 
 </script>
 
