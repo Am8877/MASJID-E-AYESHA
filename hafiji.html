@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="hi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Hafiji Dashboard - MASJID-E-AYESHA</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Login - MASJID-E-AYESHA</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -20,141 +25,57 @@ body{
 
 .container{
     width:100%;
-    max-width:650px;
+    max-width:500px;
     margin:auto;
-    padding:20px 15px 40px;
+    padding:25px 18px;
+}
+
+.logo{
+    text-align:center;
+    font-size:60px;
 }
 
 h1{
     color:white;
     text-align:center;
-    font-size:27px;
-    margin:10px 0 20px;
+    font-size:28px;
+    margin:8px 0 20px;
 }
 
-.card{
+.login-box{
     background:white;
+    padding:25px;
     border-radius:20px;
-    padding:20px;
-    margin-bottom:18px;
-    box-shadow:0 8px 25px rgba(0,0,0,.22);
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
 }
 
 h2{
-    color:#0f766e;
-    margin-top:0;
-}
-
-.profile{
     text-align:center;
+    color:#0f766e;
 }
 
-.profile img{
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    object-fit:cover;
-    border:4px solid #0f766e;
-    display:block;
-    margin:10px auto;
-}
-
-input,
 select,
-textarea{
+input{
     width:100%;
-    padding:13px;
-    margin-top:7px;
+    padding:14px;
+    margin-top:8px;
+    margin-bottom:14px;
     border:1px solid #ccc;
     border-radius:10px;
     font-size:16px;
 }
 
-textarea{
-    min-height:75px;
-    resize:vertical;
-}
-
 label{
+    font-weight:bold;
     display:block;
-    font-weight:bold;
-    margin-top:12px;
-}
-
-.summary{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:10px;
-}
-
-.summary-box{
-    background:#ecfdf5;
-    padding:14px 8px;
-    border-radius:12px;
-    text-align:center;
-}
-
-.summary-box strong{
-    display:block;
-    font-size:22px;
-    color:#0f766e;
-    margin-top:5px;
-}
-
-.payment{
-    border:1px solid #ddd;
-    border-radius:15px;
-    padding:15px;
-    margin-top:14px;
-    background:#fff;
-}
-
-.payment h3{
-    margin:0 0 10px;
-    color:#134e4a;
-}
-
-.payment p{
-    margin:7px 0;
-}
-
-.payment img{
-    width:100%;
-    max-height:350px;
-    object-fit:contain;
-    margin-top:12px;
-    border-radius:10px;
-    border:1px solid #ddd;
-}
-
-.pending{
-    color:#d97706;
-    font-weight:bold;
-}
-
-.success{
-    color:green;
-    font-weight:bold;
-}
-
-.chanda{
-    border-left:5px solid #7c3aed;
-}
-
-.hafiji{
-    border-left:5px solid #0f766e;
-}
-
-.secretary{
-    border-left:5px solid #2563eb;
 }
 
 button{
     width:100%;
-    padding:14px;
+    padding:15px;
     margin-top:10px;
     border:0;
-    border-radius:11px;
+    border-radius:12px;
     background:#0f766e;
     color:white;
     font-size:16px;
@@ -166,298 +87,202 @@ button:active{
     transform:scale(.98);
 }
 
-.refresh{
-    background:#2563eb;
+button:disabled{
+    opacity:.6;
 }
 
-.logout{
+.forgot{
+    background:#f59e0b;
+}
+
+.back{
     background:#555;
-}
-
-.remarkBtn{
-    background:#7c3aed;
-}
-
-.received{
-    background:#16a34a;
 }
 
 .message{
     text-align:center;
+    margin-top:15px;
     font-weight:bold;
-    margin-top:12px;
     line-height:1.5;
-}
-
-.empty{
-    text-align:center;
-    color:#666;
-    padding:20px 5px;
-    line-height:1.6;
-}
-
-.errorBox{
-    background:#fee2e2;
-    color:#991b1b;
-    padding:15px;
-    border-radius:12px;
-    margin-top:12px;
     word-break:break-word;
 }
 
-.filter-buttons{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-}
-
-.filter-buttons button{
-    margin-top:0;
-    font-size:14px;
-    padding:12px 5px;
-}
-
-.status{
-    padding:8px;
-    border-radius:8px;
-    text-align:center;
-    margin:10px 0;
-}
-
-.status.ok{
-    background:#dcfce7;
-    color:#166534;
-}
-
-.status.bad{
-    background:#fee2e2;
-    color:#991b1b;
-}
-
-.small{
-    color:#666;
-    font-size:13px;
-}
-
-.loading{
-    text-align:center;
-    padding:25px 5px;
-    color:#666;
-    font-size:17px;
-}
-
-@media(max-width:450px){
-
-    .summary{
-        grid-template-columns:1fr;
-    }
-
-    .container{
-        padding:15px 10px 30px;
-    }
-
-    .card{
-        padding:16px;
-    }
-}
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-<h1>🕌 MASJID-E-AYESHA</h1>
+<div class="logo">
+🕌
+</div>
+
+<h1>
+MASJID-E-AYESHA
+</h1>
 
 
-<!-- ================= PROFILE ================= -->
+<div class="login-box">
 
-<div class="card profile">
+<h2>
+🔐 Login
+</h2>
 
-<h2>🕌 Hafiji Profile</h2>
 
-<img
-    id="profileImage"
-    src="https://via.placeholder.com/110?text=H"
-    alt="Profile"
->
+<label>
+Login Type
+</label>
 
-<p>
-<strong id="hafijiName">
+
+<select id="loginType">
+
+<option value="member">
+Member
+</option>
+
+<option value="hafiji">
 Hafiji Sahab
-</strong>
-</p>
+</option>
 
-<p id="loginInfo">
-⏳ Checking login...
-</p>
+<option value="secretary">
+Secretary Sahab
+</option>
+
+</select>
+
+
+<label id="loginLabel">
+Email
+</label>
+
 
 <input
-    type="file"
-    id="profileFile"
-    accept="image/*"
+type="text"
+id="email"
+placeholder="Email डालें"
+autocomplete="username"
 >
 
-<button id="uploadProfileBtn">
-📷 Profile Picture Save करें
+
+<label>
+Password
+</label>
+
+
+<input
+type="password"
+id="password"
+placeholder="Password डालें"
+autocomplete="current-password"
+>
+
+
+<button id="loginBtn">
+🔐 Login
 </button>
 
-<div
-    id="profileMessage"
-    class="message">
-</div>
 
-</div>
-
-
-<!-- ================= CONNECTION STATUS ================= -->
-
-<div class="card">
-
-<h2>🔌 Firebase Status</h2>
-
-<div
-    id="connectionStatus"
-    class="status">
-⏳ Firebase से connection check हो रहा है...
-</div>
-
-</div>
-
-
-<!-- ================= SUMMARY ================= -->
-
-<div class="card">
-
-<h2>📊 Payment Summary</h2>
-
-<div class="summary">
-
-<div class="summary-box">
-Total
-<strong id="totalCount">0</strong>
-</div>
-
-<div class="summary-box">
-Pending
-<strong id="pendingCount">0</strong>
-</div>
-
-<div class="summary-box">
-Successful
-<strong id="successCount">0</strong>
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ================= PAYMENTS ================= -->
-
-<div class="card">
-
-<h2>💰 Payments & Chanda</h2>
-
-<div class="filter-buttons">
-
-<button id="allBtn">
-📋 All
+<button
+class="forgot"
+id="forgotBtn"
+>
+🔑 Forgot Password
 </button>
 
-<button id="hafijiBtn">
-💰 Hafiji
+
+<button
+onclick="location.href='register.html'"
+>
+📝 New Member Registration
 </button>
 
-<button id="chandaBtn">
-🤲 Chanda
+
+<button
+class="back"
+onclick="location.href='index.html'"
+>
+← Back
 </button>
 
-<button id="pendingBtn">
-⏳ Pending
-</button>
-
-</div>
 
 <div
 id="message"
-class="message">
+class="message"
+>
 </div>
 
-<div id="paymentsList">
-
-<div class="loading">
-⏳ Payments loading...
-</div>
 
 </div>
 
 </div>
 
-
-<!-- ================= ACTION ================= -->
-
-<div class="card">
-
-<button
-class="refresh"
-id="refreshBtn">
-🔄 Refresh Payments
-</button>
-
-<button
-class="logout"
-id="logoutBtn">
-🚪 Logout
-</button>
-
-</div>
-
-</div>
 
 
 <script type="module">
 
+
 /* =====================================================
-   FIREBASE IMPORT
+   FIREBASE APP
 ===================================================== */
 
 import {
+
     initializeApp
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
 
+
+/* =====================================================
+   FIREBASE AUTH
+===================================================== */
+
 import {
+
     getAuth,
-    onAuthStateChanged,
-    signOut
+
+    signInWithEmailAndPassword,
+
+    sendPasswordResetEmail,
+
+    setPersistence,
+
+    browserLocalPersistence
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 
+
+/* =====================================================
+   FIRESTORE
+===================================================== */
+
 import {
+
     getFirestore,
+
     doc,
-    getDoc,
-    collection,
-    getDocs,
-    updateDoc
+
+    getDoc
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL
-}
-from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
 
 
 /* =====================================================
@@ -467,7 +292,7 @@ from
 const firebaseConfig = {
 
     apiKey:
-    "AIzaSyBI9ow2vRoOtOt2V1-J5rNgj_QqMD_EFbg",
+    "AIzaSyBI9ow2vRoOtOtV2-J5rNgj_QqMD_EFbg",
 
     authDomain:
     "masjid-e-ayesha-371f6.firebaseapp.com",
@@ -486,142 +311,299 @@ const firebaseConfig = {
 
     measurementId:
     "G-Q5TVCP79W2"
+
 };
 
 
+
 /* =====================================================
-   INITIALIZE FIREBASE
+   INITIALIZE
 ===================================================== */
 
-let app;
-let auth;
-let db;
-let storage;
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const db =
+    getFirestore(app);
+
+
+
+/* =====================================================
+   IMPORTANT
+   LOGIN SESSION BROWSER ME SAVE RAHEGI
+===================================================== */
 
 try{
 
-    app =
-        initializeApp(firebaseConfig);
-
-    auth =
-        getAuth(app);
-
-    db =
-        getFirestore(app);
-
-    storage =
-        getStorage(app);
-
-    setConnectionStatus(
-        "ok",
-        "✅ Firebase successfully connected."
+    await setPersistence(
+        auth,
+        browserLocalPersistence
     );
 
-}
-catch(error){
+    console.log(
+        "Firebase persistence enabled"
+    );
 
-    console.error(error);
+}catch(error){
 
-    setConnectionStatus(
-        "bad",
-        "❌ Firebase initialization error: " +
-        error.message
+    console.error(
+        "Persistence error:",
+        error
     );
 
 }
 
 
-/* =====================================================
-   VARIABLES
-===================================================== */
-
-let currentUser = null;
-
-let allPayments = [];
-
-let currentFilter = "all";
-
 
 /* =====================================================
-   CONNECTION STATUS
+   FIXED LOGIN EMAILS
 ===================================================== */
 
-function setConnectionStatus(type,text){
+const HAFIJI_EMAIL =
+    "hafiji2@gmail.com";
 
-    const box =
-        document.getElementById(
-            "connectionStatus"
-        );
 
-    if(!box){
-        return;
-    }
+const SECRETARY_EMAIL =
+    "secretary@gmail.com";
 
-    box.className =
-        "status " +
-        (
-            type === "ok"
-            ? "ok"
-            : "bad"
-        );
-
-    box.innerText =
-        text;
-}
 
 
 /* =====================================================
-   AUTH
+   ELEMENTS
 ===================================================== */
 
-if(auth){
-
-onAuthStateChanged(
-    auth,
-    async function(user){
-
-        console.log(
-            "Auth user:",
-            user
-        );
+const loginType =
+    document.getElementById(
+        "loginType"
+    );
 
 
-        if(!user){
+const emailInput =
+    document.getElementById(
+        "email"
+    );
 
-            setConnectionStatus(
-                "bad",
-                "❌ Login नहीं है। Login page पर जा रहे हैं..."
-            );
 
-            setTimeout(
-                function(){
+const passwordInput =
+    document.getElementById(
+        "password"
+    );
 
-                    location.href =
-                        "login.html";
 
-                },
-                1200
-            );
+const loginLabel =
+    document.getElementById(
+        "loginLabel"
+    );
 
-            return;
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+const loginBtn =
+    document.getElementById(
+        "loginBtn"
+    );
+
+
+
+/* =====================================================
+   LOGIN TYPE
+===================================================== */
+
+loginType.addEventListener(
+    "change",
+    function(){
+
+        const type =
+            loginType.value;
+
+
+        if(type === "member"){
+
+            loginLabel.innerText =
+                "Email";
+
+            emailInput.placeholder =
+                "Member Email डालें";
+
         }
 
 
-        currentUser =
-            user;
+        if(type === "hafiji"){
+
+            loginLabel.innerText =
+                "Hafiji User ID / Email";
+
+            emailInput.placeholder =
+                "hafiji या Email डालें";
+
+        }
 
 
-        document.getElementById(
-            "loginInfo"
-        ).innerText =
-            "📧 " +
-            (
-                user.email ||
-                "Login successful"
+        if(type === "secretary"){
+
+            loginLabel.innerText =
+                "Secretary User ID / Email";
+
+            emailInput.placeholder =
+                "secretary या Email डालें";
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   GET LOGIN EMAIL
+===================================================== */
+
+function getLoginEmail(
+    type,
+    value
+){
+
+    value =
+        value.trim().toLowerCase();
+
+
+    if(type === "hafiji"){
+
+        if(value === "hafiji"){
+
+            return HAFIJI_EMAIL;
+
+        }
+
+    }
+
+
+    if(type === "secretary"){
+
+        if(value === "secretary"){
+
+            return SECRETARY_EMAIL;
+
+        }
+
+    }
+
+
+    return value;
+
+}
+
+
+
+/* =====================================================
+   NORMALIZE ROLE
+===================================================== */
+
+function normalizeRole(
+    role
+){
+
+    return String(
+        role || ""
+    )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+loginBtn.addEventListener(
+    "click",
+    async function(){
+
+        const type =
+            loginType.value;
+
+
+        const enteredEmail =
+            emailInput.value.trim();
+
+
+        const password =
+            passwordInput.value;
+
+
+        if(
+            enteredEmail === "" ||
+            password === ""
+        ){
+
+            message.style.color =
+                "red";
+
+            message.innerText =
+                "❌ Email / User ID और Password डालें।";
+
+            return;
+
+        }
+
+
+        const email =
+            getLoginEmail(
+                type,
+                enteredEmail
             );
 
 
         try{
+
+            loginBtn.disabled =
+                true;
+
+
+            message.style.color =
+                "#0f766e";
+
+
+            message.innerText =
+                "⏳ Login हो रहा है...";
+
+
+            /*
+             * Firebase Login
+             */
+
+            const result =
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+
+            const user =
+                result.user;
+
+
+            console.log(
+                "LOGIN SUCCESS:",
+                user.uid
+            );
+
+
+            /*
+             * Firestore profile
+             */
 
             const userRef =
                 doc(
@@ -637,1446 +619,460 @@ onAuthStateChanged(
                 );
 
 
-            console.log(
-                "User document exists:",
-                userSnap.exists()
-            );
-
-
             if(!userSnap.exists()){
 
-                throw new Error(
-                    "users collection में इस Hafiji का profile नहीं मिला। UID: " +
-                    user.uid
-                );
+                /*
+                 * यहाँ automatic signOut नहीं करेंगे।
+                 * इससे पता चलेगा कि असली समस्या क्या है।
+                 */
+
+                message.style.color =
+                    "red";
+
+                message.innerHTML =
+                    "❌ Login हो गया लेकिन Firestore में आपका profile नहीं मिला।<br><br>" +
+                    "UID:<br>" +
+                    user.uid;
+
+
+                loginBtn.disabled =
+                    false;
+
+
+                return;
 
             }
 
 
-            const userData =
+            const data =
                 userSnap.data();
 
 
             console.log(
-                "User data:",
-                userData
+                "FIRESTORE DATA:",
+                data
             );
 
 
-            if(
-                String(
-                    userData.role || ""
-                ).toLowerCase() !==
-                "hafiji"
-            ){
-
-                throw new Error(
-                    "इस account का role Hafiji नहीं है। Current role: " +
-                    (
-                        userData.role ||
-                        "undefined"
-                    )
-                );
-
-            }
-
-
-            document.getElementById(
-                "hafijiName"
-            ).innerText =
-                userData.name ||
-                "Hafiji Sahab";
-
-
-            if(userData.photoURL){
-
-                document.getElementById(
-                    "profileImage"
-                ).src =
-                    userData.photoURL;
-
-            }
-
-
-            setConnectionStatus(
-                "ok",
-                "✅ Hafiji login और Firebase connection सही है।"
-            );
-
-
-            await loadPayments();
-
-        }
-        catch(error){
-
-            console.error(
-                "PROFILE ERROR:",
-                error
-            );
-
-
-            showMainError(
-                "❌ Profile load नहीं हुआ",
-                error
-            );
-
-        }
-
-    }
-);
-
-}
-
-
-/* =====================================================
-   SHOW MAIN ERROR
-===================================================== */
-
-function showMainError(title,error){
-
-    const list =
-        document.getElementById(
-            "paymentsList"
-        );
-
-
-    list.innerHTML =
-        `
-        <div class="errorBox">
-
-            <strong>
-                ${escapeHtml(title)}
-            </strong>
-
-            <br><br>
-
-            ${escapeHtml(
-                error.message ||
-                String(error)
-            )}
-
-            <br><br>
-
-            <small>
-                अगर यह "Missing or insufficient permissions"
-                है तो Firestore Rules की समस्या है।
-            </small>
-
-        </div>
-        `;
-
-
-    document.getElementById(
-        "message"
-    ).innerText =
-        "❌ Firebase error";
-
-
-    document.getElementById(
-        "message"
-    ).style.color =
-        "red";
-
-
-    setConnectionStatus(
-        "bad",
-        "❌ Firebase data access में समस्या है: " +
-        (
-            error.message ||
-            "Unknown error"
-        )
-    );
-
-}
-
-
-/* =====================================================
-   PROFILE UPLOAD
-===================================================== */
-
-document
-.getElementById(
-    "uploadProfileBtn"
-)
-.addEventListener(
-    "click",
-    async function(){
-
-        if(!currentUser){
-
-            alert(
-                "पहले login करें।"
-            );
-
-            return;
-        }
-
-
-        const file =
-            document.getElementById(
-                "profileFile"
-            ).files[0];
-
-
-        const msg =
-            document.getElementById(
-                "profileMessage"
-            );
-
-
-        if(!file){
-
-            msg.style.color =
-                "red";
-
-            msg.innerText =
-                "❌ पहले photo चुनें।";
-
-            return;
-        }
-
-
-        try{
-
-            msg.style.color =
-                "#0f766e";
-
-            msg.innerText =
-                "⏳ Photo upload हो रही है...";
-
-
-            const storageRef =
-                ref(
-                    storage,
-                    "profilePictures/" +
-                    currentUser.uid +
-                    ".jpg"
+            const role =
+                normalizeRole(
+                    data.role
                 );
 
 
-            await uploadBytes(
-                storageRef,
-                file
+            console.log(
+                "ROLE:",
+                role
             );
 
 
-            const photoURL =
-                await getDownloadURL(
-                    storageRef
-                );
 
+            /* =================================================
+               MEMBER
+            ================================================= */
 
-            await updateDoc(
-                doc(
-                    db,
-                    "users",
-                    currentUser.uid
-                ),
-                {
-                    photoURL:
-                        photoURL
+            if(type === "member"){
+
+                if(role !== "member"){
+
+                    message.style.color =
+                        "red";
+
+                    message.innerText =
+                        "❌ यह Member account नहीं है। Firestore role: " +
+                        (data.role || "खाली");
+
+                    loginBtn.disabled =
+                        false;
+
+                    return;
+
                 }
-            );
 
 
-            document.getElementById(
-                "profileImage"
-            ).src =
-                photoURL;
+                localStorage.setItem(
+                    "currentUser",
+                    user.uid
+                );
 
 
-            msg.style.color =
-                "green";
+                localStorage.setItem(
+                    "userRole",
+                    "member"
+                );
 
-            msg.innerText =
-                "✅ Profile Picture Save हो गई।";
+
+                message.style.color =
+                    "green";
+
+                message.innerText =
+                    "✅ Member Login Successful";
+
+
+                setTimeout(
+                    function(){
+
+                        location.replace(
+                            "member.html"
+                        );
+
+                    },
+                    500
+                );
+
+
+                return;
+
+            }
+
+
+
+            /* =================================================
+               HAFIJI
+            ================================================= */
+
+            if(type === "hafiji"){
+
+                if(role !== "hafiji"){
+
+                    message.style.color =
+                        "red";
+
+                    message.innerText =
+                        "❌ यह Hafiji account नहीं है। Firestore role: " +
+                        (data.role || "खाली");
+
+                    loginBtn.disabled =
+                        false;
+
+                    return;
+
+                }
+
+
+                localStorage.setItem(
+                    "adminType",
+                    "hafiji"
+                );
+
+
+                localStorage.setItem(
+                    "adminUID",
+                    user.uid
+                );
+
+
+                localStorage.setItem(
+                    "userRole",
+                    "hafiji"
+                );
+
+
+                message.style.color =
+                    "green";
+
+                message.innerText =
+                    "✅ Hafiji Login Successful";
+
+
+                setTimeout(
+                    function(){
+
+                        location.replace(
+                            "hafiji.html"
+                        );
+
+                    },
+                    500
+                );
+
+
+                return;
+
+            }
+
+
+
+            /* =================================================
+               SECRETARY
+            ================================================= */
+
+            if(type === "secretary"){
+
+                /*
+                 * IMPORTANT:
+                 * role को lowercase करके check किया जा रहा है।
+                 *
+                 * secretary
+                 * Secretary
+                 * SECRETARY
+                 * Secretary
+                 * सभी चलेंगे।
+                 */
+
+                if(role !== "secretary"){
+
+                    message.style.color =
+                        "red";
+
+
+                    message.innerHTML =
+                        "❌ यह Secretary account नहीं है।<br><br>" +
+                        "Firestore Role: <b>" +
+                        (
+                            data.role ||
+                            "खाली"
+                        ) +
+                        "</b><br><br>" +
+                        "UID:<br>" +
+                        user.uid;
+
+
+                    /*
+                     * यहाँ signOut नहीं है।
+                     * इसलिए असली role समस्या साफ दिखाई देगी।
+                     */
+
+                    loginBtn.disabled =
+                        false;
+
+
+                    return;
+
+                }
+
+
+                /*
+                 * Local storage
+                 */
+
+                localStorage.setItem(
+                    "adminType",
+                    "secretary"
+                );
+
+
+                localStorage.setItem(
+                    "adminUID",
+                    user.uid
+                );
+
+
+                localStorage.setItem(
+                    "userRole",
+                    "secretary"
+                );
+
+
+                localStorage.setItem(
+                    "secretaryLoggedIn",
+                    "true"
+                );
+
+
+                message.style.color =
+                    "green";
+
+
+                message.innerText =
+                    "✅ Secretary Login Successful";
+
+
+                /*
+                 * छोटा delay देकर dashboard
+                 */
+
+                setTimeout(
+                    function(){
+
+                        location.replace(
+                            "secretary.html"
+                        );
+
+                    },
+                    500
+                );
+
+
+                return;
+
+            }
+
 
         }
+
         catch(error){
 
             console.error(
-                "PROFILE UPLOAD ERROR:",
+                "LOGIN ERROR:",
                 error
             );
 
 
-            msg.style.color =
+            message.style.color =
                 "red";
-
-            msg.innerText =
-                "❌ Photo upload failed: " +
-                error.message;
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   LOAD PAYMENTS
-===================================================== */
-
-async function loadPayments(){
-
-    const list =
-        document.getElementById(
-            "paymentsList"
-        );
-
-
-    list.innerHTML =
-        `
-        <div class="loading">
-            ⏳ Firebase से payments पढ़े जा रहे हैं...
-        </div>
-        `;
-
-
-    document.getElementById(
-        "message"
-    ).innerText =
-        "";
-
-
-    try{
-
-        if(!currentUser){
-
-            throw new Error(
-                "Current user available नहीं है।"
-            );
-
-        }
-
-
-        console.log(
-            "Reading payments collection..."
-        );
-
-
-        const paymentCollection =
-            collection(
-                db,
-                "payments"
-            );
-
-
-        const snapshot =
-            await getDocs(
-                paymentCollection
-            );
-
-
-        console.log(
-            "Payment document count:",
-            snapshot.size
-        );
-
-
-        allPayments = [];
-
-
-        snapshot.forEach(
-            function(item){
-
-                const data =
-                    item.data();
-
-
-                console.log(
-                    "Payment:",
-                    item.id,
-                    data
-                );
-
-
-                allPayments.push({
-
-                    id:
-                        item.id,
-
-                    ...data
-
-                });
-
-            }
-        );
-
-
-        allPayments.sort(
-            function(a,b){
-
-                return String(
-                    b.createdAt ||
-                    ""
-                ).localeCompare(
-                    String(
-                        a.createdAt ||
-                        ""
-                    )
-                );
-
-            }
-        );
-
-
-        updateSummary();
-
-        showPayments();
-
-
-        setConnectionStatus(
-            "ok",
-            "✅ Payments successfully load हुए: " +
-            allPayments.length
-        );
-
-
-        document.getElementById(
-            "message"
-        ).style.color =
-            "green";
-
-
-        if(allPayments.length === 0){
-
-            document.getElementById(
-                "message"
-            ).innerText =
-                "ℹ️ अभी payments collection खाली है।";
-
-        }
-        else{
-
-            document.getElementById(
-                "message"
-            ).innerText =
-                "✅ " +
-                allPayments.length +
-                " payments load हुए।";
-
-        }
-
-    }
-    catch(error){
-
-        console.error(
-            "PAYMENT LOAD ERROR:",
-            error
-        );
-
-
-        list.innerHTML =
-            `
-            <div class="errorBox">
-
-                <strong>
-                    ❌ Payments load नहीं हुए
-                </strong>
-
-                <br><br>
-
-                ${escapeHtml(
-                    error.message ||
-                    "Unknown error"
-                )}
-
-                <br><br>
-
-                <small>
-                    Firebase Firestore Rules में
-                    read permission check करें।
-                </small>
-
-            </div>
-            `;
-
-
-        document.getElementById(
-            "message"
-        ).style.color =
-            "red";
-
-
-        document.getElementById(
-            "message"
-        ).innerText =
-            "❌ Firebase: " +
-            (
-                error.message ||
-                "Unknown error"
-            );
-
-
-        setConnectionStatus(
-            "bad",
-            "❌ Payments read नहीं हो सके।"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   SUMMARY
-===================================================== */
-
-function updateSummary(){
-
-    let pending = 0;
-
-    let successful = 0;
-
-
-    allPayments.forEach(
-        function(payment){
-
-            const status =
-                String(
-                    payment.status ||
-                    ""
-                ).toLowerCase();
 
 
             if(
-                status ===
-                "successful"
+                error.code ===
+                "auth/invalid-credential"
             ){
 
-                successful++;
+                message.innerText =
+                    "❌ Email / User ID या Password गलत है।";
 
             }
+
+            else if(
+                error.code ===
+                "auth/user-not-found"
+            ){
+
+                message.innerText =
+                    "❌ Account नहीं मिला।";
+
+            }
+
+            else if(
+                error.code ===
+                "auth/wrong-password"
+            ){
+
+                message.innerText =
+                    "❌ Password गलत है।";
+
+            }
+
+            else if(
+                error.code ===
+                "auth/too-many-requests"
+            ){
+
+                message.innerText =
+                    "❌ बहुत ज्यादा कोशिश हो गई। थोड़ी देर बाद फिर कोशिश करें।";
+
+            }
+
             else{
 
-                pending++;
+                message.innerHTML =
+                    "❌ Login Error:<br>" +
+                    error.message;
 
             }
 
-        }
-    );
 
-
-    document.getElementById(
-        "totalCount"
-    ).innerText =
-        allPayments.length;
-
-
-    document.getElementById(
-        "pendingCount"
-    ).innerText =
-        pending;
-
-
-    document.getElementById(
-        "successCount"
-    ).innerText =
-        successful;
-
-}
-
-
-/* =====================================================
-   GET PAYMENT CATEGORY
-===================================================== */
-
-function getCategory(payment){
-
-    let category =
-        payment.category ||
-        payment.paymentType ||
-        payment.type ||
-        "";
-
-
-    category =
-        String(
-            category
-        ).toLowerCase()
-        .trim();
-
-
-    if(
-        category === "chanda"
-    ){
-
-        return "chanda";
-
-    }
-
-
-    if(
-        category === "hafiji"
-    ){
-
-        return "hafiji";
-
-    }
-
-
-    return "hafiji";
-
-}
-
-
-/* =====================================================
-   GET PAYMENT STATUS
-===================================================== */
-
-function isSuccessful(payment){
-
-    const status =
-        String(
-            payment.status ||
-            ""
-        ).toLowerCase()
-        .trim();
-
-
-    return (
-        status ===
-        "successful"
-    );
-
-}
-
-
-/* =====================================================
-   SHOW PAYMENTS
-===================================================== */
-
-function showPayments(){
-
-    const list =
-        document.getElementById(
-            "paymentsList"
-        );
-
-
-    let payments =
-        [...allPayments];
-
-
-    if(
-        currentFilter ===
-        "hafiji"
-    ){
-
-        payments =
-            payments.filter(
-                function(payment){
-
-                    return (
-                        getCategory(
-                            payment
-                        ) ===
-                        "hafiji"
-                    );
-
-                }
-            );
-
-    }
-
-
-    if(
-        currentFilter ===
-        "chanda"
-    ){
-
-        payments =
-            payments.filter(
-                function(payment){
-
-                    return (
-                        getCategory(
-                            payment
-                        ) ===
-                        "chanda"
-                    );
-
-                }
-            );
-
-    }
-
-
-    if(
-        currentFilter ===
-        "pending"
-    ){
-
-        payments =
-            payments.filter(
-                function(payment){
-
-                    return !isSuccessful(
-                        payment
-                    );
-
-                }
-            );
-
-    }
-
-
-    if(
-        payments.length ===
-        0
-    ){
-
-        list.innerHTML =
-            `
-            <div class="empty">
-
-                📭 कोई payment नहीं मिला।
-
-                <br><br>
-
-                <small>
-                    Filter: ${
-                        currentFilter
-                    }
-                </small>
-
-            </div>
-            `;
-
-        return;
-
-    }
-
-
-    list.innerHTML =
-        "";
-
-
-    payments.forEach(
-        function(payment){
-
-            createPaymentCard(
-                payment,
-                list
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   CREATE PAYMENT CARD
-===================================================== */
-
-function createPaymentCard(
-    payment,
-    list
-){
-
-    const box =
-        document.createElement(
-            "div"
-        );
-
-
-    const category =
-        getCategory(
-            payment
-        );
-
-
-    box.className =
-        "payment " +
-        (
-            category ===
-            "chanda"
-            ? "chanda"
-            : "hafiji"
-        );
-
-
-    const successful =
-        isSuccessful(
-            payment
-        );
-
-
-    const categoryText =
-        category ===
-        "chanda"
-        ? "🤲 Chanda"
-        : "💰 Hafiji Payment";
-
-
-    let mode =
-        String(
-            payment.paymentMode ||
-            payment.mode ||
-            "Online"
-        ).toLowerCase();
-
-
-    let modeText =
-        mode === "cash"
-        ? "💵 Cash / Offline"
-        : "🌐 Online";
-
-
-    let html = "";
-
-
-    html +=
-        "<h3>" +
-        categoryText +
-        "</h3>";
-
-
-    html +=
-        "<p>👤 Member: <strong>" +
-        escapeHtml(
-            payment.memberName ||
-            "Unknown Member"
-        ) +
-        "</strong></p>";
-
-
-    if(
-        payment.mobile
-    ){
-
-        html +=
-            "<p>📱 Mobile: " +
-            escapeHtml(
-                payment.mobile
-            ) +
-            "</p>";
-
-    }
-
-
-    if(
-        payment.email
-    ){
-
-        html +=
-            "<p>📧 Email: " +
-            escapeHtml(
-                payment.email
-            ) +
-            "</p>";
-
-    }
-
-
-    html +=
-        "<p>💰 Amount: <strong>₹" +
-        Number(
-            payment.amount ||
-            0
-        ) +
-        "</strong></p>";
-
-
-    html +=
-        "<p>💳 Mode: " +
-        modeText +
-        "</p>";
-
-
-    html +=
-        "<p>📅 Date: " +
-        escapeHtml(
-            payment.paymentDate ||
-            "-"
-        ) +
-        "</p>";
-
-
-    html +=
-        "<p>⏰ Time: " +
-        escapeHtml(
-            payment.paymentTime ||
-            "-"
-        ) +
-        "</p>";
-
-
-    html +=
-        "<p>📝 Remark: " +
-        escapeHtml(
-            payment.remark ||
-            "No remark"
-        ) +
-        "</p>";
-
-
-    if(
-        successful
-    ){
-
-        html +=
-            '<div class="status ok">✅ Payment Successful</div>';
-
-    }
-    else{
-
-        html +=
-            '<div class="status bad">⏳ Payment Pending</div>';
-
-    }
-
-
-    if(
-        payment.verifiedDate
-    ){
-
-        html +=
-            "<p>✔️ Verified Date: " +
-            escapeHtml(
-                payment.verifiedDate
-            ) +
-            "</p>";
-
-    }
-
-
-    if(
-        payment.verifiedTime
-    ){
-
-        html +=
-            "<p>🕐 Verified Time: " +
-            escapeHtml(
-                payment.verifiedTime
-            ) +
-            "</p>";
-
-    }
-
-
-    if(
-        payment.submittedBy
-    ){
-
-        html +=
-            "<p>👤 Submitted By: " +
-            escapeHtml(
-                payment.submittedBy
-            ) +
-            "</p>";
-
-    }
-
-
-    box.innerHTML =
-        html;
-
-
-    /* SCREENSHOT */
-
-    if(
-        payment.screenshot
-    ){
-
-        const screenshotTitle =
-            document.createElement(
-                "p"
-            );
-
-
-        screenshotTitle.innerHTML =
-            "<strong>📷 Payment Screenshot</strong>";
-
-
-        box.appendChild(
-            screenshotTitle
-        );
-
-
-        const img =
-            document.createElement(
-                "img"
-            );
-
-
-        img.src =
-            payment.screenshot;
-
-
-        img.alt =
-            "Payment Screenshot";
-
-
-        img.loading =
-            "lazy";
-
-
-        box.appendChild(
-            img
-        );
-
-    }
-
-
-    /* REMARK BUTTON */
-
-    const remarkButton =
-        document.createElement(
-            "button"
-        );
-
-
-    remarkButton.className =
-        "remarkBtn";
-
-
-    remarkButton.innerText =
-        "📝 Remark लिखें / बदलें";
-
-
-    remarkButton.onclick =
-        function(){
-
-            editRemark(
-                payment.id,
-                payment.remark ||
-                ""
-            );
-
-        };
-
-
-    box.appendChild(
-        remarkButton
-    );
-
-
-    /* RECEIVED BUTTON */
-
-    if(
-        !successful
-    ){
-
-        const receivedButton =
-            document.createElement(
-                "button"
-            );
-
-
-        receivedButton.className =
-            "received";
-
-
-        receivedButton.innerText =
-            "✅ Payment Received";
-
-
-        receivedButton.onclick =
-            function(){
-
-                verifyPayment(
-                    payment.id
-                );
-
-            };
-
-
-        box.appendChild(
-            receivedButton
-        );
-
-    }
-
-
-    list.appendChild(
-        box
-    );
-
-}
-
-
-/* =====================================================
-   EDIT REMARK
-===================================================== */
-
-async function editRemark(
-    paymentId,
-    oldRemark
-){
-
-    if(!currentUser){
-
-        alert(
-            "Login session नहीं है।"
-        );
-
-        return;
-    }
-
-
-    const remark =
-        prompt(
-            "Payment का Remark लिखें:",
-            oldRemark
-        );
-
-
-    if(
-        remark ===
-        null
-    ){
-
-        return;
-
-    }
-
-
-    try{
-
-        await updateDoc(
-            doc(
-                db,
-                "payments",
-                paymentId
-            ),
-            {
-
-                remark:
-                    remark.trim(),
-
-                remarkUpdatedAt:
-                    new Date().toISOString(),
-
-                remarkUpdatedBy:
-                    currentUser.uid
-
-            }
-        );
-
-
-        alert(
-            "✅ Remark Save हो गया।"
-        );
-
-
-        await loadPayments();
-
-    }
-    catch(error){
-
-        console.error(
-            error
-        );
-
-
-        alert(
-            "❌ Remark Save नहीं हुआ:\n" +
-            error.message
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   VERIFY PAYMENT
-===================================================== */
-
-async function verifyPayment(
-    paymentId
-){
-
-    if(!currentUser){
-
-        alert(
-            "Login session नहीं है।"
-        );
-
-        return;
-
-    }
-
-
-    const ok =
-        confirm(
-            "क्या आपको यह payment मिल गया है?"
-        );
-
-
-    if(!ok){
-
-        return;
-
-    }
-
-
-    try{
-
-        const now =
-            new Date();
-
-
-        const date =
-            now.toLocaleDateString(
-                "en-IN"
-            );
-
-
-        const time =
-            now.toLocaleTimeString(
-                "en-IN",
-                {
-                    hour:
-                        "2-digit",
-
-                    minute:
-                        "2-digit"
-                }
-            );
-
-
-        await updateDoc(
-            doc(
-                db,
-                "payments",
-                paymentId
-            ),
-            {
-
-                status:
-                    "Successful",
-
-                verifiedDate:
-                    date,
-
-                verifiedTime:
-                    time,
-
-                verifiedAt:
-                    new Date().toISOString(),
-
-                verifiedBy:
-                    currentUser.uid
-
-            }
-        );
-
-
-        alert(
-            "✅ Payment Successful mark कर दिया गया।"
-        );
-
-
-        await loadPayments();
-
-    }
-    catch(error){
-
-        console.error(
-            error
-        );
-
-
-        alert(
-            "❌ Payment update नहीं हुआ:\n" +
-            error.message
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   FILTER BUTTONS
-===================================================== */
-
-document
-.getElementById(
-    "allBtn"
-)
-.addEventListener(
-    "click",
-    function(){
-
-        currentFilter =
-            "all";
-
-        showPayments();
-
-    }
-);
-
-
-document
-.getElementById(
-    "hafijiBtn"
-)
-.addEventListener(
-    "click",
-    function(){
-
-        currentFilter =
-            "hafiji";
-
-        showPayments();
-
-    }
-);
-
-
-document
-.getElementById(
-    "chandaBtn"
-)
-.addEventListener(
-    "click",
-    function(){
-
-        currentFilter =
-            "chanda";
-
-        showPayments();
-
-    }
-);
-
-
-document
-.getElementById(
-    "pendingBtn"
-)
-.addEventListener(
-    "click",
-    function(){
-
-        currentFilter =
-            "pending";
-
-        showPayments();
-
-    }
-);
-
-
-/* =====================================================
-   REFRESH
-===================================================== */
-
-document
-.getElementById(
-    "refreshBtn"
-)
-.addEventListener(
-    "click",
-    async function(){
-
-        const button =
-            document.getElementById(
-                "refreshBtn"
-            );
-
-
-        button.disabled =
-            true;
-
-
-        button.innerText =
-            "⏳ Loading...";
-
-
-        try{
-
-            await loadPayments();
-
-        }
-        finally{
-
-            button.disabled =
+            loginBtn.disabled =
                 false;
 
-            button.innerText =
-                "🔄 Refresh Payments";
-
         }
 
     }
 );
 
 
+
 /* =====================================================
-   LOGOUT
+   FORGOT PASSWORD
 ===================================================== */
 
 document
 .getElementById(
-    "logoutBtn"
+    "forgotBtn"
 )
 .addEventListener(
     "click",
     async function(){
 
-        try{
-
-            await signOut(
-                auth
-            );
+        const type =
+            loginType.value;
 
 
-            location.href =
-                "login.html";
+        const enteredEmail =
+            emailInput.value.trim();
+
+
+        if(
+            enteredEmail === ""
+        ){
+
+            message.style.color =
+                "red";
+
+            message.innerText =
+                "❌ पहले Email / User ID डालें।";
+
+            return;
 
         }
+
+
+        const email =
+            getLoginEmail(
+                type,
+                enteredEmail
+            );
+
+
+        try{
+
+            message.style.color =
+                "#0f766e";
+
+            message.innerText =
+                "⏳ Reset link भेजा जा रहा है...";
+
+
+            await sendPasswordResetEmail(
+                auth,
+                email
+            );
+
+
+            message.style.color =
+                "green";
+
+            message.innerText =
+                "✅ Password reset link आपके email पर भेज दिया गया है।";
+
+        }
+
         catch(error){
 
-            alert(
-                "Logout failed: " +
-                error.message
+            console.error(
+                error
             );
+
+
+            message.style.color =
+                "red";
+
+
+            if(
+                error.code ===
+                "auth/user-not-found"
+            ){
+
+                message.innerText =
+                    "❌ यह email Firebase में नहीं मिला।";
+
+            }
+
+            else{
+
+                message.innerText =
+                    "❌ Reset Failed: " +
+                    error.message;
+
+            }
 
         }
 
     }
 );
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(value){
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
 
 </script>
 
 </body>
+
 </html>
