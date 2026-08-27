@@ -7,9 +7,7 @@
 <title>Login - MASJID-E-AYESHA</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -146,7 +144,6 @@ button:disabled{
 
 </select>
 
-
 <label id="loginLabel">
 Member Email
 </label>
@@ -157,7 +154,6 @@ Member Email
     autocomplete="username"
     placeholder="Member Email डालें"
 >
-
 
 <label>
 Password
@@ -170,11 +166,9 @@ Password
     placeholder="Password डालें"
 >
 
-
 <button id="loginBtn">
 🔐 Login
 </button>
-
 
 <button
     class="forgot"
@@ -182,13 +176,11 @@ Password
 🔑 Forgot Password
 </button>
 
-
 <button
     class="register"
     id="registerBtn">
 📝 New Member Registration
 </button>
-
 
 <button
     class="back"
@@ -196,20 +188,21 @@ Password
 ← Back
 </button>
 
-
 <div id="message" class="message"></div>
-
 
 <div class="info">
 🔒 आपका Login Firebase Authentication से सुरक्षित है।
 </div>
 
 </div>
-
 </div>
 
 
 <script type="module">
+
+/* =====================================================
+   FIREBASE IMPORT
+===================================================== */
 
 import {
     initializeApp
@@ -239,12 +232,13 @@ from
 
 /* =====================================================
    FIREBASE CONFIG
+   IMPORTANT: API KEY CORRECT
 ===================================================== */
 
 const firebaseConfig = {
 
     apiKey:
-    "AIzaSyBI9ow2vRoOtOtV2J-5rNgj_QqMD_EFbg",
+    "AIzaSyBI9ow2vRoOtOtV2-1J5rNgj_QqMD_EFbg",
 
     authDomain:
     "masjid-e-ayesha-371f6.firebaseapp.com",
@@ -267,7 +261,7 @@ const firebaseConfig = {
 
 
 /* =====================================================
-   INITIALIZE
+   FIREBASE START
 ===================================================== */
 
 const app =
@@ -281,9 +275,7 @@ getFirestore(app);
 
 
 /* =====================================================
-   IMPORTANT ADMIN EMAILS
-
-   Firebase Authentication में यही email होना चाहिए।
+   ADMIN EMAILS
 ===================================================== */
 
 const HAFIJI_EMAIL =
@@ -340,7 +332,7 @@ function showMessage(text,color){
 
 
 /* =====================================================
-   LOGIN TYPE
+   LOGIN TYPE CHANGE
 ===================================================== */
 
 loginType.addEventListener(
@@ -350,88 +342,90 @@ function(){
     const type =
     loginType.value;
 
-
     emailInput.value = "";
     passwordInput.value = "";
-
 
     if(type === "member"){
 
         loginLabel.innerText =
         "Member Email";
 
+        emailInput.type =
+        "email";
+
         emailInput.placeholder =
         "Member Email डालें";
-
     }
 
-
-    if(type === "hafiji"){
+    else if(type === "hafiji"){
 
         loginLabel.innerText =
         "Hafiji Email";
 
+        emailInput.type =
+        "email";
+
         emailInput.placeholder =
         "hafiji2@gmail.com";
-
     }
 
-
-    if(type === "secretary"){
+    else if(type === "secretary"){
 
         loginLabel.innerText =
         "Secretary Email";
 
+        emailInput.type =
+        "email";
+
         emailInput.placeholder =
         "secretary@gmail.com";
-
     }
 
-
-    showMessage("","#0f766e");
-
+    showMessage(
+        "",
+        "#0f766e"
+    );
 });
 
 
 /* =====================================================
-   GET EMAIL
+   USER ID → EMAIL
 ===================================================== */
 
 function getLoginEmail(type,value){
 
-    let email =
+    const v =
     value.trim().toLowerCase();
-
 
     if(type === "hafiji"){
 
         if(
-            email === "hafiji" ||
-            email === "hafiji sahab"
+            v === "hafiji" ||
+            v === "hafiji sahab"
         ){
 
             return HAFIJI_EMAIL;
-
         }
 
+        return v;
     }
 
 
     if(type === "secretary"){
 
         if(
-            email === "secretary" ||
-            email === "secretary sahab"
+            v === "secretary" ||
+            v === "secretary sahab"
         ){
 
             return SECRETARY_EMAIL;
-
         }
 
+        return v;
     }
 
 
-    return email;
+    return v;
 }
 
 
@@ -479,7 +473,7 @@ async function(){
 
 
     showMessage(
-        "⏳ Firebase Login हो रहा है...",
+        "⏳ Login हो रहा है...",
         "#0f766e"
     );
 
@@ -487,7 +481,7 @@ async function(){
     try{
 
         /* =============================================
-           FIREBASE AUTH
+           FIREBASE AUTH LOGIN
         ============================================= */
 
         const result =
@@ -503,7 +497,7 @@ async function(){
 
 
         console.log(
-            "LOGIN SUCCESS:",
+            "Firebase Login Success",
             user.email,
             user.uid
         );
@@ -512,8 +506,8 @@ async function(){
         /* =============================================
            HAFIJI
            
-           यहां Firestore profile check नहीं है।
-           यही पुराने error को खत्म करेगा।
+           IMPORTANT:
+           Firestore users profile check नहीं है।
         ============================================= */
 
         if(type === "hafiji"){
@@ -557,7 +551,7 @@ async function(){
 
 
             showMessage(
-                "✅ Hafiji Login Successful<br>⏳ Hafiji Dashboard खुल रहा है...",
+                "✅ Hafiji Login Successful<br>⏳ Dashboard खुल रहा है...",
                 "green"
             );
 
@@ -573,7 +567,6 @@ async function(){
                 800
             );
 
-
             return;
         }
 
@@ -581,7 +574,8 @@ async function(){
         /* =============================================
            SECRETARY
            
-           यहां भी Firestore profile check नहीं है।
+           IMPORTANT:
+           Firestore users profile check नहीं है।
         ============================================= */
 
         if(type === "secretary"){
@@ -625,7 +619,7 @@ async function(){
 
 
             showMessage(
-                "✅ Secretary Login Successful<br>⏳ Secretary Dashboard खुल रहा है...",
+                "✅ Secretary Login Successful<br>⏳ Dashboard खुल रहा है...",
                 "green"
             );
 
@@ -641,7 +635,6 @@ async function(){
                 800
             );
 
-
             return;
         }
 
@@ -649,7 +642,7 @@ async function(){
         /* =============================================
            MEMBER
            
-           Member के लिए Firestore profile जरूरी है।
+           Member के लिए users profile जरूरी है।
         ============================================= */
 
         if(type === "member"){
@@ -727,7 +720,6 @@ async function(){
                 800
             );
 
-
             return;
         }
 
@@ -750,7 +742,6 @@ async function(){
                 "❌ Email या Password गलत है।",
                 "red"
             );
-
         }
 
         else if(
@@ -762,7 +753,6 @@ async function(){
                 "❌ Firebase में यह account नहीं मिला।",
                 "red"
             );
-
         }
 
         else if(
@@ -774,7 +764,6 @@ async function(){
                 "❌ Password गलत है।",
                 "red"
             );
-
         }
 
         else if(
@@ -786,7 +775,6 @@ async function(){
                 "❌ Email गलत है।",
                 "red"
             );
-
         }
 
         else if(
@@ -795,10 +783,20 @@ async function(){
         ){
 
             showMessage(
-                "❌ बहुत ज्यादा login attempts हुए हैं। थोड़ी देर बाद कोशिश करें।",
+                "❌ बहुत ज्यादा कोशिश हुई है। थोड़ी देर बाद फिर कोशिश करें।",
                 "red"
             );
+        }
 
+        else if(
+            error.code ===
+            "auth/api-key-not-valid"
+        ){
+
+            showMessage(
+                "❌ Firebase API Key गलत है। Firebase Config जांचें।",
+                "red"
+            );
         }
 
         else{
@@ -808,7 +806,6 @@ async function(){
                 error.message,
                 "red"
             );
-
         }
 
     }
@@ -817,7 +814,6 @@ async function(){
 
         loginBtn.disabled =
         false;
-
     }
 
 });
@@ -838,7 +834,9 @@ async function(){
     emailInput.value.trim();
 
 
-    if(enteredEmail === ""){
+    if(
+        enteredEmail === ""
+    ){
 
         showMessage(
             "❌ पहले Email / User ID डालें।",
@@ -886,7 +884,6 @@ async function(){
             error.message,
             "red"
         );
-
     }
 
 });
@@ -900,7 +897,7 @@ registerBtn.addEventListener(
 "click",
 function(){
 
-    location.href =
+    window.location.href =
     "register.html";
 
 });
@@ -914,7 +911,7 @@ backBtn.addEventListener(
 "click",
 function(){
 
-    location.href =
+    window.location.href =
     "index.html";
 
 });
