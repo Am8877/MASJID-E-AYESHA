@@ -52,11 +52,15 @@ body{
     text-align:center;
 }
 
-#loadingBox{
+.loading-box{
     display:block;
 }
 
-#dashboardBox{
+.dashboard-box{
+    display:none;
+}
+
+.error-box{
     display:none;
 }
 
@@ -67,7 +71,7 @@ body{
 }
 
 .success{
-    font-size:25px;
+    font-size:24px;
     color:#0f766e;
     font-weight:bold;
     margin-bottom:20px;
@@ -80,7 +84,8 @@ body{
     padding:18px;
     margin:20px 0;
     font-size:17px;
-    line-height:1.7;
+    line-height:1.8;
+    word-break:break-word;
 }
 
 button{
@@ -116,6 +121,7 @@ button{
 
 <body>
 
+
 <div class="header">
 
     <h1>🕌 MASJID-E-AYESHA</h1>
@@ -125,19 +131,22 @@ button{
 </div>
 
 
+
 <div class="container">
 
 
-    <!-- ================= LOADING ================= -->
+    <!-- =========================================
+         LOADING
+    ========================================== -->
 
     <div
-        class="box"
+        class="box loading-box"
         id="loadingBox"
     >
 
         <div class="loading">
 
-            ⏳ Firebase Login Check हो रहा है...
+            ⏳ Login Session Check हो रहा है...
 
         </div>
 
@@ -145,10 +154,12 @@ button{
 
 
 
-    <!-- ================= DASHBOARD ================= -->
+    <!-- =========================================
+         DASHBOARD
+    ========================================== -->
 
     <div
-        class="box"
+        class="box dashboard-box"
         id="dashboardBox"
     >
 
@@ -161,22 +172,18 @@ button{
 
         <div class="user-info">
 
-            <b>📖 Hafiji Sahab</b>
+            📖 <b>Hafiji Sahab</b>
 
             <br><br>
 
             <b>Email:</b>
-
             <span id="userEmail">
-                Loading...
             </span>
 
             <br>
 
             <b>UID:</b>
-
             <span id="userUID">
-                Loading...
             </span>
 
         </div>
@@ -201,12 +208,13 @@ button{
 
 
 
-    <!-- ================= LOGIN ERROR ================= -->
+    <!-- =========================================
+         ERROR
+    ========================================== -->
 
     <div
-        class="box"
+        class="box error-box"
         id="errorBox"
-        style="display:none;"
     >
 
         <div
@@ -251,12 +259,13 @@ from
 
 import {
     getAuth,
+    browserLocalPersistence,
+    setPersistence,
     onAuthStateChanged,
     signOut
 }
 from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
 
 
 /* =====================================================
@@ -289,19 +298,15 @@ const firebaseConfig = {
 };
 
 
-
 /* =====================================================
-   INITIALIZE FIREBASE
+   INITIALIZE
 ===================================================== */
 
 const app =
-initializeApp(
-    firebaseConfig
-);
+initializeApp(firebaseConfig);
 
 const auth =
 getAuth(app);
-
 
 
 /* =====================================================
@@ -310,7 +315,6 @@ getAuth(app);
 
 const HAFIJI_EMAIL =
 "hafiji2@gmail.com";
-
 
 
 /* =====================================================
@@ -358,154 +362,205 @@ document.getElementById(
 );
 
 
-
 /* =====================================================
-   IMPORTANT:
-   FIREBASE SESSION CHECK
+   SHOW ERROR
 ===================================================== */
 
-onAuthStateChanged(
-    auth,
-    function(user){
+function showError(){
+
+    loadingBox.style.display =
+    "none";
+
+    dashboardBox.style.display =
+    "none";
+
+    errorBox.style.display =
+    "block";
+
+}
+
+
+/* =====================================================
+   SHOW DASHBOARD
+===================================================== */
+
+function showDashboard(user){
+
+    loadingBox.style.display =
+    "none";
+
+    errorBox.style.display =
+    "none";
+
+    dashboardBox.style.display =
+    "block";
+
+
+    userEmail.innerText =
+    user.email || "";
+
+    userUID.innerText =
+    user.uid || "";
+
+
+    localStorage.setItem(
+        "adminType",
+        "hafiji"
+    );
+
+    localStorage.setItem(
+        "adminUID",
+        user.uid
+    );
+
+    localStorage.setItem(
+        "loginEmail",
+        user.email || ""
+    );
+
+    localStorage.setItem(
+        "isLoggedIn",
+        "true"
+    );
+
+
+    message.innerHTML =
+    "🟢 Firebase Login Active है।";
+
+    message.style.color =
+    "green";
+
+}
+
+
+/* =====================================================
+   FIREBASE AUTH STATE
+===================================================== */
+
+async function checkLogin(){
+
+    try{
+
+        /*
+         * LOCAL PERSISTENCE
+         */
+
+        await setPersistence(
+            auth,
+            browserLocalPersistence
+        );
+
+
+        /*
+         * Firebase के saved login को
+         * restore होने का इंतजार
+         */
+
+        await auth.authStateReady();
+
+
+        const user =
+        auth.currentUser;
+
 
         console.log(
-            "Firebase Auth State:",
+            "Current Firebase User:",
             user
         );
 
 
         /* =============================================
-           USER LOGIN HAI
+           USER नहीं है
         ============================================= */
 
-        if(user){
+        if(!user){
 
             console.log(
-                "Logged in UID:",
-                user.uid
+                "Firebase में कोई logged-in user नहीं है।"
             );
 
-            console.log(
-                "Logged in Email:",
-                user.email
-            );
-
-
-            /* =========================================
-               HAFIJI ACCOUNT CHECK
-            ========================================= */
-
-            if(
-                !user.email ||
-                user.email.toLowerCase() !==
-                HAFIJI_EMAIL.toLowerCase()
-            ){
-
-                console.log(
-                    "यह Hafiji account नहीं है।"
-                );
-
-
-                loadingBox.style.display =
-                "none";
-
-                dashboardBox.style.display =
-                "none";
-
-                errorBox.style.display =
-                "block";
-
-
-                return;
-
-            }
-
-
-            /* =========================================
-               LOGIN DATA SAVE
-            ========================================= */
-
-            localStorage.setItem(
-                "adminType",
-                "hafiji"
-            );
-
-            localStorage.setItem(
-                "adminUID",
-                user.uid
-            );
-
-            localStorage.setItem(
-                "loginEmail",
-                user.email
-            );
-
-            localStorage.setItem(
-                "isLoggedIn",
-                "true"
-            );
-
-
-            /* =========================================
-               SHOW DASHBOARD
-            ========================================= */
-
-            loadingBox.style.display =
-            "none";
-
-            errorBox.style.display =
-            "none";
-
-            dashboardBox.style.display =
-            "block";
-
-
-            userEmail.innerText =
-            user.email;
-
-            userUID.innerText =
-            user.uid;
-
-
-            message.innerHTML =
-            "🟢 आपका Firebase Login Active है।";
-
-
-            message.style.color =
-            "green";
-
-
-            console.log(
-                "Hafiji Dashboard Successfully Opened"
-            );
-
+            showError();
 
             return;
 
         }
 
 
+        /* =============================================
+           EMAIL CHECK
+        ============================================= */
+
+        if(
+            !user.email ||
+            user.email.toLowerCase() !==
+            HAFIJI_EMAIL.toLowerCase()
+        ){
+
+            console.log(
+                "Logged user Hafiji नहीं है:",
+                user.email
+            );
+
+            showError();
+
+            return;
+
+        }
+
 
         /* =============================================
-           USER LOGIN NAHI HAI
+           SUCCESS
         ============================================= */
 
         console.log(
-            "Firebase User नहीं मिला।"
+            "HAFIJI LOGIN VERIFIED"
         );
 
 
-        loadingBox.style.display =
-        "none";
+        showDashboard(user);
 
-        dashboardBox.style.display =
-        "none";
+    }
 
-        errorBox.style.display =
-        "block";
+    catch(error){
+
+        console.error(
+            "AUTH CHECK ERROR:",
+            error
+        );
+
+        showError();
+
+    }
+
+}
 
 
-        /* पुराने गलत localStorage को हटाएँ */
+/* =====================================================
+   START CHECK
+===================================================== */
+
+checkLogin();
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener(
+"click",
+async function(){
+
+    try{
+
+        logoutBtn.disabled =
+        true;
+
+        logoutBtn.innerText =
+        "⏳ Logout हो रहा है...";
+
+
+        await signOut(auth);
+
 
         localStorage.removeItem(
             "adminType"
@@ -523,96 +578,53 @@ onAuthStateChanged(
             "isLoggedIn"
         );
 
-    }
-);
-
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-logoutBtn.addEventListener(
-    "click",
-    async function(){
-
-        try{
-
-            logoutBtn.disabled =
-            true;
-
-            logoutBtn.innerText =
-            "⏳ Logout हो रहा है...";
-
-
-            await signOut(auth);
-
-
-            localStorage.removeItem(
-                "adminType"
-            );
-
-            localStorage.removeItem(
-                "adminUID"
-            );
-
-            localStorage.removeItem(
-                "loginEmail"
-            );
-
-            localStorage.removeItem(
-                "isLoggedIn"
-            );
-
-
-            window.location.replace(
-                "login.html"
-            );
-
-        }
-
-        catch(error){
-
-            console.error(
-                error
-            );
-
-
-            logoutBtn.disabled =
-            false;
-
-            logoutBtn.innerText =
-            "🚪 Logout";
-
-
-            message.innerHTML =
-            "❌ Logout Failed: " +
-            error.message;
-
-            message.style.color =
-            "red";
-
-        }
-
-    }
-);
-
-
-
-/* =====================================================
-   LOGIN PAGE
-===================================================== */
-
-loginBtn.addEventListener(
-    "click",
-    function(){
 
         window.location.replace(
             "login.html"
         );
 
     }
-);
+
+    catch(error){
+
+        console.error(
+            "LOGOUT ERROR:",
+            error
+        );
+
+
+        logoutBtn.disabled =
+        false;
+
+        logoutBtn.innerText =
+        "🚪 Logout";
+
+
+        message.innerHTML =
+        "❌ Logout Failed:<br>" +
+        error.message;
+
+        message.style.color =
+        "red";
+
+    }
+
+});
+
+
+/* =====================================================
+   LOGIN PAGE BUTTON
+===================================================== */
+
+loginBtn.addEventListener(
+"click",
+function(){
+
+    window.location.replace(
+        "login.html"
+    );
+
+});
 
 
 </script>
