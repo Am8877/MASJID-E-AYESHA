@@ -52,9 +52,9 @@ h2{
 }
 
 label{
-    font-weight:bold;
     display:block;
-    margin-top:12px;
+    font-weight:bold;
+    margin-top:14px;
 }
 
 select,
@@ -62,7 +62,6 @@ input{
     width:100%;
     padding:14px;
     margin-top:8px;
-    margin-bottom:8px;
     border:1px solid #ccc;
     border-radius:10px;
     font-size:16px;
@@ -71,18 +70,21 @@ input{
 button{
     width:100%;
     padding:15px;
-    margin-top:10px;
+    margin-top:12px;
     border:0;
     border-radius:12px;
-    background:#0f766e;
     color:white;
     font-size:16px;
     font-weight:bold;
     cursor:pointer;
 }
 
-button:disabled{
-    opacity:.6;
+button:active{
+    transform:scale(.98);
+}
+
+.login-btn{
+    background:#0f766e;
 }
 
 .forgot{
@@ -97,22 +99,36 @@ button:disabled{
     background:#555;
 }
 
+button:disabled{
+    opacity:.6;
+}
+
 .message{
     text-align:center;
-    margin-top:15px;
+    margin-top:18px;
     font-weight:bold;
-    line-height:1.5;
-    min-height:25px;
+    line-height:1.6;
+    min-height:30px;
 }
 
 .info{
-    background:#ecfdf5;
+    margin-top:18px;
     padding:12px;
-    border-radius:10px;
-    margin-top:15px;
-    font-size:14px;
+    background:#ecfdf5;
     color:#134e4a;
+    border-radius:10px;
     text-align:center;
+    font-size:14px;
+}
+
+.debug{
+    margin-top:12px;
+    padding:10px;
+    background:#f8fafc;
+    border-radius:10px;
+    font-size:12px;
+    color:#555;
+    word-break:break-all;
 }
 
 </style>
@@ -123,19 +139,14 @@ button:disabled{
 
 <div class="container">
 
-<div class="logo">
-🕌
-</div>
+<div class="logo">🕌</div>
 
-<h1>
-MASJID-E-AYESHA
-</h1>
+<h1>MASJID-E-AYESHA</h1>
 
 <div class="login-box">
 
-<h2>
-🔐 Login
-</h2>
+<h2>🔐 Login</h2>
+
 
 <label>
 Login Type
@@ -158,15 +169,15 @@ Login Type
 </select>
 
 
-<label id="loginLabel">
+<label id="emailLabel">
 Member Email
 </label>
 
 <input
-type="email"
-id="email"
-autocomplete="username"
-placeholder="Member Email डालें"
+    type="email"
+    id="email"
+    autocomplete="username"
+    placeholder="Member Email डालें"
 >
 
 
@@ -175,50 +186,60 @@ Password
 </label>
 
 <input
-type="password"
-id="password"
-autocomplete="current-password"
-placeholder="Password डालें"
+    type="password"
+    id="password"
+    autocomplete="current-password"
+    placeholder="Password डालें"
 >
 
 
-<button id="loginBtn">
+<button
+    class="login-btn"
+    id="loginBtn"
+>
 🔐 Login
 </button>
 
 
 <button
-class="forgot"
-id="forgotBtn"
+    class="forgot"
+    id="forgotBtn"
 >
 🔑 Forgot Password
 </button>
 
 
 <button
-class="register"
-id="registerBtn"
+    class="register"
+    id="registerBtn"
 >
 📝 New Member Registration
 </button>
 
 
 <button
-class="back"
-id="backBtn"
+    class="back"
+    id="backBtn"
 >
 ← Back
 </button>
 
 
 <div
-id="message"
-class="message">
+    id="message"
+    class="message">
 </div>
 
 
 <div class="info">
-🔒 आपका Login Firebase Authentication से सुरक्षित है।
+🔒 Firebase Authentication Login
+</div>
+
+
+<div
+    id="debug"
+    class="debug">
+स्थिति: Login के लिए तैयार
 </div>
 
 </div>
@@ -303,14 +324,25 @@ getFirestore(app);
 
 
 /* =====================================================
+   FIXED ADMIN EMAILS
+===================================================== */
+
+const HAFIJI_EMAIL =
+"hafiji2@gmail.com";
+
+const SECRETARY_EMAIL =
+"secretary@gmail.com";
+
+
+/* =====================================================
    ELEMENTS
 ===================================================== */
 
 const loginType =
 document.getElementById("loginType");
 
-const loginLabel =
-document.getElementById("loginLabel");
+const emailLabel =
+document.getElementById("emailLabel");
 
 const emailInput =
 document.getElementById("email");
@@ -333,6 +365,9 @@ document.getElementById("backBtn");
 const message =
 document.getElementById("message");
 
+const debug =
+document.getElementById("debug");
+
 
 /* =====================================================
    MESSAGE
@@ -340,9 +375,23 @@ document.getElementById("message");
 
 function showMessage(text,color){
 
-    message.style.color = color;
+    message.style.color =
+    color;
 
-    message.innerHTML = text;
+    message.innerHTML =
+    text;
+
+}
+
+
+/* =====================================================
+   DEBUG
+===================================================== */
+
+function showDebug(text){
+
+    debug.innerText =
+    text;
 
 }
 
@@ -359,57 +408,49 @@ function(){
     loginType.value;
 
 
-    emailInput.value = "";
+    emailInput.value =
+    "";
 
-    passwordInput.value = "";
-
-
-    if(type === "member"){
-
-        loginLabel.innerText =
-        "Member Email";
-
-        emailInput.placeholder =
-        "Member Email डालें";
-
-        emailInput.type =
-        "email";
-
-    }
-
-
-    else if(type === "hafiji"){
-
-        loginLabel.innerText =
-        "Hafiji Email";
-
-        emailInput.placeholder =
-        "Hafiji Firebase Email डालें";
-
-        emailInput.type =
-        "email";
-
-    }
-
-
-    else if(type === "secretary"){
-
-        loginLabel.innerText =
-        "Secretary Email";
-
-        emailInput.placeholder =
-        "Secretary Firebase Email डालें";
-
-        emailInput.type =
-        "email";
-
-    }
-
+    passwordInput.value =
+    "";
 
     showMessage(
         "",
         "#0f766e"
     );
+
+
+    if(type === "member"){
+
+        emailLabel.innerText =
+        "Member Email";
+
+        emailInput.placeholder =
+        "Member Email डालें";
+
+    }
+
+
+    if(type === "hafiji"){
+
+        emailLabel.innerText =
+        "Hafiji Email";
+
+        emailInput.placeholder =
+        "hafiji2@gmail.com";
+
+    }
+
+
+    if(type === "secretary"){
+
+        emailLabel.innerText =
+        "Secretary Email";
+
+        emailInput.placeholder =
+        "secretary@gmail.com";
+
+    }
 
 });
 
@@ -425,22 +466,21 @@ async function(){
     const type =
     loginType.value;
 
+
     const email =
     emailInput.value
     .trim()
     .toLowerCase();
 
+
     const password =
     passwordInput.value;
 
 
-    if(
-        email === "" ||
-        password === ""
-    ){
+    if(email === ""){
 
         showMessage(
-            "❌ Email और Password दोनों डालें।",
+            "❌ Email डालें।",
             "red"
         );
 
@@ -449,14 +489,27 @@ async function(){
     }
 
 
-    loginBtn.disabled = true;
+    if(password === ""){
+
+        showMessage(
+            "❌ Password डालें।",
+            "red"
+        );
+
+        return;
+
+    }
+
+
+    loginBtn.disabled =
+    true;
 
     loginBtn.innerText =
     "⏳ Login हो रहा है...";
 
 
     showMessage(
-        "⏳ Firebase Login हो रहा है...",
+        "⏳ Firebase में Login हो रहा है...",
         "#0f766e"
     );
 
@@ -479,78 +532,172 @@ async function(){
         result.user;
 
 
-        console.log(
-            "LOGIN SUCCESS"
-        );
-
-        console.log(
-            "UID:",
-            user.uid
-        );
-
-        console.log(
-            "EMAIL:",
+        showDebug(
+            "Firebase Login OK | UID: " +
+            user.uid +
+            " | Email: " +
             user.email
         );
 
 
-        /* =============================================
-           GET USER PROFILE
-        ============================================= */
-
-        showMessage(
-            "⏳ Account role check हो रहा है...",
-            "#0f766e"
+        console.log(
+            "LOGIN USER:",
+            user
         );
 
 
-        const userRef =
-        doc(
-            db,
-            "users",
-            user.uid
-        );
-
-
-        const userSnap =
-        await getDoc(userRef);
-
-
         /* =============================================
-           PROFILE NOT FOUND
+           HAFIJI
+           
+           Email match होने पर सीधे Hafiji Dashboard
+           खुलेगा।
         ============================================= */
 
-        if(!userSnap.exists()){
+        if(type === "hafiji"){
 
-            await signOut(auth);
+            if(
+                !user.email ||
+                user.email.toLowerCase() !==
+                HAFIJI_EMAIL.toLowerCase()
+            ){
+
+                await signOut(auth);
+
+                showMessage(
+                    "❌ यह Hafiji account नहीं है।<br><br>" +
+                    "Login Email:<br>" +
+                    user.email,
+                    "red"
+                );
+
+                return;
+
+            }
+
+
+            localStorage.setItem(
+                "adminType",
+                "hafiji"
+            );
+
+            localStorage.setItem(
+                "adminUID",
+                user.uid
+            );
+
+            localStorage.setItem(
+                "loginEmail",
+                user.email
+            );
+
+            localStorage.setItem(
+                "isLoggedIn",
+                "true"
+            );
+
 
             showMessage(
-                "❌ Firebase में इस account का users profile नहीं मिला।<br><br>UID: " +
-                user.uid,
-                "red"
+                "✅ Hafiji Login Successful<br>⏳ Dashboard खुल रहा है...",
+                "green"
             );
+
+
+            showDebug(
+                "Hafiji Login OK → hafiji.html"
+            );
+
+
+            setTimeout(
+                function(){
+
+                    window.location.href =
+                    "hafiji.html";
+
+                },
+                500
+            );
+
 
             return;
 
         }
 
 
-        const data =
-        userSnap.data();
+        /* =============================================
+           SECRETARY
+           
+           Email match होने पर Secretary Dashboard
+           खुलेगा।
+        ============================================= */
+
+        if(type === "secretary"){
+
+            if(
+                !user.email ||
+                user.email.toLowerCase() !==
+                SECRETARY_EMAIL.toLowerCase()
+            ){
+
+                await signOut(auth);
+
+                showMessage(
+                    "❌ यह Secretary account नहीं है।<br><br>" +
+                    "Login Email:<br>" +
+                    user.email,
+                    "red"
+                );
+
+                return;
+
+            }
 
 
-        const role =
-        String(
-            data.role || ""
-        )
-        .toLowerCase()
-        .trim();
+            localStorage.setItem(
+                "adminType",
+                "secretary"
+            );
+
+            localStorage.setItem(
+                "adminUID",
+                user.uid
+            );
+
+            localStorage.setItem(
+                "loginEmail",
+                user.email
+            );
+
+            localStorage.setItem(
+                "isLoggedIn",
+                "true"
+            );
 
 
-        console.log(
-            "FIRESTORE ROLE:",
-            role
-        );
+            showMessage(
+                "✅ Secretary Login Successful<br>⏳ Dashboard खुल रहा है...",
+                "green"
+            );
+
+
+            showDebug(
+                "Secretary Login OK → secretary.html"
+            );
+
+
+            setTimeout(
+                function(){
+
+                    window.location.href =
+                    "secretary.html";
+
+                },
+                500
+            );
+
+
+            return;
+
+        }
 
 
         /* =============================================
@@ -559,12 +706,59 @@ async function(){
 
         if(type === "member"){
 
+            showMessage(
+                "⏳ Member profile check हो रहा है...",
+                "#0f766e"
+            );
+
+
+            const userRef =
+            doc(
+                db,
+                "users",
+                user.uid
+            );
+
+
+            const userSnap =
+            await getDoc(
+                userRef
+            );
+
+
+            if(!userSnap.exists()){
+
+                await signOut(auth);
+
+                showMessage(
+                    "❌ Member profile नहीं मिला।",
+                    "red"
+                );
+
+                return;
+
+            }
+
+
+            const data =
+            userSnap.data();
+
+
+            const role =
+            String(
+                data.role || ""
+            )
+            .toLowerCase()
+            .trim();
+
+
             if(role !== "member"){
 
                 await signOut(auth);
 
                 showMessage(
-                    "❌ यह Member account नहीं है।<br>Database Role: " +
+                    "❌ यह Member account नहीं है।<br><br>" +
+                    "Database Role: " +
                     (role || "खाली"),
                     "red"
                 );
@@ -599,148 +793,11 @@ async function(){
             setTimeout(
                 function(){
 
-                    window.location.replace(
-                        "member.html"
-                    );
+                    window.location.href =
+                    "member.html";
 
                 },
-                700
-            );
-
-
-            return;
-
-        }
-
-
-        /* =============================================
-           HAFIJI
-        ============================================= */
-
-        if(type === "hafiji"){
-
-            if(role !== "hafiji"){
-
-                await signOut(auth);
-
-                showMessage(
-                    "❌ यह Hafiji account नहीं है।<br><br>" +
-                    "Firebase में इस account का Role: <b>" +
-                    (role || "खाली") +
-                    "</b><br><br>" +
-                    "Hafiji के लिए users document में role = hafiji होना चाहिए।",
-                    "red"
-                );
-
-                return;
-
-            }
-
-
-            localStorage.setItem(
-                "adminType",
-                "hafiji"
-            );
-
-            localStorage.setItem(
-                "adminUID",
-                user.uid
-            );
-
-            localStorage.setItem(
-                "loginEmail",
-                user.email || ""
-            );
-
-            localStorage.setItem(
-                "isLoggedIn",
-                "true"
-            );
-
-
-            showMessage(
-                "✅ Hafiji Login Successful<br>⏳ Hafiji Dashboard खुल रहा है...",
-                "green"
-            );
-
-
-            setTimeout(
-                function(){
-
-                    window.location.replace(
-                        "hafiji.html"
-                    );
-
-                },
-                700
-            );
-
-
-            return;
-
-        }
-
-
-        /* =============================================
-           SECRETARY
-        ============================================= */
-
-        if(type === "secretary"){
-
-            if(role !== "secretary"){
-
-                await signOut(auth);
-
-                showMessage(
-                    "❌ यह Secretary account नहीं है।<br><br>" +
-                    "Firebase में इस account का Role: <b>" +
-                    (role || "खाली") +
-                    "</b><br><br>" +
-                    "Secretary के लिए users document में role = secretary होना चाहिए।",
-                    "red"
-                );
-
-                return;
-
-            }
-
-
-            localStorage.setItem(
-                "adminType",
-                "secretary"
-            );
-
-            localStorage.setItem(
-                "adminUID",
-                user.uid
-            );
-
-            localStorage.setItem(
-                "loginEmail",
-                user.email || ""
-            );
-
-            localStorage.setItem(
-                "isLoggedIn",
-                "true"
-            );
-
-
-            showMessage(
-                "✅ Secretary Login Successful<br>⏳ Secretary Dashboard खुल रहा है...",
-                "green"
-            );
-
-
-            setTimeout(
-                function(){
-
-                    window.location.replace(
-                        "secretary.html"
-                    );
-
-                },
-                700
+                500
             );
 
 
@@ -813,7 +870,7 @@ async function(){
         ){
 
             showMessage(
-                "❌ बहुत ज्यादा login attempts हुए हैं। थोड़ी देर बाद कोशिश करें।",
+                "❌ बहुत ज्यादा कोशिश हुई है। थोड़ी देर बाद फिर प्रयास करें।",
                 "red"
             );
 
@@ -825,8 +882,7 @@ async function(){
         ){
 
             showMessage(
-                "❌ Firestore Permission Denied.<br><br>" +
-                "Firebase Rules में logged-in user को अपने users document को पढ़ने की permission दें।",
+                "❌ Firestore Permission Denied।",
                 "red"
             );
 
@@ -841,6 +897,12 @@ async function(){
             );
 
         }
+
+
+        showDebug(
+            "Error: " +
+            error.code
+        );
 
     }
 
@@ -887,7 +949,7 @@ async function(){
     try{
 
         showMessage(
-            "⏳ Password reset link भेजा जा रहा है...",
+            "⏳ Reset link भेजा जा रहा है...",
             "#0f766e"
         );
 
@@ -899,7 +961,7 @@ async function(){
 
 
         showMessage(
-            "✅ Password reset link आपके email पर भेज दिया गया है।",
+            "✅ Password reset link email पर भेज दिया गया है।",
             "green"
         );
 
@@ -908,7 +970,6 @@ async function(){
     catch(error){
 
         console.error(error);
-
 
         showMessage(
             "❌ Reset Failed:<br>" +
@@ -953,6 +1014,19 @@ function(){
    ENTER KEY
 ===================================================== */
 
+emailInput.addEventListener(
+"keydown",
+function(event){
+
+    if(event.key === "Enter"){
+
+        passwordInput.focus();
+
+    }
+
+});
+
+
 passwordInput.addEventListener(
 "keydown",
 function(event){
@@ -966,18 +1040,9 @@ function(event){
 });
 
 
-emailInput.addEventListener(
-"keydown",
-function(event){
-
-    if(event.key === "Enter"){
-
-        passwordInput.focus();
-
-    }
-
-});
-
+/* =====================================================
+   READY
+===================================================== */
 
 console.log(
     "MASJID-E-AYESHA LOGIN READY"
