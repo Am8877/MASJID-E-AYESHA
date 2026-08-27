@@ -2,231 +2,382 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Hafiji Dashboard - MASJID-E-AYESHA</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
-    min-height:100vh;
     font-family:Arial,sans-serif;
     background:linear-gradient(135deg,#064e3b,#0f766e);
-}
-
-.header{
-    background:#064e3b;
-    color:white;
-    text-align:center;
-    padding:35px 12px;
-}
-
-.header h1{
-    margin:0;
-    font-size:32px;
-}
-
-.header p{
-    margin:12px 0 0;
-    font-size:22px;
+    min-height:100vh;
 }
 
 .container{
     width:100%;
-    max-width:700px;
+    max-width:750px;
     margin:auto;
-    padding:35px 18px;
+    padding:20px 15px 50px;
 }
 
-.box{
-    background:white;
-    border-radius:25px;
-    padding:32px 22px;
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
+.header{
+    color:white;
     text-align:center;
+    padding:10px 0 20px;
 }
 
-.loading-box{
-    display:block;
+.header h1{
+    margin:0;
+    font-size:28px;
 }
 
-.dashboard-box{
-    display:none;
-}
-
-.error-box{
-    display:none;
-}
-
-.loading{
-    font-size:22px;
-    color:#0f766e;
-    padding:35px 10px;
-    font-weight:bold;
-}
-
-.success{
-    font-size:26px;
-    color:#0f766e;
-    font-weight:bold;
-    margin-bottom:25px;
-}
-
-.user-info{
-    background:#ecfdf5;
-    color:#134e4a;
-    border-radius:18px;
-    padding:22px 15px;
-    margin:20px 0;
+.header p{
+    margin:8px 0 0;
     font-size:18px;
-    line-height:2;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.22);
+}
+
+h2{
+    margin-top:0;
+    color:#0f766e;
+}
+
+.info{
+    background:#ecfdf5;
+    padding:14px;
+    border-radius:12px;
+    line-height:1.8;
     word-break:break-word;
 }
 
-.user-info b{
+label{
+    display:block;
     font-weight:bold;
+    margin-top:12px;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:13px;
+    margin-top:7px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+}
+
+textarea{
+    min-height:80px;
+    resize:vertical;
 }
 
 button{
     width:100%;
     border:0;
-    border-radius:14px;
-    padding:17px;
-    margin-top:12px;
-    font-size:19px;
-    font-weight:bold;
+    border-radius:11px;
+    padding:14px;
+    margin-top:10px;
     color:white;
+    font-size:16px;
+    font-weight:bold;
     cursor:pointer;
 }
 
 button:disabled{
-    opacity:.7;
+    opacity:.6;
 }
 
-.logout{
-    background:#dc2626;
-}
-
-.login{
-    background:#0f766e;
-}
+.green{background:#16a34a}
+.blue{background:#2563eb}
+.orange{background:#f59e0b}
+.red{background:#dc2626}
+.gray{background:#555}
 
 .message{
-    margin-top:22px;
+    text-align:center;
     font-weight:bold;
-    font-size:18px;
-    line-height:1.6;
+    margin-top:12px;
+    line-height:1.5;
 }
 
-.status{
-    margin-top:25px;
-    font-size:19px;
+.summary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.summaryBox{
+    background:#ecfdf5;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.summaryBox strong{
+    display:block;
+    font-size:23px;
+    color:#0f766e;
+    margin-top:5px;
+}
+
+.member{
+    background:#f8fafc;
+    border:1px solid #ddd;
+    border-radius:14px;
+    padding:15px;
+    margin-top:12px;
+}
+
+.payment{
+    background:#f8fafc;
+    border:1px solid #ddd;
+    border-radius:14px;
+    padding:15px;
+    margin-top:12px;
+    line-height:1.7;
+}
+
+.pending{
+    color:#d97706;
     font-weight:bold;
-    color:green;
+}
+
+.success{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+.small{
+    font-size:13px;
+    color:#666;
+    word-break:break-all;
+}
+
+.hidden{
+    display:none !important;
+}
+
+.empty{
+    text-align:center;
+    padding:15px;
+    color:#666;
+}
+
+@media(max-width:450px){
+    .summary{
+        grid-template-columns:1fr;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<div class="container">
+
 <div class="header">
-
     <h1>🕌 MASJID-E-AYESHA</h1>
-
     <p>📖 Hafiji Sahab Dashboard</p>
+</div>
+
+
+<!-- LOGIN INFO -->
+
+<div class="card">
+
+<h2>👤 Hafiji Account</h2>
+
+<div class="info">
+
+<div>
+<b>Email:</b>
+<span id="userEmail">Loading...</span>
+</div>
+
+<div>
+<b>UID:</b>
+<span id="userUID" class="small">Loading...</span>
+</div>
+
+</div>
+
+<div id="authMessage" class="message"></div>
 
 </div>
 
 
-<div class="container">
+<!-- SUMMARY -->
 
-    <!-- LOADING -->
+<div class="card">
 
-    <div class="box loading-box" id="loadingBox">
+<h2>📊 Payment Summary</h2>
 
-        <div class="loading">
+<div class="summary">
 
-            ⏳ Firebase Login Session Check हो रहा है...
+<div class="summaryBox">
+कुल Payment
+<strong id="totalPayments">₹0</strong>
+</div>
 
-        </div>
+<div class="summaryBox">
+Successful
+<strong id="successfulPayments">₹0</strong>
+</div>
 
-    </div>
+<div class="summaryBox">
+Pending
+<strong id="pendingPayments">₹0</strong>
+</div>
 
+<div class="summaryBox">
+Members
+<strong id="totalMembers">0</strong>
+</div>
 
-    <!-- DASHBOARD -->
+</div>
 
-    <div class="box dashboard-box" id="dashboardBox">
-
-        <div class="success">
-
-            ✅ Hafiji Sahab Login Successful
-
-        </div>
-
-
-        <div class="user-info">
-
-            📖 <b>Hafiji Sahab</b>
-
-            <br><br>
-
-            <b>Email:</b>
-            <span id="userEmail"></span>
-
-            <br>
-
-            <b>UID:</b>
-            <span id="userUID"></span>
-
-        </div>
+</div>
 
 
-        <button
-            class="logout"
-            id="logoutBtn">
+<!-- ADD PAYMENT -->
 
-            🚪 Logout
+<div class="card">
 
-        </button>
+<h2>💰 Member Payment Add करें</h2>
+
+<label>👤 Member चुनें</label>
+
+<select id="memberSelect">
+<option value="">⏳ Members Loading...</option>
+</select>
+
+<label>💵 Amount</label>
+
+<input
+type="number"
+id="amount"
+min="1"
+placeholder="Amount डालें"
+>
+
+<label>📌 Payment Type</label>
+
+<select id="paymentType">
+
+<option value="Hafiji">
+💰 Hafiji
+</option>
+
+<option value="Chanda">
+🤲 Chanda
+</option>
+
+</select>
+
+<label>💳 Payment Mode</label>
+
+<select id="paymentMode">
+
+<option value="Cash">
+💵 Cash / Offline
+</option>
+
+<option value="Online">
+🌐 Online
+</option>
+
+</select>
+
+<label>📌 Payment Status</label>
+
+<select id="paymentStatus">
+
+<option value="Successful">
+✅ Successful
+</option>
+
+<option value="Pending">
+⏳ Pending
+</option>
+
+</select>
+
+<label>📝 Remark</label>
+
+<textarea
+id="remark"
+placeholder="Remark लिखें..."
+></textarea>
+
+<button
+class="green"
+id="addPaymentBtn">
+✅ Payment Save करें
+</button>
+
+<div id="addMessage" class="message"></div>
+
+</div>
 
 
-        <div
-            class="status"
-            id="status">
+<!-- MEMBERS -->
 
-            🟢 Firebase Login Active है।
+<div class="card">
 
-        </div>
+<h2>👥 Members</h2>
 
-    </div>
+<button
+class="blue"
+id="refreshMembers">
+🔄 Members Refresh करें
+</button>
 
+<div id="membersList">
+⏳ Members Loading...
+</div>
 
-    <!-- ERROR -->
-
-    <div class="box error-box" id="errorBox">
-
-        <div
-            class="message"
-            style="color:red;font-size:22px;">
-
-            ❌ Hafiji Sahab का Firebase Login नहीं मिला।
-
-        </div>
+</div>
 
 
-        <button
-            class="login"
-            id="loginBtn">
+<!-- PAYMENT HISTORY -->
 
-            🔐 Login Page पर जाएँ
+<div class="card">
 
-        </button>
+<h2>📋 Payment History</h2>
 
-    </div>
+<button
+class="blue"
+id="refreshPayments">
+🔄 Payment History Refresh करें
+</button>
+
+<div id="paymentHistory">
+⏳ Payment History Loading...
+</div>
+
+</div>
+
+
+<!-- LOGOUT -->
+
+<div class="card">
+
+<button
+class="red"
+id="logoutBtn">
+🚪 Logout
+</button>
+
+</div>
 
 </div>
 
@@ -234,7 +385,7 @@ button:disabled{
 <script type="module">
 
 /* =====================================================
-   FIREBASE
+FIREBASE IMPORT
 ===================================================== */
 
 import {
@@ -242,7 +393,6 @@ import {
 }
 from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-
 
 import {
     getAuth,
@@ -252,9 +402,24 @@ import {
 from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    addDoc,
+    doc,
+    getDoc,
+    query,
+    where,
+    orderBy,
+    serverTimestamp
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
 
 /* =====================================================
-   FIREBASE CONFIG
+FIREBASE CONFIG
 ===================================================== */
 
 const firebaseConfig = {
@@ -279,38 +444,35 @@ const firebaseConfig = {
 
     measurementId:
     "G-Q5TVCP79W2"
-
 };
 
 
 /* =====================================================
-   INITIALIZE FIREBASE
+INITIALIZE
 ===================================================== */
 
-const app = initializeApp(firebaseConfig);
+const app =
+initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth =
+getAuth(app);
+
+const db =
+getFirestore(app);
 
 
 /* =====================================================
-   HAFIJI EMAIL
+VARIABLES
 ===================================================== */
 
-const HAFIJI_EMAIL = "hafiji2@gmail.com";
+let currentUser = null;
+let members = [];
+let payments = [];
 
 
 /* =====================================================
-   ELEMENTS
+ELEMENTS
 ===================================================== */
-
-const loadingBox =
-document.getElementById("loadingBox");
-
-const dashboardBox =
-document.getElementById("dashboardBox");
-
-const errorBox =
-document.getElementById("errorBox");
 
 const userEmail =
 document.getElementById("userEmail");
@@ -318,55 +480,73 @@ document.getElementById("userEmail");
 const userUID =
 document.getElementById("userUID");
 
-const logoutBtn =
-document.getElementById("logoutBtn");
+const authMessage =
+document.getElementById("authMessage");
 
-const loginBtn =
-document.getElementById("loginBtn");
+const memberSelect =
+document.getElementById("memberSelect");
 
-const status =
-document.getElementById("status");
+const membersList =
+document.getElementById("membersList");
+
+const paymentHistory =
+document.getElementById("paymentHistory");
+
+const addMessage =
+document.getElementById("addMessage");
+
+const amountInput =
+document.getElementById("amount");
+
+const paymentType =
+document.getElementById("paymentType");
+
+const paymentMode =
+document.getElementById("paymentMode");
+
+const paymentStatus =
+document.getElementById("paymentStatus");
+
+const remarkInput =
+document.getElementById("remark");
 
 
 /* =====================================================
-   SHOW LOADING
+AUTH CHECK
 ===================================================== */
 
-function showLoading(){
+onAuthStateChanged(
+auth,
+async function(user){
 
-    loadingBox.style.display = "block";
+    if(!user){
 
-    dashboardBox.style.display = "none";
+        authMessage.style.color="red";
 
-    errorBox.style.display = "none";
+        authMessage.innerText =
+        "❌ Login नहीं मिला। Login page पर जा रहे हैं...";
 
-}
+        setTimeout(function(){
 
+            window.location.replace(
+                "login.html"
+            );
 
-/* =====================================================
-   SHOW DASHBOARD
-===================================================== */
+        },1000);
 
-function showDashboard(user){
-
-    loadingBox.style.display = "none";
-
-    errorBox.style.display = "none";
-
-    dashboardBox.style.display = "block";
-
-
-    userEmail.textContent =
-        user.email || "";
-
-    userUID.textContent =
-        user.uid || "";
+        return;
+    }
 
 
-    /*
-       Local information सिर्फ UI के लिए।
-       Login Firebase से ही माना जाएगा।
-    */
+    currentUser = user;
+
+
+    userEmail.innerText =
+    user.email || "";
+
+    userUID.innerText =
+    user.uid || "";
+
 
     localStorage.setItem(
         "adminType",
@@ -389,215 +569,341 @@ function showDashboard(user){
     );
 
 
-    status.textContent =
-        "🟢 Firebase Login Active है।";
+    authMessage.style.color="green";
 
-    status.style.color =
-        "green";
+    authMessage.innerText =
+    "✅ Hafiji Login Active";
+
+
+    await loadMembers();
+
+    await loadPayments();
+
+});
+
+
+/* =====================================================
+LOAD MEMBERS
+===================================================== */
+
+async function loadMembers(){
+
+    membersList.innerHTML =
+    "⏳ Members Loading...";
+
+    memberSelect.innerHTML =
+    "<option value=''>⏳ Members Loading...</option>";
+
+
+    try{
+
+        const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "users"
+            )
+        );
+
+
+        members = [];
+
+
+        snapshot.forEach(function(item){
+
+            const data =
+            item.data();
+
+
+            if(
+                data.role === "member"
+            ){
+
+                members.push({
+
+                    id:item.id,
+
+                    name:
+                    data.name ||
+                    data.fullName ||
+                    data.memberName ||
+                    "Member",
+
+                    email:
+                    data.email ||
+                    "",
+
+                    mobile:
+                    data.mobile ||
+                    data.phone ||
+                    ""
+
+                });
+
+            }
+
+        });
+
+
+        /* MEMBER SELECT */
+
+        memberSelect.innerHTML =
+        "<option value=''>👤 Member Select करें</option>";
+
+
+        members.forEach(function(member){
+
+            const option =
+            document.createElement(
+                "option"
+            );
+
+            option.value =
+            member.id;
+
+            option.textContent =
+            member.name +
+            (
+                member.email
+                ? " - " + member.email
+                : ""
+            );
+
+            memberSelect.appendChild(
+                option
+            );
+
+        });
+
+
+        /* MEMBER LIST */
+
+        if(members.length === 0){
+
+            membersList.innerHTML =
+            "<div class='empty'>❌ कोई Member नहीं मिला।</div>";
+
+        }
+
+        else{
+
+            membersList.innerHTML = "";
+
+            members.forEach(function(member){
+
+                const div =
+                document.createElement(
+                    "div"
+                );
+
+                div.className =
+                "member";
+
+
+                div.innerHTML =
+
+                "<b>👤 " +
+                escapeHTML(member.name) +
+                "</b>" +
+
+                "<br>📧 " +
+                escapeHTML(member.email) +
+
+                (
+                    member.mobile
+                    ?
+                    "<br>📱 " +
+                    escapeHTML(member.mobile)
+                    :
+                    ""
+                ) +
+
+                "<br><span class='small'>UID: " +
+                escapeHTML(member.id) +
+                "</span>";
+
+
+                membersList.appendChild(
+                    div
+                );
+
+            });
+
+        }
+
+
+        document.getElementById(
+            "totalMembers"
+        ).innerText =
+        members.length;
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "MEMBERS ERROR:",
+            error
+        );
+
+
+        membersList.innerHTML =
+        "<div class='empty'>❌ Members load नहीं हुए।<br><br>" +
+        escapeHTML(error.message) +
+        "</div>";
+
+        memberSelect.innerHTML =
+        "<option value=''>❌ Members load नहीं हुए</option>";
+
+    }
 
 }
 
 
 /* =====================================================
-   SHOW ERROR
+LOAD PAYMENTS
 ===================================================== */
 
-function showError(){
+async function loadPayments(){
 
-    loadingBox.style.display = "none";
+    paymentHistory.innerHTML =
+    "⏳ Payment History Loading...";
 
-    dashboardBox.style.display = "none";
 
-    errorBox.style.display = "block";
+    try{
+
+        const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "payments"
+            )
+        );
+
+
+        payments = [];
+
+
+        snapshot.forEach(function(item){
+
+            const data =
+            item.data();
+
+
+            payments.push({
+
+                id:item.id,
+
+                ...data
+
+            });
+
+        });
+
+
+        /* NEWEST FIRST */
+
+        payments.sort(function(a,b){
+
+            const aTime =
+            a.createdAt &&
+            a.createdAt.toMillis
+            ?
+            a.createdAt.toMillis()
+            :
+            0;
+
+            const bTime =
+            b.createdAt &&
+            b.createdAt.toMillis
+            ?
+            b.createdAt.toMillis()
+            :
+            0;
+
+            return bTime - aTime;
+
+        });
+
+
+        renderPayments();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "PAYMENT ERROR:",
+            error
+        );
+
+
+        paymentHistory.innerHTML =
+        "<div class='empty'>❌ Payment History load नहीं हुई।<br><br>" +
+        escapeHTML(error.message) +
+        "</div>";
+
+    }
 
 }
 
 
 /* =====================================================
-   FIREBASE AUTH STATE
+RENDER PAYMENTS
 ===================================================== */
 
-/*
-   यह सबसे महत्वपूर्ण हिस्सा है।
+function renderPayments(){
 
-   Firebase खुद check करेगा कि user
-   पहले से login है या नहीं।
+    if(payments.length === 0){
 
-   Page refresh करने पर भी Firebase
-   saved authentication session को restore
-   करेगा।
-*/
+        paymentHistory.innerHTML =
+        "<div class='empty'>📋 अभी कोई Payment नहीं है।</div>";
 
-onAuthStateChanged(
-    auth,
-    function(user){
+        updateSummary();
 
-        console.log(
-            "Firebase Auth State:",
-            user
+        return;
+
+    }
+
+
+    paymentHistory.innerHTML = "";
+
+
+    payments.forEach(function(payment){
+
+        const div =
+        document.createElement(
+            "div"
+        );
+
+        div.className =
+        "payment";
+
+
+        const status =
+        payment.status ||
+        payment.paymentStatus ||
+        "Pending";
+
+
+        const statusClass =
+        status === "Successful"
+        ? "success"
+        : "pending";
+
+
+        const memberName =
+        payment.memberName ||
+        payment.name ||
+        "Unknown Member";
+
+
+        const amount =
+        Number(
+            payment.amount || 0
         );
 
 
-        /*
-           User login नहीं है
-        */
-
-        if(!user){
-
-            localStorage.removeItem(
-                "adminType"
-            );
-
-            localStorage.removeItem(
-                "adminUID"
-            );
-
-            localStorage.removeItem(
-                "loginEmail"
-            );
-
-            localStorage.removeItem(
-                "isLoggedIn"
-            );
-
-            showError();
-
-            return;
-        }
-
-
-        /*
-           Email check
-        */
-
-        if(
-            !user.email ||
-            user.email.toLowerCase() !==
-            HAFIJI_EMAIL.toLowerCase()
-        ){
-
-            console.log(
-                "यह Hafiji account नहीं है:",
-                user.email
-            );
-
-            showError();
-
-            return;
-        }
-
-
-        /*
-           Hafiji verified
-        */
-
-        console.log(
-            "HAFIJI LOGIN VERIFIED"
-        );
-
-        showDashboard(user);
-
-    }
-);
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-logoutBtn.addEventListener(
-    "click",
-    async function(){
-
-        try{
-
-            logoutBtn.disabled = true;
-
-            logoutBtn.textContent =
-                "⏳ Logout हो रहा है...";
-
-
-            /*
-               केवल इसी button से Firebase logout होगा
-            */
-
-            await signOut(auth);
-
-
-            /*
-               Local data भी साफ
-            */
-
-            localStorage.removeItem(
-                "adminType"
-            );
-
-            localStorage.removeItem(
-                "adminUID"
-            );
-
-            localStorage.removeItem(
-                "loginEmail"
-            );
-
-            localStorage.removeItem(
-                "isLoggedIn"
-            );
-
-
-            /*
-               Login page
-            */
-
-            window.location.replace(
-                "login.html"
-            );
-
-        }
-
-        catch(error){
-
-            console.error(
-                "Logout Error:",
-                error
-            );
-
-
-            logoutBtn.disabled = false;
-
-            logoutBtn.textContent =
-                "🚪 Logout";
-
-
-            status.textContent =
-                "❌ Logout Failed: " +
-                error.message;
-
-            status.style.color =
-                "red";
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   LOGIN PAGE
-===================================================== */
-
-loginBtn.addEventListener(
-    "click",
-    function(){
-
-        window.location.replace(
-            "login.html"
-        );
-
-    }
-);
-
-</script>
-
-</body>
-</html>
+        let dateText =
+        "Date unavailable
