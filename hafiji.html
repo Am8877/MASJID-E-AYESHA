@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="hi">
-
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Login - MASJID-E-AYESHA</title>
 
@@ -54,20 +51,21 @@ h2{
     color:#0f766e;
 }
 
+label{
+    font-weight:bold;
+    display:block;
+    margin-top:12px;
+}
+
 select,
 input{
     width:100%;
     padding:14px;
     margin-top:8px;
-    margin-bottom:14px;
+    margin-bottom:8px;
     border:1px solid #ccc;
     border-radius:10px;
     font-size:16px;
-}
-
-label{
-    font-weight:bold;
-    display:block;
 }
 
 button{
@@ -87,12 +85,16 @@ button:active{
     transform:scale(.98);
 }
 
-button:disabled{
-    opacity:.6;
+.login-btn{
+    background:#0f766e;
 }
 
 .forgot{
     background:#f59e0b;
+}
+
+.register{
+    background:#0f766e;
 }
 
 .back{
@@ -104,16 +106,28 @@ button:disabled{
     margin-top:15px;
     font-weight:bold;
     line-height:1.5;
-    word-break:break-word;
+    min-height:25px;
+}
+
+.info{
+    background:#ecfdf5;
+    padding:12px;
+    border-radius:10px;
+    margin-top:15px;
+    font-size:14px;
+    color:#134e4a;
+    text-align:center;
+}
+
+.loading{
+    opacity:.7;
 }
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
@@ -133,58 +147,68 @@ MASJID-E-AYESHA
 </h2>
 
 
+<!-- ================= LOGIN TYPE ================= -->
+
 <label>
 Login Type
 </label>
 
-
 <select id="loginType">
 
 <option value="member">
-Member
+👤 Member
 </option>
 
 <option value="hafiji">
-Hafiji Sahab
+📖 Hafiji Sahab
 </option>
 
 <option value="secretary">
-Secretary Sahab
+👨‍💼 Secretary Sahab
 </option>
 
 </select>
 
 
-<label id="loginLabel">
-Email
-</label>
+<!-- ================= EMAIL ================= -->
 
+<label id="loginLabel">
+Member Email
+</label>
 
 <input
 type="text"
 id="email"
-placeholder="Email डालें"
 autocomplete="username"
+placeholder="Member Email डालें"
 >
 
+
+<!-- ================= PASSWORD ================= -->
 
 <label>
 Password
 </label>
 
-
 <input
 type="password"
 id="password"
-placeholder="Password डालें"
 autocomplete="current-password"
+placeholder="Password डालें"
 >
 
 
-<button id="loginBtn">
+<!-- ================= LOGIN ================= -->
+
+<button
+class="login-btn"
+id="loginBtn"
+>
 🔐 Login
 </button>
 
+
+<!-- ================= FORGOT ================= -->
 
 <button
 class="forgot"
@@ -194,95 +218,75 @@ id="forgotBtn"
 </button>
 
 
+<!-- ================= REGISTER ================= -->
+
 <button
-onclick="location.href='register.html'"
+class="register"
+id="registerBtn"
 >
 📝 New Member Registration
 </button>
 
 
+<!-- ================= BACK ================= -->
+
 <button
 class="back"
-onclick="location.href='index.html'"
+id="backBtn"
 >
 ← Back
 </button>
 
 
+<!-- ================= MESSAGE ================= -->
+
 <div
 id="message"
-class="message"
->
+class="message">
 </div>
 
 
-</div>
+<div class="info">
+
+🔒 आपका Login Firebase Authentication से सुरक्षित है।
 
 </div>
 
+</div>
+
+</div>
 
 
 <script type="module">
 
 
 /* =====================================================
-   FIREBASE APP
+   FIREBASE
 ===================================================== */
 
 import {
-
     initializeApp
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
 
-
-/* =====================================================
-   FIREBASE AUTH
-===================================================== */
-
 import {
-
     getAuth,
-
     signInWithEmailAndPassword,
-
-    sendPasswordResetEmail,
-
-    setPersistence,
-
-    browserLocalPersistence
-
+    sendPasswordResetEmail
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 
-
-/* =====================================================
-   FIRESTORE
-===================================================== */
-
 import {
-
     getFirestore,
-
     doc,
-
     getDoc
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-
 
 
 /* =====================================================
@@ -292,7 +296,7 @@ from
 const firebaseConfig = {
 
     apiKey:
-    "AIzaSyBI9ow2vRoOtOtV2-J5rNgj_QqMD_EFbg",
+    "AIzaSyBI9ow2vRoOtOt2V1-J5rNgj_QqMD_EFbg",
 
     authDomain:
     "masjid-e-ayesha-371f6.firebaseapp.com",
@@ -315,62 +319,31 @@ const firebaseConfig = {
 };
 
 
-
 /* =====================================================
    INITIALIZE
 ===================================================== */
 
 const app =
-    initializeApp(firebaseConfig);
-
+initializeApp(firebaseConfig);
 
 const auth =
-    getAuth(app);
-
+getAuth(app);
 
 const db =
-    getFirestore(app);
-
-
-
-/* =====================================================
-   IMPORTANT
-   LOGIN SESSION BROWSER ME SAVE RAHEGI
-===================================================== */
-
-try{
-
-    await setPersistence(
-        auth,
-        browserLocalPersistence
-    );
-
-    console.log(
-        "Firebase persistence enabled"
-    );
-
-}catch(error){
-
-    console.error(
-        "Persistence error:",
-        error
-    );
-
-}
-
+getFirestore(app);
 
 
 /* =====================================================
-   FIXED LOGIN EMAILS
+   IMPORTANT ACCOUNTS
+
+   Firebase Authentication में यही email होना चाहिए।
 ===================================================== */
 
 const HAFIJI_EMAIL =
-    "hafiji2@gmail.com";
-
+"hafiji2@gmail.com";
 
 const SECRETARY_EMAIL =
-    "secretary@gmail.com";
-
+"secretary@gmail.com";
 
 
 /* =====================================================
@@ -378,93 +351,130 @@ const SECRETARY_EMAIL =
 ===================================================== */
 
 const loginType =
-    document.getElementById(
-        "loginType"
-    );
-
+document.getElementById(
+    "loginType"
+);
 
 const emailInput =
-    document.getElementById(
-        "email"
-    );
-
+document.getElementById(
+    "email"
+);
 
 const passwordInput =
-    document.getElementById(
-        "password"
-    );
-
+document.getElementById(
+    "password"
+);
 
 const loginLabel =
-    document.getElementById(
-        "loginLabel"
-    );
-
-
-const message =
-    document.getElementById(
-        "message"
-    );
-
+document.getElementById(
+    "loginLabel"
+);
 
 const loginBtn =
-    document.getElementById(
-        "loginBtn"
-    );
+document.getElementById(
+    "loginBtn"
+);
 
+const forgotBtn =
+document.getElementById(
+    "forgotBtn"
+);
 
+const registerBtn =
+document.getElementById(
+    "registerBtn"
+);
 
-/* =====================================================
-   LOGIN TYPE
-===================================================== */
+const backBtn =
+document.getElementById(
+    "backBtn"
+);
 
-loginType.addEventListener(
-    "change",
-    function(){
-
-        const type =
-            loginType.value;
-
-
-        if(type === "member"){
-
-            loginLabel.innerText =
-                "Email";
-
-            emailInput.placeholder =
-                "Member Email डालें";
-
-        }
-
-
-        if(type === "hafiji"){
-
-            loginLabel.innerText =
-                "Hafiji User ID / Email";
-
-            emailInput.placeholder =
-                "hafiji या Email डालें";
-
-        }
-
-
-        if(type === "secretary"){
-
-            loginLabel.innerText =
-                "Secretary User ID / Email";
-
-            emailInput.placeholder =
-                "secretary या Email डालें";
-
-        }
-
-    }
+const message =
+document.getElementById(
+    "message"
 );
 
 
+/* =====================================================
+   MESSAGE FUNCTION
+===================================================== */
+
+function showMessage(
+    text,
+    color
+){
+
+    message.style.color =
+    color;
+
+    message.innerHTML =
+    text;
+
+}
+
 
 /* =====================================================
-   GET LOGIN EMAIL
+   LOGIN TYPE CHANGE
+===================================================== */
+
+loginType.addEventListener(
+"change",
+function(){
+
+    const type =
+    loginType.value;
+
+
+    if(type === "member"){
+
+        loginLabel.innerText =
+        "Member Email";
+
+        emailInput.placeholder =
+        "Member Email डालें";
+
+    }
+
+
+    else if(type === "hafiji"){
+
+        loginLabel.innerText =
+        "Hafiji User ID / Email";
+
+        emailInput.placeholder =
+        "hafiji या Email डालें";
+
+    }
+
+
+    else if(type === "secretary"){
+
+        loginLabel.innerText =
+        "Secretary User ID / Email";
+
+        emailInput.placeholder =
+        "secretary या Email डालें";
+
+    }
+
+
+    emailInput.value =
+    "";
+
+    passwordInput.value =
+    "";
+
+    showMessage(
+        "",
+        "#0f766e"
+    );
+
+});
+
+
+/* =====================================================
+   CONVERT USER ID TO EMAIL
 ===================================================== */
 
 function getLoginEmail(
@@ -472,218 +482,338 @@ function getLoginEmail(
     value
 ){
 
-    value =
-        value.trim().toLowerCase();
+    let v =
+    value
+    .trim()
+    .toLowerCase();
 
+
+    /* HAFIJI */
 
     if(type === "hafiji"){
 
-        if(value === "hafiji"){
+        if(
+            v === "hafiji" ||
+            v === "hafiji sahab"
+        ){
 
             return HAFIJI_EMAIL;
 
         }
 
+        return v;
+
     }
 
 
+    /* SECRETARY */
+
     if(type === "secretary"){
 
-        if(value === "secretary"){
+        if(
+            v === "secretary" ||
+            v === "secretary sahab"
+        ){
 
             return SECRETARY_EMAIL;
 
         }
 
+        return v;
+
     }
 
 
-    return value;
+    /* MEMBER */
+
+    return v;
 
 }
 
 
-
 /* =====================================================
-   NORMALIZE ROLE
-===================================================== */
-
-function normalizeRole(
-    role
-){
-
-    return String(
-        role || ""
-    )
-    .trim()
-    .toLowerCase();
-
-}
-
-
-
-/* =====================================================
-   LOGIN
+   LOGIN BUTTON
 ===================================================== */
 
 loginBtn.addEventListener(
-    "click",
-    async function(){
+"click",
+async function(){
 
-        const type =
-            loginType.value;
-
-
-        const enteredEmail =
-            emailInput.value.trim();
+    const type =
+    loginType.value;
 
 
-        const password =
-            passwordInput.value;
+    const enteredEmail =
+    emailInput.value.trim();
 
 
-        if(
-            enteredEmail === "" ||
-            password === ""
-        ){
-
-            message.style.color =
-                "red";
-
-            message.innerText =
-                "❌ Email / User ID और Password डालें।";
-
-            return;
-
-        }
+    const password =
+    passwordInput.value;
 
 
-        const email =
-            getLoginEmail(
-                type,
-                enteredEmail
-            );
+    /* EMPTY CHECK */
+
+    if(
+        enteredEmail === "" ||
+        password === ""
+    ){
+
+        showMessage(
+            "❌ Email / User ID और Password डालें।",
+            "red"
+        );
+
+        return;
+
+    }
 
 
-        try{
-
-            loginBtn.disabled =
-                true;
-
-
-            message.style.color =
-                "#0f766e";
+    const email =
+    getLoginEmail(
+        type,
+        enteredEmail
+    );
 
 
-            message.innerText =
-                "⏳ Login हो रहा है...";
+    /* BUTTON DISABLE */
 
+    loginBtn.disabled =
+    true;
+
+    loginBtn.classList.add(
+        "loading"
+    );
+
+
+    showMessage(
+        "⏳ Login हो रहा है...",
+        "#0f766e"
+    );
+
+
+    try{
+
+        /* =========================================
+           FIREBASE AUTH LOGIN
+        ========================================= */
+
+        const result =
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+
+        const user =
+        result.user;
+
+
+        console.log(
+            "Firebase Login Successful"
+        );
+
+        console.log(
+            "UID:",
+            user.uid
+        );
+
+        console.log(
+            "Email:",
+            user.email
+        );
+
+
+        /* =========================================
+           HAFIJI
+        ========================================= */
+
+        if(type === "hafiji"){
 
             /*
-             * Firebase Login
+             * यहां Firestore role check नहीं है।
+             * केवल Firebase Authentication email check होगा।
              */
 
-            const result =
-                await signInWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
+            if(
+                !user.email ||
+                user.email.toLowerCase() !==
+                HAFIJI_EMAIL.toLowerCase()
+            ){
+
+                showMessage(
+                    "❌ यह Hafiji account नहीं है।",
+                    "red"
                 );
-
-
-            const user =
-                result.user;
-
-
-            console.log(
-                "LOGIN SUCCESS:",
-                user.uid
-            );
-
-
-            /*
-             * Firestore profile
-             */
-
-            const userRef =
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                );
-
-
-            const userSnap =
-                await getDoc(
-                    userRef
-                );
-
-
-            if(!userSnap.exists()){
-
-                /*
-                 * यहाँ automatic signOut नहीं करेंगे।
-                 * इससे पता चलेगा कि असली समस्या क्या है।
-                 */
-
-                message.style.color =
-                    "red";
-
-                message.innerHTML =
-                    "❌ Login हो गया लेकिन Firestore में आपका profile नहीं मिला।<br><br>" +
-                    "UID:<br>" +
-                    user.uid;
-
-
-                loginBtn.disabled =
-                    false;
-
 
                 return;
 
             }
 
 
-            const data =
-                userSnap.data();
-
-
-            console.log(
-                "FIRESTORE DATA:",
-                data
+            localStorage.setItem(
+                "adminType",
+                "hafiji"
             );
 
 
-            const role =
-                normalizeRole(
-                    data.role
+            localStorage.setItem(
+                "adminUID",
+                user.uid
+            );
+
+
+            localStorage.setItem(
+                "loginEmail",
+                user.email
+            );
+
+
+            localStorage.setItem(
+                "isLoggedIn",
+                "true"
+            );
+
+
+            showMessage(
+                "✅ Hafiji Login Successful<br>⏳ Dashboard खुल रहा है...",
+                "green"
+            );
+
+
+            setTimeout(
+                function(){
+
+                    window.location.replace(
+                        "hafiji.html"
+                    );
+
+                },
+                700
+            );
+
+
+            return;
+
+        }
+
+
+        /* =========================================
+           SECRETARY
+        ========================================= */
+
+        if(type === "secretary"){
+
+            /*
+             * यहां भी Firestore role check नहीं है।
+             */
+
+            if(
+                !user.email ||
+                user.email.toLowerCase() !==
+                SECRETARY_EMAIL.toLowerCase()
+            ){
+
+                showMessage(
+                    "❌ यह Secretary account नहीं है।",
+                    "red"
+                );
+
+                return;
+
+            }
+
+
+            localStorage.setItem(
+                "adminType",
+                "secretary"
+            );
+
+
+            localStorage.setItem(
+                "adminUID",
+                user.uid
+            );
+
+
+            localStorage.setItem(
+                "loginEmail",
+                user.email
+            );
+
+
+            localStorage.setItem(
+                "isLoggedIn",
+                "true"
+            );
+
+
+            showMessage(
+                "✅ Secretary Login Successful<br>⏳ Dashboard खुल रहा है...",
+                "green"
+            );
+
+
+            setTimeout(
+                function(){
+
+                    window.location.replace(
+                        "secretary.html"
+                    );
+
+                },
+                700
+            );
+
+
+            return;
+
+        }
+
+
+        /* =========================================
+           MEMBER
+        ========================================= */
+
+        if(type === "member"){
+
+            try{
+
+                const userDoc =
+                await getDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    )
                 );
 
 
-            console.log(
-                "ROLE:",
-                role
-            );
+                if(!userDoc.exists()){
+
+                    showMessage(
+                        "❌ Member profile नहीं मिला।",
+                        "red"
+                    );
+
+                    return;
+
+                }
 
 
+                const data =
+                userDoc.data();
 
-            /* =================================================
-               MEMBER
-            ================================================= */
 
-            if(type === "member"){
+                if(
+                    data.role !==
+                    "member"
+                ){
 
-                if(role !== "member"){
-
-                    message.style.color =
-                        "red";
-
-                    message.innerText =
-                        "❌ यह Member account नहीं है। Firestore role: " +
-                        (data.role || "खाली");
-
-                    loginBtn.disabled =
-                        false;
+                    showMessage(
+                        "❌ यह Member account नहीं है।",
+                        "red"
+                    );
 
                     return;
 
@@ -697,200 +827,32 @@ loginBtn.addEventListener(
 
 
                 localStorage.setItem(
-                    "userRole",
-                    "member"
-                );
-
-
-                message.style.color =
-                    "green";
-
-                message.innerText =
-                    "✅ Member Login Successful";
-
-
-                setTimeout(
-                    function(){
-
-                        location.replace(
-                            "member.html"
-                        );
-
-                    },
-                    500
-                );
-
-
-                return;
-
-            }
-
-
-
-            /* =================================================
-               HAFIJI
-            ================================================= */
-
-            if(type === "hafiji"){
-
-                if(role !== "hafiji"){
-
-                    message.style.color =
-                        "red";
-
-                    message.innerText =
-                        "❌ यह Hafiji account नहीं है। Firestore role: " +
-                        (data.role || "खाली");
-
-                    loginBtn.disabled =
-                        false;
-
-                    return;
-
-                }
-
-
-                localStorage.setItem(
-                    "adminType",
-                    "hafiji"
+                    "loginEmail",
+                    user.email || ""
                 );
 
 
                 localStorage.setItem(
-                    "adminUID",
-                    user.uid
-                );
-
-
-                localStorage.setItem(
-                    "userRole",
-                    "hafiji"
-                );
-
-
-                message.style.color =
-                    "green";
-
-                message.innerText =
-                    "✅ Hafiji Login Successful";
-
-
-                setTimeout(
-                    function(){
-
-                        location.replace(
-                            "hafiji.html"
-                        );
-
-                    },
-                    500
-                );
-
-
-                return;
-
-            }
-
-
-
-            /* =================================================
-               SECRETARY
-            ================================================= */
-
-            if(type === "secretary"){
-
-                /*
-                 * IMPORTANT:
-                 * role को lowercase करके check किया जा रहा है।
-                 *
-                 * secretary
-                 * Secretary
-                 * SECRETARY
-                 * Secretary
-                 * सभी चलेंगे।
-                 */
-
-                if(role !== "secretary"){
-
-                    message.style.color =
-                        "red";
-
-
-                    message.innerHTML =
-                        "❌ यह Secretary account नहीं है।<br><br>" +
-                        "Firestore Role: <b>" +
-                        (
-                            data.role ||
-                            "खाली"
-                        ) +
-                        "</b><br><br>" +
-                        "UID:<br>" +
-                        user.uid;
-
-
-                    /*
-                     * यहाँ signOut नहीं है।
-                     * इसलिए असली role समस्या साफ दिखाई देगी।
-                     */
-
-                    loginBtn.disabled =
-                        false;
-
-
-                    return;
-
-                }
-
-
-                /*
-                 * Local storage
-                 */
-
-                localStorage.setItem(
-                    "adminType",
-                    "secretary"
-                );
-
-
-                localStorage.setItem(
-                    "adminUID",
-                    user.uid
-                );
-
-
-                localStorage.setItem(
-                    "userRole",
-                    "secretary"
-                );
-
-
-                localStorage.setItem(
-                    "secretaryLoggedIn",
+                    "isLoggedIn",
                     "true"
                 );
 
 
-                message.style.color =
-                    "green";
+                showMessage(
+                    "✅ Member Login Successful<br>⏳ Dashboard खुल रहा है...",
+                    "green"
+                );
 
-
-                message.innerText =
-                    "✅ Secretary Login Successful";
-
-
-                /*
-                 * छोटा delay देकर dashboard
-                 */
 
                 setTimeout(
                     function(){
 
-                        location.replace(
-                            "secretary.html"
+                        window.location.replace(
+                            "member.html"
                         );
 
                     },
-                    500
+                    700
                 );
 
 
@@ -898,181 +860,285 @@ loginBtn.addEventListener(
 
             }
 
+            catch(memberError){
+
+                console.error(
+                    memberError
+                );
+
+
+                showMessage(
+                    "❌ Member profile check नहीं हुआ: " +
+                    memberError.message,
+                    "red"
+                );
+
+                return;
+
+            }
 
         }
 
-        catch(error){
 
-            console.error(
-                "LOGIN ERROR:",
-                error
+    }
+
+    catch(error){
+
+        console.error(
+            "LOGIN ERROR:",
+            error
+        );
+
+
+        if(
+            error.code ===
+            "auth/invalid-credential"
+        ){
+
+            showMessage(
+                "❌ Email / User ID या Password गलत है।",
+                "red"
             );
 
+        }
 
-            message.style.color =
-                "red";
+        else if(
+            error.code ===
+            "auth/user-not-found"
+        ){
 
+            showMessage(
+                "❌ Firebase में यह account नहीं मिला।",
+                "red"
+            );
 
-            if(
-                error.code ===
-                "auth/invalid-credential"
-            ){
+        }
 
-                message.innerText =
-                    "❌ Email / User ID या Password गलत है।";
+        else if(
+            error.code ===
+            "auth/wrong-password"
+        ){
 
-            }
+            showMessage(
+                "❌ Password गलत है।",
+                "red"
+            );
 
-            else if(
-                error.code ===
-                "auth/user-not-found"
-            ){
+        }
 
-                message.innerText =
-                    "❌ Account नहीं मिला।";
+        else if(
+            error.code ===
+            "auth/invalid-email"
+        ){
 
-            }
+            showMessage(
+                "❌ Email format गलत है।",
+                "red"
+            );
 
-            else if(
-                error.code ===
-                "auth/wrong-password"
-            ){
+        }
 
-                message.innerText =
-                    "❌ Password गलत है।";
+        else if(
+            error.code ===
+            "auth/too-many-requests"
+        ){
 
-            }
+            showMessage(
+                "❌ बहुत ज्यादा कोशिश हुई है। थोड़ी देर बाद फिर प्रयास करें।",
+                "red"
+            );
 
-            else if(
-                error.code ===
-                "auth/too-many-requests"
-            ){
+        }
 
-                message.innerText =
-                    "❌ बहुत ज्यादा कोशिश हो गई। थोड़ी देर बाद फिर कोशिश करें।";
+        else{
 
-            }
-
-            else{
-
-                message.innerHTML =
-                    "❌ Login Error:<br>" +
-                    error.message;
-
-            }
-
-
-            loginBtn.disabled =
-                false;
+            showMessage(
+                "❌ Login Failed:<br>" +
+                error.message,
+                "red"
+            );
 
         }
 
     }
-);
 
+    finally{
+
+        loginBtn.disabled =
+        false;
+
+        loginBtn.classList.remove(
+            "loading"
+        );
+
+    }
+
+});
 
 
 /* =====================================================
    FORGOT PASSWORD
 ===================================================== */
 
-document
-.getElementById(
-    "forgotBtn"
-)
-.addEventListener(
-    "click",
-    async function(){
+forgotBtn.addEventListener(
+"click",
+async function(){
 
-        const type =
-            loginType.value;
+    const type =
+    loginType.value;
 
 
-        const enteredEmail =
-            emailInput.value.trim();
+    const enteredEmail =
+    emailInput.value.trim();
+
+
+    if(
+        enteredEmail === ""
+    ){
+
+        showMessage(
+            "❌ पहले Email / User ID डालें।",
+            "red"
+        );
+
+        return;
+
+    }
+
+
+    const email =
+    getLoginEmail(
+        type,
+        enteredEmail
+    );
+
+
+    try{
+
+        showMessage(
+            "⏳ Password reset link भेजा जा रहा है...",
+            "#0f766e"
+        );
+
+
+        await sendPasswordResetEmail(
+            auth,
+            email
+        );
+
+
+        showMessage(
+            "✅ Password reset link आपके email पर भेज दिया गया है।",
+            "green"
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            error
+        );
 
 
         if(
-            enteredEmail === ""
+            error.code ===
+            "auth/user-not-found"
         ){
 
-            message.style.color =
-                "red";
-
-            message.innerText =
-                "❌ पहले Email / User ID डालें।";
-
-            return;
+            showMessage(
+                "❌ यह email Firebase में नहीं मिला।",
+                "red"
+            );
 
         }
 
+        else{
 
-        const email =
-            getLoginEmail(
-                type,
-                enteredEmail
+            showMessage(
+                "❌ Reset Failed:<br>" +
+                error.message,
+                "red"
             );
-
-
-        try{
-
-            message.style.color =
-                "#0f766e";
-
-            message.innerText =
-                "⏳ Reset link भेजा जा रहा है...";
-
-
-            await sendPasswordResetEmail(
-                auth,
-                email
-            );
-
-
-            message.style.color =
-                "green";
-
-            message.innerText =
-                "✅ Password reset link आपके email पर भेज दिया गया है।";
-
-        }
-
-        catch(error){
-
-            console.error(
-                error
-            );
-
-
-            message.style.color =
-                "red";
-
-
-            if(
-                error.code ===
-                "auth/user-not-found"
-            ){
-
-                message.innerText =
-                    "❌ यह email Firebase में नहीं मिला।";
-
-            }
-
-            else{
-
-                message.innerText =
-                    "❌ Reset Failed: " +
-                    error.message;
-
-            }
 
         }
 
     }
+
+});
+
+
+/* =====================================================
+   REGISTER BUTTON
+===================================================== */
+
+registerBtn.addEventListener(
+"click",
+function(){
+
+    window.location.href =
+    "register.html";
+
+});
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backBtn.addEventListener(
+"click",
+function(){
+
+    window.location.href =
+    "index.html";
+
+});
+
+
+/* =====================================================
+   ENTER KEY LOGIN
+===================================================== */
+
+passwordInput.addEventListener(
+"keydown",
+function(event){
+
+    if(
+        event.key === "Enter"
+    ){
+
+        loginBtn.click();
+
+    }
+
+});
+
+
+emailInput.addEventListener(
+"keydown",
+function(event){
+
+    if(
+        event.key === "Enter"
+    ){
+
+        passwordInput.focus();
+
+    }
+
+});
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+    "MASJID-E-AYESHA Login Ready"
 );
 
 </script>
 
 </body>
-
 </html>
