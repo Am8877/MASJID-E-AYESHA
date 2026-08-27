@@ -3,8 +3,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Hafiji Dashboard - MASJID-E-AYESHA</title>
 
@@ -18,111 +17,96 @@ body{
     margin:0;
     min-height:100vh;
     font-family:Arial,sans-serif;
-    background:linear-gradient(
-        135deg,
-        #064e3b,
-        #0f766e
-    );
+    background:linear-gradient(135deg,#064e3b,#0f766e);
 }
 
-header{
+.header{
     background:#064e3b;
     color:white;
-    padding:22px 15px;
     text-align:center;
+    padding:35px 15px;
 }
 
-header h1{
+.header h1{
     margin:0;
-    font-size:28px;
+    font-size:32px;
 }
 
-header p{
-    margin:8px 0 0;
-    font-size:15px;
+.header p{
+    margin:12px 0 0;
+    font-size:22px;
 }
 
 .container{
-    max-width:650px;
+    width:100%;
+    max-width:700px;
     margin:auto;
-    padding:20px;
+    padding:30px 18px;
 }
 
-.card{
+.box{
     background:white;
-    border-radius:22px;
-    padding:22px;
-    margin-bottom:20px;
-    box-shadow:
-    0 8px 25px rgba(0,0,0,.22);
+    border-radius:25px;
+    padding:30px 22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    text-align:center;
 }
 
-.title{
+#loadingBox{
+    display:block;
+}
+
+#dashboardBox{
+    display:none;
+}
+
+.loading{
+    font-size:22px;
     color:#0f766e;
-    font-size:24px;
-    font-weight:bold;
-    margin-bottom:15px;
+    padding:30px 10px;
 }
 
-.status{
+.success{
+    font-size:25px;
+    color:#0f766e;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.user-info{
     background:#ecfdf5;
-    color:#065f46;
-    padding:16px;
-    border-radius:14px;
-    line-height:1.6;
-}
-
-.email{
-    word-break:break-all;
-    font-weight:bold;
+    color:#134e4a;
+    border-radius:15px;
+    padding:18px;
+    margin:20px 0;
+    font-size:17px;
+    line-height:1.7;
 }
 
 button{
     width:100%;
     border:0;
-    border-radius:13px;
+    border-radius:14px;
     padding:16px;
     margin-top:12px;
-    color:white;
     font-size:17px;
     font-weight:bold;
+    color:white;
     cursor:pointer;
-}
-
-.refresh{
-    background:#2563eb;
 }
 
 .logout{
     background:#dc2626;
 }
 
-.back{
-    background:#555;
+.login{
+    background:#0f766e;
 }
 
 .message{
-    text-align:center;
+    margin-top:20px;
     font-weight:bold;
-    line-height:1.6;
-}
-
-.loading{
-    text-align:center;
-    padding:25px;
-    font-size:18px;
-    color:#0f766e;
-}
-
-.hidden{
-    display:none;
-}
-
-.info{
-    background:#f0fdfa;
-    padding:15px;
-    border-radius:13px;
-    color:#134e4a;
+    font-size:17px;
     line-height:1.6;
 }
 
@@ -132,145 +116,131 @@ button{
 
 <body>
 
+<div class="header">
 
-<header>
+    <h1>🕌 MASJID-E-AYESHA</h1>
 
-<h1>
-🕌 MASJID-E-AYESHA
-</h1>
+    <p>📖 Hafiji Sahab Dashboard</p>
 
-<p>
-📖 Hafiji Sahab Dashboard
-</p>
-
-</header>
+</div>
 
 
 <div class="container">
 
 
-<div id="loading" class="card">
+    <!-- ================= LOADING ================= -->
 
-<div class="loading">
+    <div
+        class="box"
+        id="loadingBox"
+    >
 
-⏳ Hafiji account check हो रहा है...
+        <div class="loading">
 
-</div>
+            ⏳ Firebase Login Check हो रहा है...
 
-</div>
+        </div>
 
-
-<div id="dashboard" class="hidden">
-
-
-<div class="card">
-
-<div class="title">
-📖 Hafiji Dashboard
-</div>
+    </div>
 
 
-<div class="status">
 
-<div>
-✅ Login Successful
-</div>
+    <!-- ================= DASHBOARD ================= -->
 
-<div>
-👤 Account:
-<span id="userEmail"
-class="email">
-Loading...
-</span>
-</div>
+    <div
+        class="box"
+        id="dashboardBox"
+    >
 
-<div>
-🆔 UID:
-<span id="userUID"
-class="email">
-Loading...
-</span>
-</div>
+        <div class="success">
 
-</div>
+            ✅ Hafiji Sahab Login Successful
 
-</div>
+        </div>
 
 
-<div class="card">
+        <div class="user-info">
 
-<div class="title">
-📋 Hafiji Panel
-</div>
+            <b>📖 Hafiji Sahab</b>
 
-<div class="info">
+            <br><br>
 
-यह Hafiji का सुरक्षित dashboard है।<br><br>
+            <b>Email:</b>
 
-Firebase Authentication से आपका login
-active रहेगा।<br><br>
+            <span id="userEmail">
+                Loading...
+            </span>
 
-यह page बिना वजह आपको logout नहीं करेगा।
+            <br>
 
-</div>
+            <b>UID:</b>
 
+            <span id="userUID">
+                Loading...
+            </span>
 
-<button
-class="refresh"
-id="refreshBtn">
-
-🔄 Dashboard Refresh करें
-
-</button>
-
-</div>
+        </div>
 
 
-<div class="card">
+        <button
+            class="logout"
+            id="logoutBtn"
+        >
 
-<div class="title">
-🔐 Account
-</div>
+            🚪 Logout
 
-
-<button
-class="logout"
-id="logoutBtn">
-
-🚪 Logout
-
-</button>
+        </button>
 
 
-<button
-class="back"
-id="backBtn">
+        <div
+            class="message"
+            id="message"
+        ></div>
 
-← Login Page
-
-</button>
+    </div>
 
 
-<div
-id="message"
-class="message">
-</div>
 
-</div>
+    <!-- ================= LOGIN ERROR ================= -->
+
+    <div
+        class="box"
+        id="errorBox"
+        style="display:none;"
+    >
+
+        <div
+            class="message"
+            style="color:red;font-size:22px;"
+        >
+
+            ❌ Firebase में Login नहीं मिला।
+
+        </div>
+
+
+        <button
+            class="login"
+            id="loginBtn"
+        >
+
+            🔐 Login Page पर जाएँ
+
+        </button>
+
+    </div>
 
 
 </div>
 
-
-</div>
 
 
 <script type="module">
 
 
-/* ==================================================
-   FIREBASE
-================================================== */
+/* =====================================================
+   FIREBASE IMPORT
+===================================================== */
 
 import {
     initializeApp
@@ -288,16 +258,15 @@ from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 
-/* ==================================================
-   FIREBASE CONFIG
 
-   LOGIN PAGE वाला SAME CONFIG रखें
-================================================== */
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
 
 const firebaseConfig = {
 
     apiKey:
-    "AIzaSyBI9ow2vRoOtOtOtOtOtOtOtOtOtOtOtOt",
+    "AIzaSyBI9ow2vRoOtOt2V1-J5rNgj_QqMD_EFbg",
 
     authDomain:
     "masjid-e-ayesha-371f6.firebaseapp.com",
@@ -312,208 +281,231 @@ const firebaseConfig = {
     "356807161570",
 
     appId:
-    "1:356807161570:web:53e439043b8eee8e7d90bb"
+    "1:356807161570:web:53e439043b8eee8e7d90bb",
+
+    measurementId:
+    "G-Q5TVCP79W2"
 
 };
 
 
+
+/* =====================================================
+   INITIALIZE FIREBASE
+===================================================== */
+
 const app =
-initializeApp(firebaseConfig);
+initializeApp(
+    firebaseConfig
+);
 
 const auth =
 getAuth(app);
 
 
-/* ==================================================
+
+/* =====================================================
    HAFIJI EMAIL
-================================================== */
+===================================================== */
 
 const HAFIJI_EMAIL =
 "hafiji2@gmail.com";
 
 
-/* ==================================================
+
+/* =====================================================
    ELEMENTS
-================================================== */
+===================================================== */
 
-const loading =
-document.getElementById("loading");
+const loadingBox =
+document.getElementById(
+    "loadingBox"
+);
 
-const dashboard =
-document.getElementById("dashboard");
+const dashboardBox =
+document.getElementById(
+    "dashboardBox"
+);
+
+const errorBox =
+document.getElementById(
+    "errorBox"
+);
 
 const userEmail =
-document.getElementById("userEmail");
+document.getElementById(
+    "userEmail"
+);
 
 const userUID =
-document.getElementById("userUID");
+document.getElementById(
+    "userUID"
+);
+
+const logoutBtn =
+document.getElementById(
+    "logoutBtn"
+);
+
+const loginBtn =
+document.getElementById(
+    "loginBtn"
+);
 
 const message =
-document.getElementById("message");
+document.getElementById(
+    "message"
+);
 
 
-/* ==================================================
-   AUTH CHECK
-================================================== */
+
+/* =====================================================
+   IMPORTANT:
+   FIREBASE SESSION CHECK
+===================================================== */
 
 onAuthStateChanged(
-auth,
-function(user){
+    auth,
+    function(user){
 
-    console.log(
-        "AUTH STATE:",
-        user
-    );
-
-
-    if(!user){
-
-        /*
-         * User वास्तव में logged in नहीं है।
-         */
-
-        loading.innerHTML = `
-
-        <div class="loading">
-
-        ❌ Firebase में Login नहीं मिला।<br><br>
-
-        <button
-        class="back"
-        onclick="location.href='login.html'">
-
-        🔐 Login Page पर जाएँ
-
-        </button>
-
-        </div>
-
-        `;
-
-        return;
-    }
+        console.log(
+            "Firebase Auth State:",
+            user
+        );
 
 
-    console.log(
-        "CURRENT USER:",
-        user.email
-    );
+        /* =============================================
+           USER LOGIN HAI
+        ============================================= */
+
+        if(user){
+
+            console.log(
+                "Logged in UID:",
+                user.uid
+            );
+
+            console.log(
+                "Logged in Email:",
+                user.email
+            );
 
 
-    /* ==============================================
-       EMAIL CHECK
-    ============================================== */
+            /* =========================================
+               HAFIJI ACCOUNT CHECK
+            ========================================= */
 
-    if(
-        !user.email ||
-        user.email.toLowerCase() !==
-        HAFIJI_EMAIL.toLowerCase()
-    ){
+            if(
+                !user.email ||
+                user.email.toLowerCase() !==
+                HAFIJI_EMAIL.toLowerCase()
+            ){
 
-        loading.innerHTML = `
-
-        <div class="loading">
-
-        ❌ यह Hafiji account नहीं है।
-
-        <br><br>
-
-        Login Email:<br>
-
-        <b>
-        ${user.email || "Unknown"}
-        </b>
-
-        <br><br>
-
-        Hafiji Email:<br>
-
-        <b>
-        ${HAFIJI_EMAIL}
-        </b>
-
-        <br><br>
-
-        <button
-        class="back"
-        onclick="location.href='login.html'">
-
-        ← वापस Login
-
-        </button>
-
-        </div>
-
-        `;
-
-        return;
-    }
+                console.log(
+                    "यह Hafiji account नहीं है।"
+                );
 
 
-    /* ==============================================
-       LOGIN SUCCESS
-    ============================================== */
+                loadingBox.style.display =
+                "none";
 
-    localStorage.setItem(
-        "adminType",
-        "hafiji"
-    );
+                dashboardBox.style.display =
+                "none";
 
-    localStorage.setItem(
-        "adminUID",
-        user.uid
-    );
-
-    localStorage.setItem(
-        "loginEmail",
-        user.email
-    );
+                errorBox.style.display =
+                "block";
 
 
-    userEmail.innerText =
-    user.email;
+                return;
 
-    userUID.innerText =
-    user.uid;
+            }
 
 
-    loading.classList.add(
-        "hidden"
-    );
+            /* =========================================
+               LOGIN DATA SAVE
+            ========================================= */
 
-    dashboard.classList.remove(
-        "hidden"
-    );
+            localStorage.setItem(
+                "adminType",
+                "hafiji"
+            );
 
+            localStorage.setItem(
+                "adminUID",
+                user.uid
+            );
 
-    console.log(
-        "HAFIJI DASHBOARD OPEN"
-    );
+            localStorage.setItem(
+                "loginEmail",
+                user.email
+            );
 
-});
-
-
-/* ==================================================
-   LOGOUT
-================================================== */
-
-document
-.getElementById("logoutBtn")
-.addEventListener(
-"click",
-async function(){
-
-    try{
-
-        message.style.color =
-        "#0f766e";
-
-        message.innerText =
-        "⏳ Logout हो रहा है...";
+            localStorage.setItem(
+                "isLoggedIn",
+                "true"
+            );
 
 
-        await signOut(auth);
+            /* =========================================
+               SHOW DASHBOARD
+            ========================================= */
 
+            loadingBox.style.display =
+            "none";
+
+            errorBox.style.display =
+            "none";
+
+            dashboardBox.style.display =
+            "block";
+
+
+            userEmail.innerText =
+            user.email;
+
+            userUID.innerText =
+            user.uid;
+
+
+            message.innerHTML =
+            "🟢 आपका Firebase Login Active है।";
+
+
+            message.style.color =
+            "green";
+
+
+            console.log(
+                "Hafiji Dashboard Successfully Opened"
+            );
+
+
+            return;
+
+        }
+
+
+
+        /* =============================================
+           USER LOGIN NAHI HAI
+        ============================================= */
+
+        console.log(
+            "Firebase User नहीं मिला।"
+        );
+
+
+        loadingBox.style.display =
+        "none";
+
+        dashboardBox.style.display =
+        "none";
+
+        errorBox.style.display =
+        "block";
+
+
+        /* पुराने गलत localStorage को हटाएँ */
 
         localStorage.removeItem(
             "adminType"
@@ -527,58 +519,100 @@ async function(){
             "loginEmail"
         );
 
+        localStorage.removeItem(
+            "isLoggedIn"
+        );
 
-        location.replace(
+    }
+);
+
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener(
+    "click",
+    async function(){
+
+        try{
+
+            logoutBtn.disabled =
+            true;
+
+            logoutBtn.innerText =
+            "⏳ Logout हो रहा है...";
+
+
+            await signOut(auth);
+
+
+            localStorage.removeItem(
+                "adminType"
+            );
+
+            localStorage.removeItem(
+                "adminUID"
+            );
+
+            localStorage.removeItem(
+                "loginEmail"
+            );
+
+            localStorage.removeItem(
+                "isLoggedIn"
+            );
+
+
+            window.location.replace(
+                "login.html"
+            );
+
+        }
+
+        catch(error){
+
+            console.error(
+                error
+            );
+
+
+            logoutBtn.disabled =
+            false;
+
+            logoutBtn.innerText =
+            "🚪 Logout";
+
+
+            message.innerHTML =
+            "❌ Logout Failed: " +
+            error.message;
+
+            message.style.color =
+            "red";
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   LOGIN PAGE
+===================================================== */
+
+loginBtn.addEventListener(
+    "click",
+    function(){
+
+        window.location.replace(
             "login.html"
         );
 
     }
-
-    catch(error){
-
-        console.error(error);
-
-        message.style.color =
-        "red";
-
-        message.innerText =
-        "❌ Logout Failed: " +
-        error.message;
-
-    }
-
-});
-
-
-/* ==================================================
-   REFRESH
-================================================== */
-
-document
-.getElementById("refreshBtn")
-.addEventListener(
-"click",
-function(){
-
-    location.reload();
-
-});
-
-
-/* ==================================================
-   BACK
-================================================== */
-
-document
-.getElementById("backBtn")
-.addEventListener(
-"click",
-function(){
-
-    location.href =
-    "login.html";
-
-});
+);
 
 
 </script>
